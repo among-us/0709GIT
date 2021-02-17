@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="trustnet.auth.manager.repository.ManagerMapper">
+ 	<select id="findAllManagerList" resultType="ManagerInfoENTITY">
+		SELECT * 
+		FROM tam_info_tbl
+		<!-- WHERE exist = 'Y' -->
+	</select>
+	
+	 <select id="findAllManagerListOnlyExist" resultType="ManagerInfoENTITY">
+		SELECT * 
+		FROM tam_info_tbl
+		WHERE exist = 'Y'
+	</select>
+	
+	<select id="findManager" parameterType="ManagerInfoVO" resultType="ManagerInfoENTITY">
+		SELECT * 
+		FROM tam_info_tbl
+		WHERE tam_name = (#{tam_name})
+		LIMIT 1
+	</select>
+	
+	<select id="findManagerWithNO" parameterType="ManagerInfoVO" resultType="ManagerInfoENTITY">
+		SELECT * 
+		FROM tam_info_tbl
+		WHERE tam_no = (#{tam_no})
+		LIMIT 1
+	</select>
+	
+	<select id="findManagerAsName" parameterType="ManagerInfoENTITY" resultType="ManagerInfoENTITY">
+		SELECT * 
+		FROM tam_info_tbl
+		WHERE tam_name = (#{tam_name})
+		LIMIT 1
+	</select>
+	
+	<update id="updateManagerWithID" parameterType="ManagerInfoENTITY">
+		UPDATE tam_info_tbl
+		SET tam_name = #{tam_name},
+			site_info = #{site_info},
+			tam_local_ip = #{tam_local_ip},
+			tam_local_port = #{tam_local_port},
+			tam_pub_ip = #{tam_pub_ip},
+			tam_pub_port = #{tam_pub_port},
+			tam_admin_port = #{tam_admin_port},
+			tam_license = #{tam_license},
+			shared_path = #{shared_path},
+			log_path = #{log_path},
+			log_level = #{log_level},
+			comm_type = #{comm_type},
+			watchdog = #{watchdog},
+			<!-- tam_state = #{tam_state}, -->
+			hmac = #{hmac},
+			exist = #{exist}
+		WHERE tam_no = #{tam_no}
+	</update>
+	
+	<update id="deleteManagerWithID" parameterType="ManagerInfoENTITY">
+		UPDATE tam_info_tbl
+		SET exist = 'N'
+		WHERE tam_no = #{tam_no}
+	</update>
+	
+	<select id="isFindManager" parameterType="ManagerInfoVO" resultType="int">
+		SELECT COUNT(*) 
+		FROM tam_info_tbl
+		WHERE tam_name = (#{tam_name})
+	</select>
+	
+	<insert id="saveManagerInfo" parameterType="ManagerInfoVO">
+        INSERT INTO 
+        	tam_info_tbl(tam_name, 
+        	site_info, 
+        	tam_local_ip,
+        	tam_local_port, 
+        	tam_admin_port,
+        	tam_license, 
+        	shared_path, 
+        	log_path, 
+        	log_level, 
+        	comm_type, 
+        	watchdog, <!-- tam_state, --> 
+        	hmac,
+        	exist)
+        values 
+        	(#{tam_name}, 
+        	#{site_info}, 
+        	#{tam_local_ip}, 
+        	#{tam_local_port}, 
+        	#{tam_admin_port}, 
+        	<if test='#{tam_license} != null'>
+        	'LICENSEVALUE',
+      <!--  		#{tam_license},   -->
+        	</if>
+        	#{shared_path}, 
+        	#{log_path}, 
+        	#{log_level}, 
+        	#{comm_type},
+        	#{watchdog},<!--  #{tam_state}, --> 
+        	#{hmac}, 'Y')
+    </insert> 
+    
+    <insert id="saveManagerHistoryInfo" parameterType="ManagerHistoryInfoENTITY">
+        INSERT INTO 
+        	tam_info_history_tbl(tam_no, tam_name, site_info, tam_local_ip
+        	, tam_local_port, tam_admin_port, <!-- tam_pub_ip, tam_pub_port, -->
+        	tam_license, shared_path, log_path, log_level, comm_type, watchdog,
+        	<!-- tam_state, --> exist, hmac, issuer_user_no, action, history_reg_date)
+        values 
+        	(#{tam_no}, #{tam_name}, #{site_info}, #{tam_local_ip}, 
+        	#{tam_local_port}, #{tam_admin_port}, <!-- #{tam_pub_ip}, #{tam_pub_port},  -->
+        	#{tam_license}, #{shared_path}, #{log_path}, #{log_level}, #{comm_type}, #{watchdog},
+        	 <!-- #{tam_state},  -->#{exist}, #{hmac}, #{issuer_user_no}, #{action}, now())
+    </insert> 
+    
+    <select id="findAllManagerHistoryAsTamNo" parameterType="ManagerInfoENTITY" resultType="ManagerHistoryInfoENTITY">
+		SELECT 
+			tiht.tam_history_no,
+			tiht.tam_no,
+			tiht.tam_name,
+			tiht.site_info,
+			tiht.tam_local_ip,
+			tiht.tam_local_port,
+			tiht.tam_admin_port,
+			tiht.tam_pub_ip,
+			tiht.tam_license,
+			tiht.shared_path,
+			tiht.log_path,
+			tiht.log_level,
+			tiht.comm_type,
+			tiht.watchdog,
+			tiht.tam_state,
+			tiht.exist,
+			tiht.hmac,
+			tiht.issuer_user_no,
+			tiht.`action`,
+			tiht.history_reg_date,
+			uit.user_id AS issuer_user_id
+		FROM tam_info_history_tbl AS tiht
+		JOIN user_info_tbl AS uit
+		ON tiht.issuer_user_no = uit.user_no
+		WHERE tam_no = #{tam_no}
+	</select>
+
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="trustnet.auth.managerzone.repository.ManagerZoneMapper">
+
+ 	<select id="findManager" parameterType="ManagerZoneInfoVO" resultType="ManagerInfoENTITY">
+		SELECT * 
+		FROM tam_info_tbl
+		WHERE tam_no = (#{tam_no})
+		LIMIT 1
+	</select>
+	
+	<select id="isFindManagerZone" parameterType="ManagerZoneInfoVO" resultType="Int">
+		SELECT COUNT(*) 
+		FROM tam_zone_list_tbl
+		WHERE tam_no = (#{tam_no})
+		LIMIT 1
+	</select>
+	
+	<select id="findAllHavingZone" parameterType="ManagerZoneInfoVO" resultType="ManagerZoneMatchInfoENTITY">
+		SELECT tzlt.tam_no, tzlt.zone_no, zft.zone_name 
+		FROM tam_zone_list_tbl AS tzlt
+		JOIN zone_info_tbl AS zft
+		WHERE
+		(tzlt.zone_no = zft.zone_no) AND (tzlt.tam_no = ${tam_no}) AND zft.exist = 'Y'
+	</select>
+	
+	<select id="findAllZoneInfo" parameterType="ManagerZoneInfoVO" resultType="ZoneInfoENTITY">
+		SELECT *
+		FROM zone_info_tbl
+		WHERE zone_no = #{zone_no} 
+	</select>
+	
+	<delete id="deleteManagerZoneWithTAMNO" parameterType="ManagerZoneInfoVO">
+		DELETE
+		FROM tam_zone_list_tbl
+		WHERE tam_no = #{tam_no}
+	</delete>
+	
+	<delete id="deleteManagerZoneWithZONENO" parameterType="ManagerZoneInfoVO">
+		DELETE
+		FROM tam_zone_list_tbl
+		WHERE zone_no = #{zone_no}
+	</delete>
+	 
+	<insert id="saveManagerZone" parameterType="ManagerZoneInfoENTITY">
+		INSERT INTO
+			tam_zone_list_tbl(tam_no, zone_no, hmac)
+		values
+			(#{tam_no}, #{zone_no}, #{hmac})
+	</insert>
+</mapper>

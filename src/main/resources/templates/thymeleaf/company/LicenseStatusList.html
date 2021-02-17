@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TACO</title>
+</head>
+<body>
+<th:block th:include="thymeleaf/include/header"></th:block>
+
+
+
+
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+    	<!-- Main Content -->
+    	<div id="content">
+ 			<!-- Begin Page Content -->
+        	<div class="container-fluid">
+            	<!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">사용자</h1>
+                <p class="mb-4">사용자 목록을 확인할 수 있습니다</p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                	<div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">사용자 목록</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+										<th>사이트명</th>
+										<th>ZONE명</th>
+										<th>설명</th>
+										<th>허용된 PL 라이선스 갯수</th>
+										<th>허용된 TPL 라이선스 갯수</th>
+										<th>PL 합계</th>
+										<th>TPL 합계</th>
+								<!-- 		<th>TTL_SUM</th>
+										<th>RC_SUM</th> -->
+										<th>NA 합계</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+									<tr th:each="companyZone : ${companyZoneList}" >
+										<td th:text="${companyZone?.getComp_name()}"></td>
+										<td th:text="${companyZone?.getZone_name()}"></td>
+										<td th:text="${companyZone?.getZone_info()}"></td>
+										<td th:text="${companyZone?.getPl_license_cnt()}"></td>
+										<td th:text="${companyZone?.getTpl_license_cnt()}"></td>
+										<td th:text="${companyZone?.getPL_SUM()}"></td>
+										<td th:text="${companyZone?.getTPL_SUM()}"></td>
+						<!-- 				<td th:text="${companyZone?.getTTL_SUM()}"></td>
+										<td th:text="${companyZone?.getRC_SUM()}"></td> -->
+										<td th:text="${companyZone?.getNA_SUM()}"></td>
+							    	</tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+	
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/jQuery-v3.5.1.js"></script>
+	<script type="text/javascript" src="/js/company/companyInfo.js"></script>
+	<script type="text/javascript" src="/js/company/company.js"></script>
+	
+    <!-- <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/js/demo/datatables-demo.js"></script>
+
+</body>
+</html>

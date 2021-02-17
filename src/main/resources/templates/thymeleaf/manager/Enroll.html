@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- sweetalert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!--  -->
+<title>TACO</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+		<!-- Main Content -->
+		<div id="content">
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+				<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">TAManager</h1>
+				<p class="mb-4">TAManager을 등록 할 수 있습니다</p>
+				<!-- DataTales Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<span class="pr-5 font-weight-bold text-primary">TAManager 등록</span> <span class="ml-5"> <i class="fas fa-star-of-life"></i> &nbsp; 표시는
+							필수항목입니다.
+						</span>
+					</div>
+					<div class="card-body">
+						<form>
+							<div class="form-group row">
+								<label for="t_name" class="col-sm-2 col-form-label"> <i class="fas fa-star-of-life"></i> TAManager 명
+								</label>
+								<div class="col-sm-4">
+									<input type="text" name="tam_name" class="form-control" id="t_name" placeholder="">
+								</div>
+								<div class="col ml-3">
+									<input type="button" class="btn btn-primary" value="중복 검사" id="checkBtn">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="t_info" class="col-sm-2 col-form-label">설명</label>
+								<div class="col-sm-5">
+									<input type="text" name="site_info" class="form-control" id="t_info" placeholder="">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="t_local_ip" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 서비스 IP 주소</label>
+								<div class="col-sm-5">
+									<input type="text" name="tam_local_ip" class="form-control" id="t_local_ip" placeholder="">
+								</div>
+								<a href="#" class="help"><i class="far fa-question-circle"></i><span>시스템 로컬 IP 정보</span></a>
+							</div>
+							<div class="form-group row">
+								<label for="t_local_port" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 서비스 포트</label>
+								<div class="col-sm-5">
+									<input type="text" name="tam_local_port" class="form-control" id="t_local_port" placeholder="" maxlength="5">
+								</div>
+								<a href="#" class="help"><i class="far fa-question-circle"></i><span>TAAgent 서비스 포트</span></a>
+							</div>
+							<div class="form-group row">
+								<label for="t_admin_port" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 관리자 포트</label>
+								<div class="col-sm-5">
+									<input type="text" name="tam_admin_port" class="form-control" id="t_admin_port" placeholder="" maxlength="5">
+								</div>
+								<a href="#" class="help"><i class="far fa-question-circle"></i><span>TAManager 관리 포트</span></a>
+							</div>
+							<div class="form-group row">
+								<label for="t_log_path" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 로그 디렉토리 경로</label>
+								<div class="col-sm-5">
+									<input type="text" name="log_path" value="" class="form-control" id="t_log_path" placeholder="">
+									<!-- value="/temp/logs"  -->
+								</div>
+								<a href="#" class="help"><i class="far fa-question-circle"></i><span>TAManager 로그 위치</span></a>
+							</div>
+							<div class="form-group row">
+								<label for="t_log_level" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 로그 레벨</label>
+								<div class="col-sm-5">
+									<select name="log_level" class="form-control">
+										<option value="TRACE">TRACE</option>
+										<option value="DEBUG">DEBUG</option>
+										<option value="INFO">INFO</option>
+										<option value="WARNING">WARNING</option>
+										<option value="ERROR" selected="selected">ERROR</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="t_shared_path" class="col-sm-2 col-form-label">공유 디렉토리 경로</label>
+								<div class="col-sm-5">
+									<input type="text" name="shared_path" value="" class="form-control" id="t_shared_path" placeholder="" disabled>
+									<!-- value="/shared/directory"  -->
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="t_watchdog" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 프로세스 모니터링</label>
+								<div class="col-sm-5">
+									<select name="watchdog" class="form-control">
+										<option value="Y">YES</option>
+										<option value="N">NO</option>
+									</select>
+								</div>
+								<a href="#" class="help"><i class="far fa-question-circle"></i><span>TAManager 서비스 프로세스 관리 (WatchDog)</span></a>
+							</div>
+
+							<div class="form-group row">
+								<label for="t_comm_type" class="col-sm-2 col-form-label">타입</label>
+								<div class="col-sm-5">
+									<select name="comm_type" class="form-control" disabled>
+										<option value="NETWORK">NETWORK</option>
+										<option value="FILE">FILE</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-sm-10">
+									<input type="button" class="btn btn-primary" value="등록" id="enrollBtn"> <input type="button" id="ECBtn" class="btn btn-light"
+										value="취소" />
+
+								</div>
+							</div>
+
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/manager/managerInfo.js"></script>
+	<script type="text/javascript" src="/js/manager/manager.js"></script>
+	<script type="text/javascript" src="/js/leejs/cancel.js"></script>
+	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script src="/js/sb-admin-2.min.js"></script>
+	<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="/js/demo/datatables-demo.js"></script>
+
+
+
+</body>
+</html>

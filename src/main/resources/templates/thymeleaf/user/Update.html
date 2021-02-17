@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TACO</title>
+</head>
+<body>
+<th:block th:include="thymeleaf/include/header"></th:block>
+
+<table border="1">
+
+
+	 <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+    	<!-- Main Content -->
+    	<div id="content">
+ 			<!-- Begin Page Content -->
+        	<div class="container-fluid">
+            	<!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">사용자</h1>
+                <p class="mb-4">TACO 사용자 정보를 변경할 수 있습니다</p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                	<div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">사용자 정보 변경</h6>
+                    </div>
+                    <div class="card-body">
+                    
+                    
+                      <form>
+						  <div class="form-group row">
+						    <label for="u_no" class="col-sm-2 col-form-label">고유 번호</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="user_no" class="form-control" id="u_no" th:value="${userInfo?.getUser_no()}" disasbled="disabled" readonly>
+						    </div>
+						  </div>
+						  <div class="form-group row">
+						    <label for="u_id" class="col-sm-2 col-form-label">계정명</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="user_id" class="form-control" id="u_id" th:value="${userInfo?.getUser_id()}" disabled="disabled" readonly>
+						    </div>
+						  </div>
+						  <div class="form-group row">
+						    <label for="u_license" class="col-sm-2 col-form-label">권한</label>
+						    <div class="col-sm-5">
+						    		<select name="permissions" class="form-control">
+								  		<option th:selected="${userInfo?.getPermissions()} == 'admin'" value="admin">admin</option>
+								  		<option th:selected="${userInfo?.getPermissions()} == 'operator'" value="operator">operator</option>
+									</select>
+<!-- 						      <input type="text" name="permissions" class="form-control" id="inputEmail3" > -->
+						    </div>
+						  </div>
+						  <div class="form-group row">
+						    <label for="u_siteName" class="col-sm-2 col-form-label">사이트명</label>
+						    <div class="col-sm-5">
+						    	  <select name="comp_name" class="form-control">
+									<option th:each=" company : ${companyInfoList} " th:value="${company?.getComp_no()}" th:utext="${company?.getComp_name()}" th:selected="${company?.getComp_no()} == ${userInfo?.getComp_no()}"></option>
+								  </select>
+						    </div>
+						  </div>
+						  <div class="form-group row">
+						    <label for="u_err_cnt" class="col-sm-2 col-form-label">로그인 실패 횟수</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="auth_err" class="form-control" id="u_err_cnt" th:value="${userInfo?.getAuth_err()}" disabled="disabled" readonly>
+						    </div>
+						  </div>	
+						  <div class="form-group row">
+						    <label for="u_last_login" class="col-sm-2 col-form-label">마지막 로그인 일자</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="last_login" class="form-control" id="u_last_login" th:value="${userInfo?.getLast_login()}" disabled="disabled" readonly>
+						    </div>
+						  </div>
+						  <div class="form-group row">
+						    <label for="u_reg_date" class="col-sm-2 col-form-label">계정 등록 일자</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="reg_date" class="form-control" id="u_reg_date" th:value="${userInfo?.getReg_date()}" disabled="disabled" readonly>
+						    </div>
+						  </div>	
+						  <div class="form-group row">
+						    <label for="u_exist" class="col-sm-2 col-form-label">활성화</label>
+						    <div class="col-sm-5">
+						      	<select name="exist" class="form-control">
+							  		<option th:selected="${userInfo?.getExist()} == 'Y'" value="Y">YES</option>
+							  		<option th:selected="${userInfo?.getExist()} == 'N'" value="N">NO</option>
+								</select>
+						    </div>
+						  </div>
+						</form>
+						  <div class="form-group row">
+						    <div class="col-sm-10">
+						      <input type="button" class="btn btn-primary" value="변경하기" id="updateBtn">
+						    </div>
+						  </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    
+    <th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/user/userInfo.js"></script>
+	<script type="text/javascript" src="/js/user/user.js"></script
+
+<th:block th:include="thymeleaf/include/footer"></th:block>
+</body>
+</html>

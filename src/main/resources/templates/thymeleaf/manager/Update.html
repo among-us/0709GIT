@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TACO</title>
+
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+
+		<!-- Main Content -->
+		<div id="content">
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+				<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">TAManager</h1>
+				<p class="mb-4">TAManager에 대한 정보 변경을 수행할 수 있습니다</p>
+
+				<!-- DataTales Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold text-primary">TAManager 정보 변경</h6>
+					</div>
+					<div class="card-body">
+
+						<form>
+							<div class="form-group row">
+								<label for="t_no" class="col-sm-2 col-form-label">고유
+									번호</label>
+								<div class="col-sm-5">
+									<input type="text" name="tam_no" class="form-control"
+										id="t_no" th:value="${managerInfo?.getTam_no()}"
+										disabled="disabled" readonly>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="t_name" class="col-sm-2 col-form-label"><i
+									class="fas fa-star-of-life"></i> TAManager 명</label>
+								<div class="col-sm-5">
+									<input type="text" name="tam_name" class="form-control"
+										id="t_name" th:value="${managerInfo?.getTam_name()}">
+								</div>
+								<a href="#" class="help" style="color:red;"> <i
+									class="fas fa-exclamation-triangle"></i><span> 
+									이름 변경 시 서비스지원이 불가능할 수 있습니다.</span></a>
+							</div>
+							<div class="form-group row">
+								<label for="t_info" class="col-sm-2 col-form-label">설명</label>
+								<div class="col-sm-5">
+									<input type="text" name="site_info" class="form-control"
+										id="t_info" th:value="${managerInfo?.getSite_info()}">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="t_local_ip" class="col-sm-2 col-form-label"><i
+									class="fas fa-star-of-life"></i> 서비스 IP</label>
+								<div class="col-sm-5">
+									<input type="text" name="tam_local_ip" class="form-control"
+										id="t_local_ip" th:value="${managerInfo?.getTam_local_ip()}">
+								</div>
+								<a href="#" class="help"><i class="far fa-question-circle"></i><span>시스템
+										로컬 IP 정보</span></a>
+							</div>
+							<div class="form-group row">
+								<label for="t_local_port" class="col-sm-2 col-form-label"><i
+									class="fas fa-star-of-life"></i> 서비스 포트</label>
+								<div class="col-sm-5">
+									<input type="text" name="tam_local_port" class="form-control"
+										id="t_local_port"
+										th:value="${managerInfo?.getTam_local_port()}">
+								</div>
+								<a href="#" class="help"> <i class="far fa-question-circle"></i><span>TAManager 서비스 포트</span></a>
+							</div>
+
+							<!-- 						  <div class="form-group row">
+						    <label for="inputPassword3" class="col-sm-2 col-form-label">Public IP</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="tam_pub_ip" class="form-control" id="inputEmail3" th:value="${managerInfo?.getTam_pub_ip()}">
+						    </div>
+						  </div> -->
+
+							<!-- 						  <div class="form-group row">
+						    <label for="inputPassword3" class="col-sm-2 col-form-label">Public 포트</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="tam_pub_port" class="form-control" id="inputEmail3" th:value="${managerInfo?.getTam_pub_port()}">
+						    </div>
+						  </div> -->
+
+							<!-- 						  <div class="form-group row">
+						    <label for="inputPassword3" class="col-sm-2 col-form-label">라이선스</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="tam_license" class="form-control" id="inputEmail3" th:value="${managerInfo?.getTam_license()}">
+						    </div>
+						  </div> -->
+
+							<div class="form-group row">
+								<label for="t_admin_port" class="col-sm-2 col-form-label"><i
+									class="fas fa-star-of-life"></i> 관리자 포트</label>
+								<div class="col-sm-5">
+									<input type="text" name="tam_admin_port" class="form-control"
+										id="t_admin_port"
+										th:value="${managerInfo?.getTam_admin_port()}">
+								</div>
+								<a href="#" class="help"> <i class="far fa-question-circle"></i><span>TAManager
+										관리 포트</span></a>
+							</div>
+
+
+
+							<div class="form-group row">
+								<label for="t_shared_path" class="col-sm-2 col-form-label"><i
+									class="fas fa-star-of-life"></i> 공유 디렉토리 경로</label>
+								<div class="col-sm-5">
+									<input type="text" name="shared_path" class="form-control"
+										id="t_shared_path" th:value="${managerInfo?.getShared_path()}"
+										disabled>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="t_log_path" class="col-sm-2 col-form-label"><i
+									class="fas fa-star-of-life"></i> 로그 디렉토리 경로</label>
+								<div class="col-sm-5">
+									<input type="text" name="log_path" class="form-control" id="t_log_path">
+									<!-- th:value="${managerInfo?.getLog_path()}" -->
+								</div>
+								<a href="#" class="help"> <i class="far fa-question-circle"></i><span>TAManager 로그 위치</span></a>
+							</div>
+							<div class="form-group row">
+								<label for="t_log_level" class="col-sm-2 col-form-label">로그 레벨</label>
+								<div class="col-sm-5">
+									<select name="log_level" class="form-control">
+										<option th:selected="${managerInfo?.getLog_level()} == 'TRACE'" value="TRACE">TRACE</option>
+										<option th:selected="${managerInfo?.getLog_level()} == 'DEBUG'" value="DEBUG">DEBUG</option>
+										<option th:selected="${managerInfo?.getLog_level()} == 'INFO'" value="INFO">INFO</option>
+										<option th:selected="${managerInfo?.getLog_level()} == 'WARNING'" value="WARNING">WARNING</option>
+										<option th:selected="${managerInfo?.getLog_level()} == 'ERROR'" value="ERROR" selected="selected">ERROR</option>
+									</select>
+								</div>
+							</div>
+
+
+							<div class="form-group row">
+								<label for="t_watchdog" class="col-sm-2 col-form-label"><i
+									class="fas fa-star-of-life"></i> 프로세스 모니터링 여부</label>
+								<div class="col-sm-5">
+									<select name="watchdog" class="form-control">
+										<option th:selected="${managerInfo?.getWatchdog()} == 'Y'"
+											value="Y">YES</option>
+										<option th:selected="${managerInfo?.getWatchdog()} == 'N'"
+											value="N">NO</option>
+									</select>
+								</div>
+								<a href="#" class="help"><i class="far fa-question-circle"></i><span>TAManager
+										서비스 프로세스 관리 (WatchDog)</span></a>
+							</div>
+
+							<div class="form-group row">
+								<label for="t_comm_type" class="col-sm-2 col-form-label">타입</label>
+								<div class="col-sm-5">
+									<select name="comm_type" class="form-control" disabled>
+										<option th:selected="${managerInfo?.getComm_type()} == 'FILE'"
+											value="FILE">FILE</option>
+										<option
+											th:selected="${managerInfo?.getComm_type()} == 'NETWORK'"
+											value="NETWORK">NETWORK</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="t_exist" class="col-sm-2 col-form-label">활성화</label>
+								<div class="col-sm-5">
+									<select name="exist" class="form-control">
+										<option th:selected="${managerInfo?.getExist()} == 'Y'"
+											value="Y">YES</option>
+										<option th:selected="${managerInfo?.getExist()} == 'N'"
+											value="N">NO</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<div class="col-sm-10">
+									<input type="button" class="btn btn-primary" value="적용"
+										id="updateBtn"> 
+										<input type="button" id="UCBtn"  class="btn btn-light" value="취소" />
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<!-- swal  -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<!--  -->
+	<script type="text/javascript" src="/js/manager/managerInfo.js"></script>
+	<script type="text/javascript" src="/js/manager/manager.js"></script>
+	<script type="text/javascript" src="/js/leejs/cancel.js"></script>
+</body>
+</html>

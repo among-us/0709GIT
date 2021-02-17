@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TACO</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+
+		<!-- Main Content -->
+		<div id="content">
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+				<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">ZONE</h1>
+				<p class="mb-4">ZONE에 대한 정보 등록을 수행할 수 있습니다</p>
+
+				<!-- DataTales Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<span class="pr-5 font-weight-bold text-primary">ZONE 정보 등록</span> <span class="ml-5"> <i class="fas fa-star-of-life"></i> &nbsp; 표시는
+							필수항목입니다.
+						</span>
+					</div>
+					<div class="card-body">
+
+
+						<form>
+							<div class="form-group row">
+								<label for="z_name" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> ZONE 이름</label>
+								<div class="col-sm-4">
+									<input type="text" name="zone_name" class="form-control" id="z_name">
+								</div>
+								<div class="col-sm-5">
+									<input type="button" value="중복검사" class="btn btn-primary" id="checkBtn"> <br />
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="z_reno" class="col-sm-2 col-form-label">개정 번호</label>
+								<div class="col-sm-5">
+									<input type="text" name="revision_no" class="form-control" id="z_reno" th:value="${zoneInfo?.getRevision_no()}" disabled="disabled" readonly>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="z_info" class="col-sm-2 col-form-label">설명</label>
+								<div class="col-sm-5">
+									<input type="text" name="zone_info" class="form-control" id="z_info" value="유넷시스템 서비스 존">
+								</div>
+							</div>
+							
+							<!--  -->
+						<!-- 	<div class="form-group row" style="display: none;">
+								<label for="z_pl" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> PL 라이선스 갯수</label>
+								<div class="col-sm-5">
+									<input type="text" name="pl_license_cnt" class="form-control" id="z_pl" value="">
+								</div>
+							</div>
+							<div class="form-group row" style="display: none;">
+								<label for="z_tpl" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> TPL 라이선스 갯수</label>
+								<div class="col-sm-5">
+									<input type="text" name="tpl_license_cnt" class="form-control" id="z_tpl" value=" "> 
+								</div>
+							</div> -->
+							<!--  -->
+
+							<div class="form-group row">
+								<label for="z_sessionTime" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 세션 타임</label>
+								<div class="col-sm-5">
+									<select name="session_time" class="form-control">
+										<option th:each=" num : ${#numbers.sequence(1,20)} " th:value="${num*5}" th:utext="${num*5}"></option>
+									</select>
+								</div>
+
+								<a href="#" class="help"><i class="far fa-question-circle"></i><span>TAAgent의 세션 시간</span></a>
+							</div>
+							<div class="form-group row">
+								<label for="z_siteName" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 사이트명</label>
+								<div class="col-sm-5">
+								<!--  comp_name ->  comp_no  -->
+									<select name="comp_no" class="form-control">
+										<option th:each=" company : ${companyList} " th:value="${company?.getComp_no()}" th:utext="${company?.getComp_name()}"></option>
+									</select>
+								</div>
+							</div>
+
+
+							<!--  -->
+							<!-- 	<div class="form-group row" style="display: none;">
+								<label for="z_integrity" class="col-sm-2 col-form-label"><i class="fas fa-star-of-life"></i> 정합성 코드 </label>
+								<div class="col-sm-4">
+									<input type="text" name="integrity_value" class="form-control" id="z_integrity">
+								</div>
+								<div>
+									<button type="button" class="btn btn-primary" id="hintModal">힌트</button>
+									<input type="button" class="btn btn-primary" value="검증" id="verifyBtn">
+								</div>
+							</div>
+							<div class="form-group row" style="display: none;">
+								<label for="z_limited_url" class="col-sm-2 col-form-label">URL 제한</label>
+								<div class="col-sm-5">
+									<input type="text" name="limited_url" class="form-control" id="z_limited_url" value=""> 설명 name과 동일하게되어있었음 zone_info -> limited_url
+								</div>
+							</div> -->
+							<!--  -->
+							
+						
+							<!-- Modal -->
+							<div class="modal fade" id="integrityInfo" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title">정합성 값 정보</h4>
+										</div>
+										<div class="modal-body">
+											<p>
+												- ZONE 명 : <b id="zone_name"></b>
+											</p>
+											<p>
+												- 개정 번호 : <b id="revision_no"></b>
+											</p>
+											<p>
+												- 허용 PL 수 : <b id="zone_pl_count"></b>
+											</p>
+											<p>
+												- 허용 TPL 수 :<b id="zone_tpl_count"></b>
+											</p>
+											<p>
+												- 제한 URL :<b id="limited_url"></b>
+											</p>
+											<br> <span> <i style="color: red;" class="fas fa-exclamation-triangle"></i> 해당 정보를 제조사에 제공 후 받은 정합성 코드를 입력하세요
+											</span>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-light" data-dismiss="modal">❌</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--  -->
+							<div class="form-group row">
+								<div class="col-sm-10">
+									<input type="button" class="btn btn-primary" value="등록" id="enrollBtn"> <input type="button" class="btn btn-light" value="취소"
+										onclick="cancel();" />
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/js/zone/zoneInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/zone.js"></script>
+	<script type="text/javascript" src="/js/leejs/cancel.js"></script>
+</body>
+</html>

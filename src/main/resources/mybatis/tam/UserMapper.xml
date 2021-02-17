@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="trustnet.auth.user.repository.UserMapper">
+
+	<select id="findUserAll" resultType="UserInfoENTITY">
+		SELECT * 
+		FROM user_info_tbl
+	</select>
+	
+	<select id="findAllUserWithComp" resultType="UserInfoENTITY">
+		SELECT 
+		tut.user_no AS user_no,
+		tut.user_id AS user_id, 
+		tut.passwd AS passwd, 
+		tut.permissions AS permissions, 
+		tut.comp_no AS comp_no,
+		cit.comp_name AS comp_name,
+		tut.auth_err AS auth_err, 
+		tut.last_login AS last_login, 
+		tut.reg_date AS reg_date, 
+		tut.exist AS exist, 
+		tut.hmac AS hmac
+		FROM user_info_tbl AS tut
+		JOIN company_info_tbl AS cit
+		ON tut.comp_no = cit.comp_no
+<!-- 		WHERE tut.exist = 'Y' -->
+	</select>
+	
+	<select id="findAllUserWithCompASUserNO" parameterType="UserInfoENTITY" resultType="UserInfoENTITY">
+		SELECT 
+		tut.user_no AS user_no,
+		tut.user_id AS user_id, 
+		tut.passwd AS passwd, 
+		tut.permissions AS permissions, 
+		tut.comp_no AS comp_no,
+		cit.comp_name AS comp_name,
+		tut.auth_err AS auth_err, 
+		tut.last_login AS last_login, 
+		tut.reg_date AS reg_date, 
+		tut.exist AS exist, 
+		tut.hmac AS hmac
+		FROM user_info_tbl AS tut
+		JOIN company_info_tbl AS cit
+		ON tut.comp_no = cit.comp_no
+		WHERE <!-- tut.exist = 'Y'  AND--> tut.user_no = #{user_no} 
+		LIMIT 1
+	</select>
+	
+	<select id="findUser" resultType="UserInfoENTITY">
+		SELECT * 
+		FROM user_info_tbl 
+		WHERE user_id = #{user_id}
+		LIMIT 1
+	</select>
+	
+	<update id="updateUserInfo" parameterType="UserInfoENTITY">
+		UPDATE user_info_tbl
+		SET 
+			permissions = #{permissions},
+			comp_no = #{comp_no},
+			exist = #{exist}
+		WHERE user_no = #{user_no}
+	</update>
+	
+	<update id="updateUserPW" parameterType="UserInfoENTITY">
+		UPDATE user_info_tbl
+		SET 
+			passwd = #{passwd}
+		WHERE user_id = #{user_id}
+	</update>
+	
+    <insert id="saveUserVO" parameterType="UserInfoENTITY" >
+        INSERT 
+        INTO user_info_tbl(user_id, passwd, permissions, comp_no, auth_err, last_login, reg_date, exist, hmac)
+        values (#{user_id}, #{passwd}, #{permissions}, #{comp_no}, 0, now(), now(), 'Y', #{hmac} )
+    </insert>
+   
+   	<update id="updateUserForAuthERRIncrease" parameterType="UserInfoENTITY">
+		UPDATE user_info_tbl
+		SET auth_err = #{auth_err} + 1
+		WHERE user_id = #{user_id}
+	</update>
+	
+	<update id="updateUserForAuthERRInit" parameterType="UserInfoENTITY">
+		UPDATE user_info_tbl
+		SET auth_err = 0
+		WHERE user_id = #{user_id}
+	</update>
+	
+	<update id="updateUserForLastLogin" parameterType="UserInfoENTITY">
+		UPDATE user_info_tbl
+		SET last_login = now()
+		WHERE user_id = #{user_id}
+	</update>
+	
+	
+	<insert id="saveUserHistory" parameterType="UserHistoryInfoENTITY" >
+        INSERT 
+        INTO user_info_history_tbl(user_no, user_id, passwd,
+        permissions, comp_no, auth_err, last_login, reg_date, exist, hmac, issuer_user_no, action, history_reg_date)
+        values ( #{user_no}, #{user_id}, #{passwd}, #{permissions},
+        #{comp_no}, #{auth_err}, #{last_login}, #{reg_date}, #{exist}, #{hmac}, #{issuer_user_no}, #{action}, now() )
+    </insert>
+
+
+	<select id="findAllUserHistory" resultType="UserHistoryInfoENTITY">
+		SELECT * 
+		FROM user_info_history_tbl 
+	</select>
+	
+	<select id="findAllUserHistoryAsUserNo" resultType="UserHistoryInfoENTITY">
+<!-- 		SELECT * 
+		FROM user_info_history_tbl 
+		WHERE user_no = #{user_no} -->
+		SELECT 
+			uiht.user_history_no,
+			uiht.user_no,
+			uiht.user_id,
+			uiht.passwd,
+			uiht.permissions,
+			uiht.comp_no,
+			uiht.auth_err,
+			uiht.last_login,
+			uiht.reg_date,
+			uiht.exist,
+			cit.comp_name,
+			uiht.hmac,
+			uiht.issuer_user_no,
+			uiht.`action`,
+			uiht.history_reg_date,
+			uit.user_id AS issuer_user_id
+		FROM user_info_history_tbl AS uiht 
+		JOIN company_info_tbl AS cit 
+		JOIN user_info_tbl AS uit
+		ON uiht.comp_no = cit.comp_no AND uit.user_no = uiht.issuer_user_no
+		WHERE uiht.user_no = #{user_no}
+	</select>
+
+	<select id="findUserInfoAsUserID"  parameterType="UserInfoENTITY" resultType="UserInfoENTITY">
+		SELECT * 
+		FROM user_info_tbl 
+		WHERE user_id = #{user_id}
+		LIMIT 1
+	</select>
+
+	<select id="findUserInfoAsUserNO"  parameterType="UserInfoENTITY" resultType="UserInfoENTITY">
+		SELECT * 
+		FROM user_info_tbl 
+		WHERE user_no = #{user_no}
+		LIMIT 1
+	</select>
+	
+	<select id="isFindUser" parameterType="UserInfoENTITY" resultType="int">
+		SELECT COUNT(*) 
+		FROM user_info_tbl
+		WHERE user_id = #{user_id}
+	</select>
+	
+	
+</mapper>

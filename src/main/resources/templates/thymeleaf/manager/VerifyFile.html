@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- sweetalert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!--  -->
+<title>TACO</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+		<!-- Main Content -->
+		<div id="content">
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+				<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">TAManager</h1>
+				<p class="mb-4">TAManager 환경파일을 검증할 수 있습니다</p>
+				<!-- DataTales Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<span class="pr-5 font-weight-bold text-primary">TAManager 환경파일 검증</span> </span>
+					</div>
+					<div class="card-body">
+						<form>
+							<div class="form-group row">
+								<div class="col-sm-10">
+									<input type="button" class="btn btn-primary" value="TAManager 환경파일 검증" id="verifyFileBtn">
+									<!--  -->
+									<input type="button" class="btn btn-light" value="취소" id="ECBtn" />
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/manager/managerInfo.js"></script>
+	<script type="text/javascript" src="/js/manager/manager.js"></script>
+	<script type="text/javascript" src="/js/leejs/cancel.js"></script>
+	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script src="/js/sb-admin-2.min.js"></script>
+	<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="/js/demo/datatables-demo.js"></script>
+
+</body>
+</html>

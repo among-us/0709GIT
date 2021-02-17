@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TACO</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+
+		<!-- Main Content -->
+		<div id="content">
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+				<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">TAManager</h1>
+				<p class="mb-4">TAManager 목록을 확인할 수 있습니다</p>
+
+				<!-- DataTales Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<span class="m-0 font-weight-bold text-primary">TAManager 목록</span> <span class="ml-5"> <i class="fas fa-star-of-life"></i> &nbsp; 수정 /
+							보기 기능을 사용하려면 해당 목록을 클릭하세요.
+						</span>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered display nowrap" id="tables" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<th>번호</th>
+										<th>TAManager</th>
+										<th>설명</th>
+										<th>로컬 IP</th>
+										<th>서비스 포트</th>
+										<th>관리자 포트</th>
+										<!--<th>License</th> -->
+										<th>SharedPath</th>
+										<th>LogPath</th>
+										<th>LogLevel</th>
+										<th>CommType</th>
+										<th>활성화</th>
+										<th>Download</th>
+										<!--<th>hMac</th>	 -->
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="manager, seq : ${managerList}" style="cursor: pointer" th:attr="onclick=|goToManagerZoneMatch('${manager?.getTam_no()}')|">
+										<td th:text="${seq.count}"></td>
+										<td th:text="${manager?.getTam_name()}"></td>
+										<td th:text="${manager?.getSite_info()}"></td>
+										<td th:text="${manager?.getTam_local_ip()}"></td>
+										<td th:text="${manager?.getTam_local_port()}"></td>
+										<td th:text="${manager?.getTam_admin_port()}"></td>
+										<!-- <td th:text="${manager?.getTam_license()}"></td> -->
+										<td th:text="${manager?.getShared_path()}"></td>
+										<td th:text="${manager?.getLog_path()}"></td>
+										<td th:text="${manager?.getLog_level()}"></td>
+										<td th:text="${manager?.getComm_type()}"></td>
+										<td th:text="${manager?.getExist()}"></td>
+										<!--<td th:text="${manager?.getHmac()}"></td>  -->
+
+										<!--  test file 삽입해보자 -->
+										<!--  이 td는 onclick 버튼 비활성화해야함  -->
+										<td onclick="event.cancelBubble=true">
+											<button class="btn btn-primary">
+												<a href="/leejs/tam.conf" download="tam.conf" target="_blank" class="tnas_conf_button" style="color: white">File Download</a>
+											</button>
+
+										</td>
+
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/manager/managerInfo.js"></script>
+	<script type="text/javascript" src="/js/manager/manager.js"></script>
+
+	<!-- <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script src="/js/sb-admin-2.min.js"></script>
+	<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="/js/demo/datatables-demo.js"></script>
+
+
+
+</body>
+</html>

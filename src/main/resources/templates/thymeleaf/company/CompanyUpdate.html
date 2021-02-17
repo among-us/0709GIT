@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TACO</title>
+</head>
+<body>
+<th:block th:include="thymeleaf/include/header"></th:block>
+
+<!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+    	<!-- Main Content -->
+    	<div id="content">
+ 			<!-- Begin Page Content -->
+        	<div class="container-fluid">
+            	<!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">사이트</h1>
+                <p class="mb-4">사이트 정보를 변경할 수 있습니다</p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                	<div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">사이트 변경</h6>
+                    </div>
+                    <div class="card-body">
+                      <form>
+                      	  <div class="form-group row">
+						    <label for="c_no" class="col-sm-2 col-form-label">고유번호</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="comp_no" class="form-control" id="c_no" th:value="${companyNGroup?.getCi_comp_no()}" disabled="disabled" readonly>
+						    </div>
+						  </div>
+                      	  <div class="form-group row">
+						    <label for="c_groupName" class="col-sm-2 col-form-label">그룹명</label>
+						    <div class="col-sm-5">
+						      <select name="group_name" class="form-control">
+				  				<option th:each=" group : ${groupInfoList} " th:value="${group?.getGroup_no()}" th:utext="${group?.getGroup_name()}" th:selected="${group?.getGroup_no()} == ${companyNGroup?.getGi_group_no()}" ></option>
+					 		</select>
+						    </div>
+						  </div>	
+						  <div class="form-group row">
+						    <label for="c_siteName" class="col-sm-2 col-form-label">회사명</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="comp_name"  class="form-control" id="c_siteName" th:value="${companyNGroup?.getCi_comp_name()}">
+						    </div>
+						  </div>		
+						  
+						  <div class="form-group row">
+						    <label for="c_reg_date" class="col-sm-2 col-form-label">등록일자</label>
+						    <div class="col-sm-5">
+						      <input type="text" name="reg_date"  class="form-control" id="c_reg_date" th:value="${companyNGroup?.getCi_reg_date()}" disabled="disabled" readonly>
+						    </div>
+						  </div>							  
+						  
+						  <div class="form-group row">
+						    <div >
+						      <input type="button" class="btn btn-primary" value="변경하기" id="updateBtn">
+						    </div>
+						    <div class="col-sm-10">
+						      <input type="button" class="btn btn-primary" value="삭제하기" id="deleteBtn">
+						    </div>						    
+						  </div>
+						</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    
+    <th:block th:include="thymeleaf/include/footer"></th:block>
+    <script type="text/javascript" src="/js/jQuery-v3.5.1.js"></script>
+	<script type="text/javascript" src="/js/company/companyInfo.js"></script>
+	<script type="text/javascript" src="/js/company/company.js"></script
+	
+<th:block th:include="thymeleaf/include/footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TACO</title>
+
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/js/sb-admin-2.min.js"></script>
+
+
+
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+
+		<!-- Main Content -->
+		<div id="content">
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+				<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">라이선스 관리</h1>
+				<p class="mb-4">라이선스 현황 이력을 확인할 수 있습니다</p>
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold text-primary">라이선스 발급이력</h6>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered display nowrap" id="statetables" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<th>고유번호</th>
+										<th>TAM명</th>
+										<th>로컬 IP</th>
+										<th>TAA IP</th>
+										<th>TAA Hostname</th>
+										<th>ZONE명</th>
+										<th>라이선스 타입</th>
+										<th>요청 타입</th>
+										<th>요청 일자</th>
+										<th>요청 결과</th>
+										<th>결과 사유</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="stateHistory : ${stateHistoryList}">
+										<td th:text="${stateHistory?.getState_no()}"></td>
+										<td th:text="${stateHistory?.getTam_name()}"></td>
+										<td th:text="${stateHistory?.getTam_local_ip()}"></td>
+										<!-- <td th:text="${stateHistory?.getTaa_no()}"></td> -->
+										<td th:text="${stateHistory?.getTaa_ip()}"></td>
+										<td th:text="${stateHistory?.getTaa_hostname()}"></td>
+										<!-- <td th:text="${stateHistory?.getZone_no()}"></td> -->
+										<td th:text="${stateHistory?.getZone_name()}"></td>
+										<td th:text="${stateHistory?.getLicense_type()}"></td>
+										<td th:text="${stateHistory?.getReq_type()}"></td>
+										<td th:text="${stateHistory?.getReq_date()}"></td>
+										<td th:text="${stateHistory?.getReq_result()}"></td>
+										<td th:text="${stateHistory?.getResult_reason()}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="/js/demo/datatables-demo.js"></script>
+	<script src="/js/zone/history.js"></script>
+</body>
+</html>

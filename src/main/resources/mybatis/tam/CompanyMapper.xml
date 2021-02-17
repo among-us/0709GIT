@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="trustnet.auth.company.repository.CompanyMapper">
+	<select id="findAllCompanyInfoAll" resultType="CompanyInfoENTITY">
+		SELECT * 
+		FROM company_info_tbl
+		WHERE exist = 'Y'
+	</select>
+	
+	<select id="findCompanyInfoAsCompNO" parameterType="CompanyInfoENTITY" resultType="CompanyNGroupInfoENTITY">
+		SELECT ci.comp_no AS ci_comp_no, 
+				ci.comp_name AS ci_comp_name, 
+				ci.group_no AS ci_group_no,
+				ci.exist AS ci_exist,
+				ci.reg_date AS ci_reg_date, 
+				gi.group_no AS gi_group_no, 
+				gi.group_name AS gi_group_name,
+				gi.exist AS gi_exist, 
+				gi.reg_date AS gi_reg_date
+		FROM company_info_tbl AS ci
+		JOIN group_info_tbl AS gi
+		ON ci.group_no = gi.group_no
+		WHERE ci.comp_no = #{comp_no} AND ci.exist = 'Y' AND gi.exist = 'Y'
+		LIMIT 1
+	</select>
+	
+	<select id="findAllGroupInfoAll" resultType="GroupInfoENTITY">
+		SELECT * 
+		FROM group_info_tbl
+		WHERE exist = 'Y'
+	</select>
+	
+	<select id="findAllCompanyNGroupInfo" resultType="CompanyNGroupInfoENTITY">
+		SELECT ci.comp_no AS ci_comp_no, 
+				ci.comp_name AS ci_comp_name, 
+				ci.group_no AS ci_group_no,
+				ci.exist AS ci_exist,
+				ci.reg_date AS ci_reg_date, 
+				gi.group_no AS gi_group_no, 
+				gi.group_name AS gi_group_name,
+				gi.exist AS gi_exist, 
+				gi.reg_date AS gi_reg_date
+		FROM company_info_tbl AS ci
+		JOIN group_info_tbl AS gi
+		ON ci.group_no = gi.group_no
+		WHERE ci.exist = 'Y' AND gi.exist = 'Y'
+	</select>
+	
+	<select id="findAllCompanyLicenseWithCompNO" parameterType="CompNoInfoENTITY" resultType="CompanyLicenseENTITY">
+		SELECT 
+			c.comp_name,
+			z.zone_name,
+			z.zone_info,
+			z.pl_license_cnt,
+			z.tpl_license_cnt,
+			us.PL_SUM,
+			us.TPL_SUM,
+			us.TTL_SUM,
+			us.RC_SUM,
+			us.NA_SUM
+		FROM company_info_tbl c
+		LEFT JOIN zone_info_tbl z
+		ON c.comp_no = z.comp_no
+		LEFT JOIN
+		(
+		SELECT
+			zone_no,
+			IFNULL(SUM(CASE license_type when 'PL' then 1 ELSE 0 END), 0) AS PL_SUM,
+			IFNULL(SUM(CASE license_type when 'TPL' then 1 ELSE 0 END), 0) AS TPL_SUM,
+			IFNULL(SUM(CASE license_type when 'TTL' then 1 ELSE 0 END), 0) AS TTL_SUM,
+			IFNULL(SUM(CASE license_type when 'RC' then 1 ELSE 0 END), 0) AS RC_SUM,
+			IFNULL(SUM(CASE license_type when 'NA' then 1 ELSE 0 END), 0) AS NA_SUM
+		FROM taa_info_tbl
+		GROUP BY zone_no
+		) us
+		ON us.zone_no = z.zone_no		
+		WHERE 1=1 AND c.exist = 'Y' AND z.exist = 'Y'
+		<if test = 'c_comp_no != 0'>
+			AND c.comp_no = #{c_comp_no} 
+		</if>
+		<if test = 'z_zone_no != 0'>
+			AND z.zone_no = #{z_zone_no}
+		</if>
+		
+		
+	</select>
+	
+	<insert id="saveCompanyInfo" parameterType="CompanyInfoENTITY">
+        INSERT INTO 
+        	company_info_tbl(comp_name, group_no, exist, reg_date)
+        VALUES 
+        	(#{comp_name}, #{group_no}, 'Y', now())
+    </insert>
+    
+    
+    <update id="updateCompanyInfo" parameterType="CompanyInfoENTITY">
+		UPDATE company_info_tbl
+		SET comp_name = #{comp_name},
+			group_no = #{group_no}
+		WHERE comp_no = #{comp_no}
+	</update>
+	
+	<update id="deleteCompanyInfo" parameterType="CompanyInfoENTITY">
+		UPDATE company_info_tbl
+		SET exist = 'N'
+		WHERE comp_no = #{comp_no}
+	</update>
+    
+</mapper>
