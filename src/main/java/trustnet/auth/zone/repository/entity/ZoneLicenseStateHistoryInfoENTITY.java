@@ -29,4 +29,10 @@ public class ZoneLicenseStateHistoryInfoENTITY {
 	String result_reason;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	String tam_name;
+	
+	int pageNum;
+	int show_cnt;
+	String ordering;
+	String filter;
+	String column;
 }

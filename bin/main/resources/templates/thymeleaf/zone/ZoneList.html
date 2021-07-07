@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					PROJECT 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">PROJECT 정보</b>
+				</h1>
+				<p class="mb-4 sub">PROJECT 목록을 확인할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<span class="pr-5 font-weight-bold text-white">PROJECT 목록</span> <span class="ml-5"> <b class="text-danger mr-2">*</b>수정 / 보기 기능을 사용하려면 해당 목록을 클릭하세요.
+						</span>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table display nowrap text-secondary" id="tables" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv text-white">
+										<th colspan="4"></th>
+										<th colspan="2">정적 라이선스</th>
+										<th colspan="2">동적 라이선스</th>
+										<th colspan="2">시간제한 라이선스</th>
+										<th colspan="3"></th>
+									</tr>
+									<tr class="bg-nv text-white">
+										<td>번호</td>
+										<td>PROJECT</td>
+										<td>설명</td>
+										<td>GROUP</td>
+										<td>최대</td>
+										<td>발급</td>
+										<td>최대</td>
+										<td>발급</td>
+										<td>최대</td>
+										<td>발급</td>
+										<td>세션타임</td>
+										<td>활성화</td>
+									</tr>
+								</thead>
+								<tbody class="text-secondary">
+									<tr th:each="zone, seq : ${zoneList}" style="cursor: pointer" th:attr="onclick=|goToZoneUpdatePage('${zone?.getZone_no()}')|">
+										<td th:text="${seq.count}"></td>
+										<td th:text="${zone?.getZone_name()}"></td>
+										<td th:text="${zone?.getZone_info()}"></td>
+										<td th:text="${zone?.getComp_name()}"></td>
+										<td th:text="${zone?.getPl_license_cnt()}"></td>
+										<td th:text="${zone?.getPub_static()}"></td>
+										<td th:text="${zone?.getTpl_license_cnt()}"></td>
+										<td th:text="${zone?.getPub_dynamic()}"></td>
+										<td th:text="${zone?.getAllowed_cnt()}"></td>
+										<td th:text="${zone?.getPub_timelimit()}"></td>
+										<td th:text="${zone?.getSession_time()}"></td>
+										<td th:text="${zone?.getExist()}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/zone/zoneInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/zone.js"></script>
+	<script src="/js/include/tables.js"></script>
+</body>
+</html>

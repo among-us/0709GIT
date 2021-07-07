@@ -1,0 +1,488 @@
+.sub{
+	font-size : 0.9rem;
+	margin-left : 0.2rem;
+}	
+#LicenseAllowInfoSearch {
+	min-width: 9em;
+	max-width: 9em;
+}
+
+/* Swal.fire btn  */
+.Swal.fire-button.Swal.fire-button--confirm {
+	background-color: #ccc;
+	color: black;
+}
+
+.Swal.fire-button:not([disabled]):hover {
+	background-color: #2e59d9;
+	color: white;
+}
+/* Swal.fire btn  */
+
+/* enroll right help icon */
+a.help:hover {
+	cursor: help;
+	position: relative;
+}
+
+a.help span {
+	display: none
+}
+
+a.help:hover span {
+	display: block;
+	z-index: 100;
+	left: 0px;
+	width: 400px;
+	position: absolute;
+	top: 10px;
+	text-decoration: none;
+	margin-left: 2.5em;
+}
+
+a.f1 {
+	cursor: pointer;
+}
+
+a.f1:hover {
+	text-decoration: none;
+	color: #6495ED;
+	cursor: help;
+	position: relative;
+}
+/* a.f1 span { */
+/* 	display: none */
+/* } */
+/* a.f1:hover span { */
+/* 	display: block; */
+/* 	z-index: 100; */
+/* 	width: 400px; */
+/* 	position: absolute; */
+/* 	top: -1px; */
+/* 	text-decoration: none; */
+/* } */
+
+/* 필수 icon color */
+.fas.fa-star-of-life {
+	color: red;
+}
+
+/* 라이선스 요청 및 현황 > PROJECT SEARCH INPUT OUTLINE */
+#myInput:focus {
+	outline: none;
+}
+
+/* MANAGER - PROJECT MATCHING */
+#m_enrollBtn, #m_deleteBtn {
+	margin-top: 7em;
+	border-radius: 1.5em;
+	border: 1px solid #191C24;
+	background-color: #272C33;
+	cursor: pointer;
+}
+
+button#m_enrollBtn:focus, button#m_deleteBtn:focus {
+	outline: none;
+}
+
+.fas.fa-arrow-right {
+	font-size: 3em;
+	color: #2E59D9;
+}
+
+.fas.fa-arrow-left {
+	font-size: 3em;
+	color: #2E59D9;
+}
+
+/* PROJECT 허용 IP 정보 변경 */
+#now_stat, #now_stat_lic_type {
+	color: #fc424a;
+	font-weight: 700;
+}
+
+/* .card.match { */
+/* 	width: 15.3em; */
+/* } */
+.col.arrow {
+	text-align: center;
+	max-width: 36%;
+}
+
+.card-header-name {
+	text-align: center;
+}
+
+.ztm {
+	font-family: emoji;
+}
+
+.matchbox {
+	position: absolute;
+	top: 30%;
+	left: 42%;
+	border: 1px solid #ccc;
+}
+
+.T_table {
+	width: 12.5em;
+	height: 5em;
+	overflow-y: auto;
+}
+
+#tbodytest {
+	overflow-y: auto;
+}
+
+/* tamanager - zone matching btn align */
+.card-footer.text-muted {
+	text-align: center;
+}
+/* #button_group{ */
+/* 	margin-right: 9em; */
+/* } */
+.btn.btn-primary.match {
+	margin: 1em;
+	float: right;
+}
+
+.match.btn_group {
+	margin: 1em;
+	text-align: right;
+}
+
+/*  Logout Modal*/
+.modal-header.logout {
+	border-bottom: none;
+}
+
+.modal-footer.logout {
+	border-top: none;
+}
+
+.modal-dialog.logout {
+	margin-left: 52em;
+	margin-top: 12em;
+}
+
+.btn.btn-light.logout {
+	margin-left: 4em;
+}
+
+.modal-content.logout {
+	width: 51%;
+}
+
+/*  라이선스 요청 정보 > list click > modal */
+.modal-content.license {
+	width: 111%;
+}
+/*  */
+
+/* main login page  */
+.container.main_box {
+	margin-top: 11em;
+}
+
+.container.main_box.enroll {
+	margin-top: -1em;
+}
+
+.card.o-hidden {
+	border-radius: 1.5em;
+}
+
+#tawebconsole {
+	text-align: center;
+	font-size: 2.0em;
+	font-family : unset;
+	font-weight: 700;
+}
+
+/* ZHBtn */
+.BeforeCancel {
+	text-align: center;
+}
+
+/* MODAL RB BTN*/
+.modal_input:focus {
+	outline: none;
+}
+
+.modal_input.cnt {
+	border: 2px solid red;
+	max-width: 3em;
+}
+
+.modal_input {
+	border: 2px solid red;
+}
+
+.modal_ori {
+	margin-left: 1em;
+	font-size: 0.8em;
+	color: #4e73df;
+	font-weight: 600;
+}
+
+.integrity_content {
+	margin-bottom: 1em;
+}
+
+/* TAAgent 환경파일 검증 */
+.box-file-input label {
+	display: inline-block;
+	background: #4e73df;
+	color: #fff;
+	padding: 0px 15px;
+	line-height: 35px;
+	cursor: pointer;
+}
+
+.box-file-input label:after {
+	content: "파일등록";
+}
+
+.box-file-input .btn.btn-primary {
+	display: none;
+}
+
+.box-file-input .filename {
+	display: inline-block;
+	padding-left: 10px;
+}
+
+.modal-content.TaaVerify {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 119%;
+	pointer-events: auto;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: .3rem;
+	outline: 0;
+}
+
+.taaVerify, .tamVerify {
+	margin-left: 0.3em;
+	color: black;
+	font-weight: 700;
+}
+
+.TaaResult {
+	color: lightgreen;
+	font-weight: 700;
+}
+
+.TaaResult.fail {
+	color: red;
+	font-weight: 700;
+}
+
+.taaVerifyNotion {
+	margin-right: 12.1em;
+}
+
+/*  */
+.asis {
+	font-size: 0.8em;
+	color: blue;
+	margin-left: 1em;
+}
+
+#license_question {
+	margin-right: 7em;
+}
+
+.help-class {
+	margin-left: 2.5em;
+}
+
+/* 라이선스 허용정보 등록  */
+
+/* .filelabel{ */
+/* 	min-width : 32em; */
+/* } */
+
+/* .row.pastefile{ */
+/* 	min-width : 113em; */
+/* } */
+
+/* 라이선스 허용정보 등록  */
+#companyProjectTables tbody tr td {
+	cursor: pointer;
+}
+
+.fixed_btn {
+	min-width: 4em;
+	max-height: 2em;
+	max-width: 2em;
+	min-height: 2.3em;
+}
+
+.fixedLabel {
+	max-width: 11em;
+	min-width: 11em;
+}
+
+.en_pw {
+	min-width: 107%;
+}
+
+.reg_account {
+	min-width: 10em;
+	max-width: 10em;
+	margin-bottom:20px;
+}
+
+.proj_update_label {
+	min-width: 8em;
+}
+
+.form-control.main {
+	display: block;
+	min-width: 10em;
+	max-width: 15em;
+	width: 100%;
+	height: calc(1.5em + .75rem + 2px);
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #6e707e;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d1d3e2;
+	border-radius: .35rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	width: 100%;
+}
+
+.form-control.small {
+	display: block;
+	min-width: 5.5em;
+	max-width: 5.5em;
+	height: calc(1.5em + .75rem + 2px);
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #6e707e;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d1d3e2;
+	border-radius: .35rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	width: 100%;
+}
+
+.ui-state-default.ui-state-highlight {
+	background: #355CCC;
+	border: 1px solid #355CCC;
+	color: white;
+}
+
+.delete {
+	margin: 0;
+}
+
+.delete.hr {
+	border-top: 1px dotted #85878B;
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.main.select {
+	border-top-right-radius: 0.35rem;
+	border-bottom-right-radius: 0.35rem;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left: 0;
+}
+
+#content {
+	background-color: #000000;
+}
+
+.bg-dim {
+	background-color: #272C33;
+}
+
+#enroll_div {
+	background-color: #2E2E2E;
+}
+
+/* DATATABLES CSS OPTION */
+.custom-select.custom-select-sm.form-control.form-control-sm {
+	background-color: #2e2e2e;
+	color: white;
+}
+
+.dataTables_filter {
+	color: white;
+}
+
+#tables_paginate {
+	margin-top: 1em;
+}
+
+.darkSelect {
+	background-color: #383F48;
+}
+
+.dataTables_scrollHeadInner {
+	background-color: #383F48;
+}
+
+/* swal */
+.border-1 {
+	border: 1px solid;
+}
+
+.page-link {
+	background-color: #383F48;
+	color: white;
+}
+
+.page-item.disabled .page-link {
+	background-color: #383F48;
+	color: white;
+}
+
+.btn.btn-corn {
+	color: white;
+	background-color: cornflowerblue;
+}
+
+.form-control.enroll {
+	background-color: #1B1B1B;
+}
+
+.form-control.enroll:focus {
+	background-color: #343A40;
+}
+
+#enroll-bkground {
+	background-color: #191C24;
+}
+
+#enroll_card_header {
+	border-radius: 0.8em;
+}
+
+.pagination {
+	margin-top: 2em;
+}
+
+#licenseInfoTables tbody tr:hover {
+	background-color: black;
+}
+
+#qrCodeBox {
+	top: -14px;
+	left: 2em;
+}

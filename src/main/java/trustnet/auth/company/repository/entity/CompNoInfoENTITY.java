@@ -14,4 +14,5 @@ import lombok.ToString;
 public class CompNoInfoENTITY {
 	int c_comp_no;
 	int z_zone_no;
+	
 }

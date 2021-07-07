@@ -14,6 +14,7 @@ import lombok.ToString;
 public class CompanyLicenseENTITY {
 	String comp_name;
 	String zone_name;
+	String proj_name;
 	String zone_info;
 	int pl_license_cnt;
 	int tpl_license_cnt;
@@ -22,4 +23,9 @@ public class CompanyLicenseENTITY {
 	int TTL_SUM;
 	int RC_SUM;
 	int NA_SUM;
+	int allowed_cnt;
+	
+	int zone_no;
+	int revision_no;
+	String limited_url;
 }

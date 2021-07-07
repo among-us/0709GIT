@@ -17,6 +17,6 @@ public class ZoneLicenseInfoDTO {
 //	String zone_name;
 	String taa_ip;
 	int license_type;
-	String license_value;
+//	String license_value;
 	
 }

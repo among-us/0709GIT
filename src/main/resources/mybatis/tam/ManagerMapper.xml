@@ -1,145 +1,547 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="trustnet.auth.manager.repository.ManagerMapper">
- 	<select id="findAllManagerList" resultType="ManagerInfoENTITY">
-		SELECT * 
-		FROM tam_info_tbl
-		<!-- WHERE exist = 'Y' -->
+<mapper
+	namespace="trustnet.auth.manager.repository.ManagerMapper">
+
+	<select id="findAllManagerList" resultType="ManagerInfoENTITY">
+		SELECT *
+		FROM
+		tam_info_tbl
 	</select>
-	
-	 <select id="findAllManagerListOnlyExist" resultType="ManagerInfoENTITY">
-		SELECT * 
+
+	<select id="findAllControllerList"
+		resultType="ControllerInfoENTITY">
+		SELECT * FROM ctrl_info_tbl cit ;
+	</select>
+	<!-- <select id="findAllManagerList" resultType="ManagerInfoENTITY"> -->
+	<!-- SELECT * -->
+	<!-- FROM tam_info_tbl -->
+	<!-- </select> -->
+
+	<select id="findAllManagerListOnlyExist"
+		resultType="ManagerInfoENTITY">
+		SELECT *
 		FROM tam_info_tbl
 		WHERE exist = 'Y'
 	</select>
-	
-	<select id="findManager" parameterType="ManagerInfoVO" resultType="ManagerInfoENTITY">
-		SELECT * 
+
+	<select id="findManager" parameterType="ManagerInfoVO"
+		resultType="ManagerInfoENTITY">
+		SELECT *
 		FROM tam_info_tbl
 		WHERE tam_name = (#{tam_name})
 		LIMIT 1
 	</select>
-	
-	<select id="findManagerWithNO" parameterType="ManagerInfoVO" resultType="ManagerInfoENTITY">
-		SELECT * 
+
+	<select id="findDBManager" parameterType="ManagerDBInfoVO"
+		resultType="ManagerDBInfoENTITY">
+		SELECT *
+		FROM tam_info_tbl
+		WHERE tam_name = (#{tam_name})
+		LIMIT 1
+	</select>
+
+	<select id="findManagerWithNO" parameterType="ManagerInfoVO"
+		resultType="ManagerInfoENTITY">
+		SELECT *
 		FROM tam_info_tbl
 		WHERE tam_no = (#{tam_no})
 		LIMIT 1
 	</select>
-	
-	<select id="findManagerAsName" parameterType="ManagerInfoENTITY" resultType="ManagerInfoENTITY">
-		SELECT * 
+
+	<select id="findControllerWithNO"
+		parameterType="ControllerInfoVO" resultType="ControllerInfoENTITY">
+		SELECT * FROM
+		ctrl_info_tbl cit
+		WHERE cit.ctrl_no = #{ctrl_no}
+		LIMIT 1;
+	</select>
+
+	<select id="findManagerAsName" parameterType="ManagerInfoENTITY"
+		resultType="ManagerInfoENTITY">
+		SELECT *
 		FROM tam_info_tbl
 		WHERE tam_name = (#{tam_name})
 		LIMIT 1
 	</select>
-	
-	<update id="updateManagerWithID" parameterType="ManagerInfoENTITY">
+
+	<update id="updateManagerWithID"
+		parameterType="ManagerInfoENTITY">
 		UPDATE tam_info_tbl
 		SET tam_name = #{tam_name},
-			site_info = #{site_info},
-			tam_local_ip = #{tam_local_ip},
-			tam_local_port = #{tam_local_port},
-			tam_pub_ip = #{tam_pub_ip},
-			tam_pub_port = #{tam_pub_port},
-			tam_admin_port = #{tam_admin_port},
-			tam_license = #{tam_license},
-			shared_path = #{shared_path},
-			log_path = #{log_path},
-			log_level = #{log_level},
-			comm_type = #{comm_type},
-			watchdog = #{watchdog},
-			<!-- tam_state = #{tam_state}, -->
-			hmac = #{hmac},
-			exist = #{exist}
+		site_info =
+		#{site_info},
+		tam_local_ip = #{tam_local_ip},
+		tam_local_port =
+		#{tam_local_port},
+		tam_adm_port = #{tam_adm_port},
+		tam_pub_ip =
+		#{tam_pub_ip},
+		tam_pub_port = #{tam_pub_port},
+		tam_pub_adm_port =
+		#{tam_pub_adm_port},
+		tam_license = #{tam_license},
+		shared_path =
+		#{shared_path},
+		comm_type = #{comm_type},
+		watchdog =
+		#{watchdog},
+		<!-- tam_state = #{tam_state}, -->
+		hmac = #{hmac},
+		exist = #{exist}
 		WHERE tam_no = #{tam_no}
 	</update>
-	
-	<update id="deleteManagerWithID" parameterType="ManagerInfoENTITY">
+
+	<update id="updateControllerWithID"
+		parameterType="ControllerInfoENTITY">
+		UPDATE ctrl_info_tbl SET local_ip=#{local_ip},
+		local_port=#{local_port}, admin_port=#{admin_port},
+		license=#{license}, watchdog=#{watchdog}, proc_state=NULL,
+		enable=#{enable}, icv=#{icv} WHERE ctrl_name=#{ctrl_name};
+	</update>
+
+	<update id="deleteManagerWithID"
+		parameterType="ManagerInfoENTITY">
 		UPDATE tam_info_tbl
 		SET exist = 'N'
-		WHERE tam_no = #{tam_no}
+		WHERE tam_no =
+		#{tam_no}
 	</update>
-	
-	<select id="isFindManager" parameterType="ManagerInfoVO" resultType="int">
-		SELECT COUNT(*) 
+
+	<select id="isFindManager" parameterType="ManagerInfoVO"
+		resultType="int">
+		SELECT COUNT(*)
 		FROM tam_info_tbl
-		WHERE tam_name = (#{tam_name})
+		WHERE tam_name =
+		(#{tam_name})
 	</select>
-	
+
+	<select id="isFindController" parameterType="ControllerInfoVO"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM ctrl_info_tbl cit
+		WHERE cit.ctrl_name =
+		#{ctrl_name};
+	</select>
+
+	<select id="isFindSvcName" parameterType="ManagerDBInfoVO"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM db_info_tbl
+		WHERE db_svc_name =
+		(#{db_svc_name})
+	</select>
+
 	<insert id="saveManagerInfo" parameterType="ManagerInfoVO">
-        INSERT INTO 
-        	tam_info_tbl(tam_name, 
-        	site_info, 
-        	tam_local_ip,
-        	tam_local_port, 
-        	tam_admin_port,
-        	tam_license, 
-        	shared_path, 
-        	log_path, 
-        	log_level, 
-        	comm_type, 
-        	watchdog, <!-- tam_state, --> 
-        	hmac,
-        	exist)
-        values 
-        	(#{tam_name}, 
-        	#{site_info}, 
-        	#{tam_local_ip}, 
-        	#{tam_local_port}, 
-        	#{tam_admin_port}, 
-        	<if test='#{tam_license} != null'>
-        	'LICENSEVALUE',
-      <!--  		#{tam_license},   -->
-        	</if>
-        	#{shared_path}, 
-        	#{log_path}, 
-        	#{log_level}, 
-        	#{comm_type},
-        	#{watchdog},<!--  #{tam_state}, --> 
-        	#{hmac}, 'Y')
-    </insert> 
-    
-    <insert id="saveManagerHistoryInfo" parameterType="ManagerHistoryInfoENTITY">
-        INSERT INTO 
-        	tam_info_history_tbl(tam_no, tam_name, site_info, tam_local_ip
-        	, tam_local_port, tam_admin_port, <!-- tam_pub_ip, tam_pub_port, -->
-        	tam_license, shared_path, log_path, log_level, comm_type, watchdog,
-        	<!-- tam_state, --> exist, hmac, issuer_user_no, action, history_reg_date)
-        values 
-        	(#{tam_no}, #{tam_name}, #{site_info}, #{tam_local_ip}, 
-        	#{tam_local_port}, #{tam_admin_port}, <!-- #{tam_pub_ip}, #{tam_pub_port},  -->
-        	#{tam_license}, #{shared_path}, #{log_path}, #{log_level}, #{comm_type}, #{watchdog},
-        	 <!-- #{tam_state},  -->#{exist}, #{hmac}, #{issuer_user_no}, #{action}, now())
-    </insert> 
-    
-    <select id="findAllManagerHistoryAsTamNo" parameterType="ManagerInfoENTITY" resultType="ManagerHistoryInfoENTITY">
-		SELECT 
-			tiht.tam_history_no,
-			tiht.tam_no,
-			tiht.tam_name,
-			tiht.site_info,
-			tiht.tam_local_ip,
-			tiht.tam_local_port,
-			tiht.tam_admin_port,
-			tiht.tam_pub_ip,
-			tiht.tam_license,
-			tiht.shared_path,
-			tiht.log_path,
-			tiht.log_level,
-			tiht.comm_type,
-			tiht.watchdog,
-			tiht.tam_state,
-			tiht.exist,
-			tiht.hmac,
-			tiht.issuer_user_no,
-			tiht.`action`,
-			tiht.history_reg_date,
-			uit.user_id AS issuer_user_id
-		FROM tam_info_history_tbl AS tiht
-		JOIN user_info_tbl AS uit
-		ON tiht.issuer_user_no = uit.user_no
+		INSERT INTO
+		tam_info_tbl(tam_name,
+		site_info,
+		tam_local_ip,
+		tam_local_port,
+		tam_adm_port,
+		tam_pub_ip,
+		tam_pub_port,
+		tam_pub_adm_port,
+		tam_license,
+		shared_path,
+		comm_type,
+		watchdog, <!-- tam_state, -->
+		hmac,
+		exist)
+		values
+		(#{tam_name},
+		#{site_info},
+		#{tam_local_ip},
+		#{tam_local_port},
+		#{tam_adm_port},
+		#{tam_pub_ip},
+		#{tam_pub_port},
+		#{tam_pub_adm_port},
+		#{tam_license},
+		#{shared_path},
+		#{comm_type},
+		#{watchdog},<!-- #{tam_state}, -->
+		#{hmac}, 'Y')
+	</insert>
+
+	<insert id="saveControllerInfo" parameterType="ControllerInfoVO">
+		INSERT INTO
+		ctrl_info_tbl (ctrl_name, local_ip, local_port, admin_port, license,
+		watchdog, proc_state, enable, icv)
+		VALUES(#{ctrl_name},#{local_ip},#{local_port},#{admin_port},#{license},#{watchdog},NULL,#{enable},#{icv});
+	</insert>
+
+	<insert id="saveManagerDBInfo" parameterType="ManagerDBInfoVO">
+		INSERT INTO
+		db_info_tbl(db_svc_name,db_type_no,db_priv_ip,db_priv_port,db_pub_ip,db_pub_port,db_id,db_passwd,db_name)
+		values
+		(#{db_svc_name},
+		#{db_type_no},
+		#{db_priv_ip},
+		#{db_priv_port},
+		#{db_pub_ip},
+		#{db_pub_port},
+		#{db_id},
+		#{db_passwd},
+		#{db_name})
+	</insert>
+
+	<insert id="saveDBInfoHistory" parameterType="DBInfoHistoryVO">
+		INSERT INTO
+		db_info_history_tbl (db_no, db_svc_name, db_type_no, db_priv_ip,
+		db_priv_port, db_pub_ip, db_pub_port, db_id, db_passwd, db_name,
+		reg_date, `action`, issuer_user_no)
+		VALUES((SELECT db_no FROM
+		db_info_tbl WHERE db_svc_name =#{db_svc_name}),
+		#{db_svc_name},
+		#{db_type_no}, #{db_priv_ip}, #{db_priv_port},
+		#{db_pub_ip},
+		#{db_pub_port}, #{db_id}, #{db_passwd}, #{db_name},
+		now(), #{action},
+		#{issuer_user_no});
+	</insert>
+
+	<select id="getDBHistory" parameterType="DBInfoHistoryENTITY"
+		resultType="DBInfoHistoryENTITY">
+		SELECT diht.history_no , diht.db_svc_name ,diht.db_type_no
+		,diht.db_priv_ip
+		,diht.db_priv_port ,diht.db_pub_ip ,diht.db_pub_port
+		,diht.reg_date
+		,diht.`action` , uit.user_id as issuer_user_id FROM
+		db_info_history_tbl diht
+		LEFT JOIN user_info_tbl uit
+		ON
+		diht.issuer_user_no = uit.user_no
+		WHERE
+		diht.history_no LIKE
+		CONCAT('%',#{filter},'%')
+		OR diht.db_svc_name LIKE
+		CONCAT('%',#{filter},'%')
+		OR diht.db_priv_ip LIKE
+		CONCAT('%',#{filter},'%')
+		OR diht.db_priv_port LIKE
+		CONCAT('%',#{filter},'%')
+		OR diht.db_pub_ip LIKE
+		CONCAT('%',#{filter},'%')
+		OR diht.db_pub_port LIKE
+		CONCAT('%',#{filter},'%')
+		OR diht.reg_date LIKE
+		CONCAT('%',#{filter},'%')
+		OR diht.action LIKE CONCAT('%',#{filter},'%')
+		OR uit.user_id LIKE CONCAT('%',#{filter},'%')
+		ORDER BY ${column}
+		${ordering}
+		LIMIT #{pageNum}, #{show_cnt};
+	</select>
+
+	<insert id="saveDBInfoHistoryDel"
+		parameterType="DBInfoHistoryVO">
+		INSERT INTO
+		db_info_history_tbl (db_no, db_svc_name,
+		db_type_no, db_priv_ip,
+		db_priv_port, db_pub_ip, db_pub_port, db_id,
+		db_passwd, db_name,
+		reg_date, `action`, issuer_user_no)
+		VALUES(#{db_no}, #{db_svc_name}, #{db_type_no}, #{db_priv_ip},
+		#{db_priv_port},
+		#{db_pub_ip}, #{db_pub_port}, #{db_id}, #{db_passwd},
+		#{db_name},
+		now(), #{action}, #{issuer_user_no});
+	</insert>
+
+	<insert id="saveManagerHistoryInfo"
+		parameterType="ManagerHistoryInfoENTITY">
+		INSERT INTO
+		tam_info_history_tbl(tam_no, tam_name, site_info,
+		tam_local_ip, tam_local_port, tam_adm_port,
+		tam_pub_ip,
+		tam_pub_port,tam_pub_adm_port,
+		tam_license, shared_path, comm_type,
+		watchdog,
+		exist, hmac, issuer_user_no, action, history_reg_date)
+		values
+		(#{tam_no}, #{tam_name}, #{site_info}, #{tam_local_ip},
+		#{tam_local_port}, #{tam_adm_port},
+		#{tam_pub_ip},
+		#{tam_pub_port},#{tam_pub_adm_port},
+		#{tam_license}, #{shared_path},
+		#{comm_type}, #{watchdog},
+		<!-- #{tam_state}, -->
+		#{exist}, #{hmac}, #{issuer_user_no}, #{action}, now())
+	</insert>
+
+	<!-- <insert id="saveManagerHistoryInfo" -->
+	<!-- parameterType="ManagerHistoryInfoENTITY"> -->
+	<!-- INSERT INTO -->
+	<!-- tam_info_history_tbl(tam_no, tam_name, site_info, -->
+	<!-- tam_local_ip -->
+	<!-- , tam_local_port, tam_adm_port, -->
+	<!-- tam_license, shared_path, comm_type, watchdog, -->
+	<!-- exist, hmac, issuer_user_no, action, history_reg_date) -->
+	<!-- values -->
+	<!-- (#{tam_no}, #{tam_name}, #{site_info}, #{tam_local_ip}, -->
+	<!-- #{tam_local_port}, #{tam_adm_port}, -->
+	<!-- #{tam_license}, #{shared_path}, -->
+	<!-- #{comm_type}, #{watchdog}, -->
+	<!-- #{exist}, #{hmac}, #{issuer_user_no}, #{action}, now()) -->
+	<!-- </insert> -->
+
+
+	<select id="findAllManagerHistoryAsTamNo"
+		parameterType="ManagerInfoENTITY"
+		resultType="ManagerHistoryInfoENTITY">
+		SELECT
+		tiht.tam_history_no,
+		tiht.tam_no,
+		tiht.tam_name,
+		tiht.site_info,
+		tiht.tam_local_ip,
+		tiht.tam_local_port,
+		tiht.tam_adm_port,
+		tiht.tam_pub_ip,
+		tiht.tam_license,
+		tiht.shared_path,
+		tiht.comm_type,
+		tiht.watchdog,
+		tiht.tam_state,
+		tiht.exist,
+		tiht.hmac,
+		tiht.issuer_user_no,
+		tiht.`action`,
+		tiht.history_reg_date,
+		uit.user_id AS
+		issuer_user_id
+		FROM
+		tam_info_history_tbl AS tiht
+		JOIN user_info_tbl
+		AS
+		uit
+		ON
+		tiht.issuer_user_no = uit.user_no
 		WHERE tam_no = #{tam_no}
 	</select>
+
+	<select id="findAllManagerHistory"
+		parameterType="ManagerHistoryInfoENTITY"
+		resultType="ManagerHistoryInfoENTITY">
+		SELECT
+		tiht.tam_history_no,
+		tiht.tam_no,
+		tiht.tam_name,
+		tiht.site_info,
+		tiht.tam_local_ip,
+		tiht.tam_local_port,
+		tiht.tam_adm_port,
+		tiht.tam_pub_ip,
+		tiht.tam_pub_port,
+		tiht.tam_pub_adm_port,
+		tiht.tam_license,
+		tiht.shared_path,
+		tiht.comm_type,
+		tiht.watchdog,
+		tiht.tam_state,
+		tiht.exist,
+		tiht.hmac,
+		tiht.issuer_user_no,
+		tiht.`action`,
+		tiht.history_reg_date,
+		uit.user_id AS
+		issuer_user_id
+		FROM
+		tam_info_history_tbl AS tiht
+		LEFT JOIN user_info_tbl AS
+		uit ON
+		tiht.issuer_user_no = uit.user_no
+		WHERE
+		tam_history_no LIKE
+		CONCAT('%',#{filter},'%')
+		OR tam_name LIKE CONCAT('%',#{filter},'%')
+		OR
+		site_info LIKE CONCAT('%',#{filter},'%')
+		OR tam_local_ip LIKE
+		CONCAT('%',#{filter},'%')
+		OR tam_local_port LIKE
+		CONCAT('%',#{filter},'%')
+		OR tam_adm_port LIKE
+		CONCAT('%',#{filter},'%')
+		OR tam_pub_ip LIKE CONCAT('%',#{filter},'%')
+		OR tam_pub_port LIKE CONCAT('%',#{filter},'%')
+		OR tam_pub_adm_port
+		LIKE CONCAT('%',#{filter},'%')
+		OR comm_type LIKE
+		CONCAT('%',#{filter},'%')
+		OR tam_name LIKE CONCAT('%',#{filter},'%')
+		OR
+		watchdog LIKE CONCAT('%',#{filter},'%')
+		OR tiht.exist LIKE
+		CONCAT('%',#{filter},'%')
+		OR uit.user_id LIKE CONCAT('%',#{filter},'%')
+		OR `action` LIKE CONCAT('%',#{filter},'%')
+		OR history_reg_date LIKE
+		CONCAT('%',#{filter},'%')
+		ORDER BY ${column} ${ordering}
+		LIMIT #{pageNum}, #{show_cnt};
+	</select>
+
+	<!-- original -->
+	<!-- <select id="findAllManagerHistory" -->
+	<!-- parameterType="ManagerHistoryInfoENTITY" -->
+	<!-- resultType="ManagerHistoryInfoENTITY"> -->
+	<!-- SELECT -->
+	<!-- tiht.tam_history_no, -->
+	<!-- tiht.tam_no, -->
+	<!-- tiht.tam_name, -->
+	<!-- tiht.site_info, -->
+	<!-- tiht.tam_local_ip, -->
+	<!-- tiht.tam_local_port, -->
+	<!-- tiht.tam_adm_port, -->
+	<!-- tiht.tam_pub_ip, -->
+	<!-- tiht.tam_license, -->
+	<!-- tiht.shared_path, -->
+	<!-- tiht.comm_type, -->
+	<!-- tiht.watchdog, -->
+	<!-- tiht.tam_state, -->
+	<!-- tiht.exist, -->
+	<!-- tiht.hmac, -->
+	<!-- tiht.issuer_user_no, -->
+	<!-- tiht.`action`, -->
+	<!-- tiht.history_reg_date, -->
+	<!-- uit.user_id AS issuer_user_id -->
+	<!-- FROM -->
+	<!-- tam_info_history_tbl AS tiht -->
+	<!-- JOIN user_info_tbl -->
+	<!-- AS uit -->
+	<!-- ON tiht.issuer_user_no = uit.user_no -->
+	<!-- ORDER BY tiht.tam_history_no ${ordering} -->
+	<!-- LIMIT #{pageNum}, #{show_cnt} -->
+	<!-- </select> -->
+
+
+	<!-- ORDER BY tiht.tam_history_no DESC -->
+	<!-- ORDER BY tiht.tam_history_no #{ordering} -->
+
+
+
+
+
+	<select id="countManagerHistory" resultType="int">
+		SELECT COUNT(*) FROM tam_info_history_tbl tiht 
+		WHERE tiht.tam_history_no LIKE CONCAT('%',#{filter},'%');
+	</select>
+
+	<select id="countDBHistory" resultType="int">
+		SELECT COUNT(*) FROM
+		db_info_history_tbl diht ;
+	</select>
+
+
+
+
+
+	<!-- -->
+	<select id="findAllManagerName"
+		parameterType="ManagerCreateFileENTITY"
+		resultType="ManagerCreateFileENTITY">
+		SELECT tam_name , comm_type FROM tam_info_tbl;
+		<!-- SELECT tam_name FROM tam_info_tbl; -->
+	</select>
+
+	<select id="findAllServiceName"
+		parameterType="ManagerCreateFileENTITY"
+		resultType="ManagerCreateFileENTITY">
+		SELECT db_svc_name, db_type_no FROM
+		db_info_tbl;
+	</select>
+
+
+	<select id="getTamInfowithNo" parameterType="ManagerInfoENTITY"
+		resultType="ManagerInfoENTITY">
+		SELECT tam_name , tam_local_ip ,comm_type FROM tam_info_tbl
+		tit
+		WHERE tam_no = #{tam_no}
+		LIMIT 1
+	</select>
+
+	<select id="getCtrlInfowithNo" parameterType="ControllerInfoVO"
+		resultType="ControllerInfoENTITY">
+		SELECT * FROM ctrl_info_tbl cit WHERE ctrl_no = #{ctrl_no};
+	</select>
+
+
+	<select id="createHMAC" parameterType="ManagerCreateFileENTITY"
+		resultType="ManagerCreateFileENTITY">
+		SELECT tam_name, comm_type FROM tam_info_tbl
+		WHERE tam_name
+		= #{s_tam_name};
+	</select>
+
+	<!-- generateTAMDbIntegrity 임시 쿼리 (영향없도록) -->
+	<!-- <select id="genHmac" parameterType="ManagerInfoENTITY" -->
+	<!-- resultType="ManagerInfoENTITY"> -->
+	<!-- UPDATE tam_info_tbl SET hmac = "test입니다" -->
+	<!-- WHERE tam_name = -->
+	<!-- "pki_1"; -->
+	<!-- </select> -->
+
+	<select id="getPrivateIp" parameterType="ManagerInfoENTITY"
+		resultType="ManagerInfoENTITY">
+		SELECT tam_local_ip FROM tam_info_tbl
+		WHERE tam_name
+		=#{tam_name};
+	</select>
+
+	<select id="getAgentPrivate" parameterType="ManagerInfoENTITY"
+		resultType="ManagerInfoENTITY">
+		SELECT tam_local_ip, tam_local_port,tam_pub_ip,
+		tam_pub_port FROM tam_info_tbl
+		WHERE tam_name
+		=#{tam_name};
+	</select>
+
+	<select id="getDBInfo" parameterType="ManagerDBInfoENTITY"
+		resultType="ManagerDBInfoENTITY">
+		SELECT db_no,db_type_no, db_priv_ip,
+		db_priv_port,db_pub_ip,db_pub_port, db_id, db_passwd, db_name
+		FROM
+		db_info_tbl
+		WHERE db_svc_name = #{db_svc_name};
+	</select>
+
+	<select id="findAllDBList" resultType="ManagerDBInfoENTITY">
+		SELECT *
+		FROM db_info_tbl;
+	</select>
+
+	<select id="findDBWithNO" parameterType="ManagerDBInfoVO"
+		resultType="ManagerDBInfoENTITY">
+		SELECT *
+		FROM db_info_tbl
+		WHERE db_no = #{db_no}
+	</select>
+	<!-- WHERE db_no = (#{db_no}) -->
+
+	<update id="updateDB" parameterType="ManagerDBInfoENTITY">
+		UPDATE db_info_tbl
+		SET
+		db_no =
+		#{db_no},
+		db_svc_name = #{db_svc_name},
+		db_type_no = #{db_type_no},
+		db_priv_ip =#{db_priv_ip},
+		db_priv_port = #{db_priv_port},
+		db_pub_ip =
+		#{db_pub_ip},
+		db_pub_port = #{db_pub_port},
+		db_id = #{db_id},
+		db_passwd =
+		#{db_passwd},
+		db_name = #{db_name}
+		WHERE db_no = #{db_no}
+	</update>
+
+	<delete id="deleteDBInfo" parameterType="ManagerDBInfoENTITY">
+		DELETE FROM db_info_tbl
+		WHERE db_svc_name = #{db_svc_name}
+	</delete>
 
 </mapper>

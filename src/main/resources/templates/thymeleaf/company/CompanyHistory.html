@@ -1,0 +1,38 @@
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid bg-dk">
+		<h1 class="h3 mb-2 text-secondary">
+			GROUP 관리<i class="fas fa-chevron-right mr-2 ml-2"></i><b class="text-white">GROUP 설정 로그</b>
+		</h1>
+		<p class="mb-4">GROUP 설정 로그를 볼 수 있습니다</p>
+	</div>
+	<div class="container-fluid full-height">
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">GROUP 설정 로그</h6>
+			</div>
+			<div class="card-body bg-nv rounded-bottom rounded-bottom">
+				<div class="table-responsive">
+					<table class="table text-white" id="companyHistoryTable" width="100%" cellspacing="0">
+						<thead>
+							<tr class="bg-nv text-white">
+								<!-- 										<th>기업 고유 번호</th> -->
+								<th>번호</th>
+								<th>GROUP</th>
+								<th>변경 계정</th>
+								<th>활동</th>
+								<th>등록 일자</th>
+							</tr>
+						</thead>
+						<tbody class="text-secondary">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/js/company/history.js"></script>
+	<script src="/js/include/tables.js"></script>
+</body>
+<th:block th:include="thymeleaf/include/footer"></th:block>
+</html>

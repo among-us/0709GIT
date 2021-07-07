@@ -14,7 +14,8 @@ import lombok.ToString;
 public class ManagerZoneInfoDTO {
 	int tam_no;
 	int zone_no;
-//	String hmac;
+	
+	String zone_name;
 }
 
 

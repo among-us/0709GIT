@@ -3,8 +3,6 @@ package trustnet.auth.manager.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +12,6 @@ import trustnet.auth.manager.code.ManagerResultEnum;
 @Getter
 @Setter
 public class ManagerInfoResponseDTO {
-
 
 	int errorCode;
 	

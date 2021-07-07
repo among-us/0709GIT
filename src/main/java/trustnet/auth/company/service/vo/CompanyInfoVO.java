@@ -15,7 +15,8 @@ public class CompanyInfoVO {
 	
 	int comp_no;
 	String comp_name;
-	int group_no;
+	String asis_comp_name;
 	String exist;
 	String reg_date;
+	String issuer_user_id;
 }

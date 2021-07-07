@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					라이선스 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">라이선스 현황 로그</b>
+				</h1>
+				<p class="mb-4 sub">라이선스 현황 로그 내역을 확인할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">라이선스 현황 로그</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table text-secondary" id="licensehistoryTables" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<th>번호</th>
+										<th>PROJECT</th>
+										<th>Agent IP</th>
+										<th>라이선스 타입</th>
+										<th>등록계정</th>
+										<th>활동</th>
+										<th>등록 일자</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br> <br>
+			<div id="content">
+				<div class="container-fluid mb-5">
+					<h1 class="h3 mb-2 text-secondary">
+						라이선스 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-success">시간제한 라이선스 등록 / 변경 이력</b>
+					</h1>
+					<p class="mb-4 sub">시간제한 라이선스 현황을 확인할 수 있습니다</p>
+					<div class="card shadow mb-4 bg-nv">
+						<div class="card-header py-3 bg-nv">
+							<h6 class="m-0 font-weight-bold text-success">시간제한 라이선스 현황</h6>
+						</div>
+						<div class="card-body bg-nv rounded-bottom">
+							<div class="table-responsive">
+								<table class="table text-secondary" id="timelicensehistoryTables" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th>번호</th>
+											<th>PROJECT</th>
+											<th>허용 IP</th>
+											<th>최대 허용 개수</th>
+											<th>제한 기간</th>
+											<th>등록계정</th>
+											<th>활동</th>
+											<th>등록 일자</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<th:block th:include="thymeleaf/include/footer"></th:block>
+		<script type="text/javascript" src="/js/zone/licensehistory.js"></script>
+</body>
+</html>

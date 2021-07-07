@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>SB Admin 2 - 404</title>
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+<link href="/css/added.css" rel="stylesheet">
+</head>
+<body>
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+		<!-- Sidebar -->
+		<ul class="navbar-nav bg-nv sidebar sidebar-dark accordion" id="accordionSidebar">
+			<!-- Sidebar - Brand -->
+			<a class="sidebar-brand d-flex align-items-center justify-content-center bg-nv" href="/main">
+				<div class="sidebar-brand-text">
+					TAWebConsole<sup> V1.0</sup>
+				</div>
+			</a>
+			<!-- Divider -->
+			<hr class="sidebar-divider my-0">
+			<!-- Nav Item - Dashboard -->
+			<li class="nav-item active"><a class="nav-link" href="/main">
+					<i class="fas fa-fw fa-tachometer-alt"></i> <span>WebConsole Dashboard</span>
+				</a></li>
+			<!-- Divider -->
+			<hr class="sidebar-divider">
+			<!-- Heading -->
+			<!--            <div class="sidebar-heading">
+                Interface
+            </div> -->
+			<th:block th:if="${permCode == 1}">
+				<li class="nav-item delete" id="admin_menu"><a class="nav-link collapsed" id="ad_nav" href="#" data-toggle="collapse" data-target="#userPages" aria-expanded="true" aria-controls="userPages">
+						<i class="fas fa-cogs text-dk"></i><span>관리자 메뉴</span>
+					</a>
+					<div id="userPages" class="collapse delete" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+						<div class="bg-dim py-2 collapse-inner rounded border border-dark">
+							<a class="collapse-item" href="/user/listPage" id="user_list">계정 관리</a>
+							<a class="collapse-item" href="/user/historyPage" id="user_history">계정 로그</a>
+							<hr class="delete hr">
+							<a class="collapse-item" href="/manager/enrollDBPage">DB 정보등록</a>
+							<a class="collapse-item" href="/manager/listDBPage" id="db_list">DB 정보목록</a>
+							<a class="collapse-item" href="/manager/dbHistoryPage" id="db_history">DB 정보로그</a>
+						</div>
+					</div></li>
+			</th:block>
+
+			<li class="nav-item"><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#companyPages" aria-expanded="true" aria-controls="companyPages">
+					<i class="fas fa-building text-dk"></i> <span>GROUP 관리</span>
+				</a>
+				<div id="companyPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-dim py-2 collapse-inner rounded border border-dark">
+						<th:block th:if="${permCode == 1}">
+							<a class="collapse-item delete" href="/company/enrollPage" id="group_info">GROUP 등록 및 정보</a>
+						</th:block>
+						<a class="collapse-item" href="/company/historyPage" id="group_history">GROUP 설정 로그</a>
+						<th:block th:if="${permCode == 1}">
+							<hr class="delete hr">
+							<a class="collapse-item delete" href="/company/enrollProjectPage" id="project_setting">GROUP-PROJECT 설정</a>
+							<a class="collapse-item delete" href="/company/projectHistoryPage" id="project_history">
+								GROUP-PROJECT <br>설정 로그
+							</a>
+						</th:block>
+					</div>
+				</div></li>
+			<li class="nav-item"><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#zonePages" aria-expanded="true" aria-controls="zonePages">
+					<i class="fas fa-project-diagram text-dk"></i> <span>PROJECT 관리</span>
+				</a>
+
+				<div id="zonePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-dim py-2 collapse-inner rounded border border-dark">
+						<th:block th:if="${permCode == 1}">
+							<a class="collapse-item delete" href="/zone/enrollPage" id="enrollProject">PROJECT 등록</a>
+							<a class="collapse-item delete" href="/zone/listPage" id="zone_list">PROJECT 정보</a>
+							<a class="collapse-item delete" href="/zoneLicense/enrollPage" id="enrollLicense">PROJECT 허용 IP 등록</a>
+						</th:block>
+						<a class="collapse-item" href="/zoneLicense/listPage" id="zonelicense_list">PROJECT 허용 IP 목록</a>
+						<!-- url 수정 controller  -->
+						<th:block th:if="${permCode == 1}">
+							<a class="collapse-item delete" href="/zone/historyPage" id="zone_history">PROJECT 현황 로그</a>
+						</th:block>
+					</div>
+				</div></li>
+			<th:block th:if="${permCode == 1}">
+				<li class="nav-item delete" id="managerLIST delete"><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tamPages" aria-expanded="true" aria-controls="tamPages">
+						<i class="fas fa-user-tie text-dk"></i> <span>TA-Manager 관리</span>
+					</a>
+					<div id="tamPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+						<div class="bg-dim py-2 collapse-inner rounded border border-dark">
+							<!-- <h6 class="collapse-header">Login Screens:</h6> -->
+							<a class="collapse-item" href="/manager/enrollPage" id="manager_enroll">Manager 등록</a>
+							<a class="collapse-item" href="/manager/listPage" id="manager_list">Manager 정보</a>
+							<a class="collapse-item" href="/managerZone/listPage" id="manager_matching">Manager-PROJECT 설정</a>
+							<a class="collapse-item" href="/manager/createFilePage" id="manager_cfile">Manager 환경파일 생성</a>
+							<a class="collapse-item" href="/manager/settingPage" hidden="hidden">Manager 환경파일 생성</a>
+							<a class="collapse-item" href="/manager/verifyFilePage" id="verifyFile">Manager 환경파일 검증</a>
+							<a class="collapse-item" href="/manager/historyPage" id="manager_history">Manager 현황 로그</a>
+						</div>
+					</div></li>
+			</th:block>
+
+			<!-- taagent 관리 -->
+			<li class="nav-item"><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#TAAgent" aria-expanded="true" aria-controls="zoneLicensePages">
+					<i class="fas fa-user-friends text-dk"></i> <span>TA-Agent 관리</span>
+				</a>
+
+				<div id="TAAgent" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-dim py-2 collapse-inner rounded border border-dark">
+						<th:block th:if="${permCode == 1}">
+							<a class="collapse-item delete" href="/zoneLicense/taCreateFilePage" id="taCreatFile">Agent 환경파일 생성</a>
+							<a class="collapse-item delete" href="/zoneLicense/taVerifyFilePage" id="taVerifyFile">Agent 환경파일 검증</a>
+						</th:block>
+						<a class="collapse-item" href="/zone/taWhetherPage" id="taWhether">Agent 허용 / 제한</a>
+						<a class="collapse-item" href="/zone/licenseStateHistoryPage" id="taHistory">Agent 현황 로그</a>
+					</div>
+				</div></li>
+			<!--  -->
+
+			<!-- TA-Controller 관리 -->
+			<li class="nav-item"><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tacontrollerpage" aria-expanded="true" aria-controls="tacontrollerpage">
+					<i class="fas fa-user-friends text-dk"></i> <span>TA-Controller 관리</span>
+				</a>
+
+				<div id="tacontrollerpage" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-dim py-2 collapse-inner rounded border border-dark">
+						<a class="collapse-item" href="/controller/enrollPage" id="taControllerEnroll">Controller 등록</a>
+						<a class="collapse-item" href="/controller/listPage" id="taControllerInfo">Controller 정보</a>
+						<a class="collapse-item" href="/controller/createFilePage" id="taControllerConfFile">Controller 환경파일 생성</a>
+						<!-- 						<a class="collapse-item" href="/zone/licenseStateHistoryPage" id="taHistory">Agent 현황 로그</a> -->
+					</div>
+				</div></li>
+			<!--  -->
+
+			<li class="nav-item"><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#zoneLicensePages" aria-expanded="true" aria-controls="zoneLicensePages">
+					<i class="fas fa-id-badge text-dk"></i> <span>라이선스 관리</span>
+				</a>
+
+				<div id="zoneLicensePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-dim py-2 collapse-inner rounded border border-dark">
+						<!-- <h6 class="collapse-header">Login Screens:</h6> -->
+						<a class="collapse-item" href="/zoneLicense/LicenseAllowInfoPage">라이선스 요청 및 현황</a>
+						<a class="collapse-item" href="/zoneLicense/LicenseAllowEnrollPage">라이선스 등록 / 변경</a>
+						<a class="collapse-item" href="/license/ChangeHistoryPage">라이선스 현황 로그</a>
+					</div>
+				</div></li>
+			<!-- Divider -->
+			<hr class="sidebar-divider">
+		</ul>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<nav class="navbar navbar-expand navbar-light bg-nv topbar static-top shadow">
+					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+						<i class="fa fa-bars text-white"></i>
+					</button>
+					<!-- Topbar Search -->
+					<!-- 					<form -->
+					<!-- 						class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"> -->
+					<!-- 						<div class="input-group"> -->
+					<!-- 							<input type="text" class="form-control bg-light border-0 small" -->
+					<!-- 								placeholder="Search for..." aria-label="Search" -->
+					<!-- 								aria-describedby="basic-addon2"> -->
+					<!-- 							<div class="input-group-append"> -->
+					<!-- 								<button class="btn btn-success" type="button"> -->
+					<!-- 									<i class="fas fa-search fa-sm"></i> -->
+					<!-- 								</button> -->
+					<!-- 							</div> -->
+					<!-- 						</div> -->
+					<!-- 					</form>  -->
+					<!-- Topbar Navbar -->
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item dropdown no-arrow"><a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span><i class="far fa-user text-white"></i> &nbsp;</span> <br /> <span class="mr-2 d-none d-lg-inline text-white-600 small" th:utext="${authInfoToken?.getUser_id()}"></span>
+								<!-- 								<img class="img-profile rounded-circle" src="/img/undraw_profile.svg">-->
+							</a> <!-- Dropdown - User Information -->
+							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+								<!-- 								<a class="dropdown-item" href="/user/myAccountPage" id="user_info_update"> -->
+								<a class="dropdown-item" id="user_info_update">
+									<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> 계정 정보변경
+								</a>
+								<!--  <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a> -->
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#" id="logout">
+									<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> 로그아웃
+								</a>
+							</div></li>
+					</ul>
+				</nav>
+
+				<!-- Logout Modal-->
+				<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog logout" role="document">
+						<div class="modal-content logout">
+							<div class="modal-header logout">
+								<h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까 ?</h5>
+								<br>
+								<!-- 								<button class="close" type="button" data-dismiss="modal" aria-label="Close"> -->
+								<!-- 									<span aria-hidden="true">×</span> -->
+								<!-- 								</button> -->
+							</div>
+							<div class="modal-body logout">
+								<a class="btn btn-success" href="/logout">로그아웃</a>
+								<button class="btn btn-light logout" type="button" data-dismiss="modal">취소</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<script src="/vendor/jquery/jquery.min.js"></script>
+				<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+				<script src="/js/sb-admin-2.min.js"></script>
+				<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+				<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+				<script src="/vendor/chart.js/Chart.min.js"></script>
+				<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+				<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+				<script src="/js/include/header.js"></script>
+				<script src="/js/chart/cancel.js"></script>
+</body>
+</html>

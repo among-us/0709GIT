@@ -6,5 +6,7 @@ import lombok.Data;
 public class ManagerZoneInfoVO {
 	int tam_no;
 	int zone_no;
-	String hmac;
+	
+	
+	String zone_name;
 }

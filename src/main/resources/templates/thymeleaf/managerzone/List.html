@@ -1,75 +1,51 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>TACO</title>
-</head>
 <body>
-<th:block th:include="thymeleaf/include/header"></th:block>
-   <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-    	<!-- Main Content -->
-    	<div id="content">
- 			<!-- Begin Page Content -->
-        	<div class="container-fluid">
-            	<!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">TAManager - ZONE </h1>
-                <p class="mb-4">등록한 TAManager에 ZONE을 매칭할 수 있습니다</p>
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                	<div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">TAManager - ZONE 매칭</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered display nowrap" id="tables" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-										<th>번호</th>
-										<th>TAM명</th>
-										<th>설명</th>
-										<th>로컬 IP</th>
-										<th>서비스 포트</th>
-										<th>관리자 포트</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-									<tr th:each="manager, seq : ${managerList}" style="cursor:pointer" 
-									th:attr="onclick=|goToManagerZoneMatch('${manager?.getTam_no()}')|">
-										<td th:text="${seq.count}"></td>
-										<!-- <td th:text="${manager?.getTam_no()}"></td> -->
-										<td th:text="${manager?.getTam_name()}"></td>
-										<td th:text="${manager?.getSite_info()}"></td>
-										<td th:text="${manager?.getTam_local_ip()}"></td>
-										<td th:text="${manager?.getTam_local_port()}"></td>
-										<td th:text="${manager?.getTam_admin_port()}"></td>
-										<!-- <td th:text="${manager?.getTam_license()}"></td>
-										<td th:text="${manager?.getShared_path()}"></td>
-										<td th:text="${manager?.getLog_path()}"></td>
-										<td th:text="${manager?.getLog_level()}"></td> 
-										<td th:text="${manager?.getComm_type()}"></td> 
-										<td th:text="${manager?.getHmac()}"></td>  -->
-							    	</tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">
+			TA-Manager 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Manager - PROJECT 설정</b>
+		</h1>
+		<p class="mb-4">등록된 Manager와 PROJECT 목록을 볼 수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">Manager - PROJECT 설정 목록</h6>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="table-responsive">
+					<table class="table display nowrap text-secondary" id="tables" width="100%" cellspacing="0">
+						<thead>
+							<tr class="bg-nv text-white">
+								<th>번호</th>
+								<th>Manager</th>
+								<th>설명</th>
+								<th>내부 IP</th>
+								<th>내부 포트</th>
+								<th>내부 관리자 포트</th>
+								<th>외부 IP</th>
+								<th>외부 포트</th>
+								<th>외부 관리자 포트</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="manager, seq : ${managerList}" style="cursor: pointer" th:attr="onclick=|goToManagerZoneMatch('${manager?.getTam_no()}')|">
+								<td th:text="${seq.count}"></td>
+								<!-- <td th:text="${manager?.getTam_no()}"></td> -->
+								<td th:text="${manager?.getTam_name()}"></td>
+								<td th:text="${manager?.getSite_info()}"></td>
+								<td th:text="${manager?.getTam_local_ip()}"></td>
+								<td th:text="${manager?.getTam_local_port()}"></td>
+								<td th:text="${manager?.getTam_adm_port()}"></td>
+								<td th:text="${manager?.getTam_pub_ip()}"></td>
+								<td th:text="${manager?.getTam_pub_port()}"></td>
+								<td th:text="${manager?.getTam_pub_adm_port()}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
-
 	<script type="text/javascript" src="/js/managerzone/managerzoneInfo.js"></script>
 	<script type="text/javascript" src="/js/managerzone/managerzone.js"></script>
-	
-	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="/js/sb-admin-2.min.js"></script>
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="/js/demo/datatables-demo.js"></script>
-    
-<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script src="/js/include/tables.js"></script>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
 </body>
-</html>

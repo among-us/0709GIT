@@ -18,4 +18,6 @@ public class CompanyNGroupInfoVO {
 	int gi_group_no;
 	String gi_group_name;
 	String gi_reg_date;
+	
+	String exist;
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+		<!-- Main Content -->
+		<div id="content">
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					TA-Agent 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Agent 환경파일 검증</b>
+				</h1>
+				<p class="mb-4 sub">Agent 환경파일을 검증할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<span class="pr-5 font-weight-bold text-white">Agent 환경파일 검증</span> </span>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="form-group row">
+							<div class="col-xl-12">
+								<button onclick="openTextFile()" class="btn btn-corn">Agent 환경파일 검증</button>
+								<input type="button" class="btn btn-light" value="취소" id="ECBtn" /><br> <br> <i class="fas fa-exclamation-triangle"></i> <span> 발급 받은 Agent 환경파일의 유효성을 검증합니다</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<!-- Modal -->
+		<div class="modal fade TaaVerify" id="taaFilemodal" role="dialog">
+			<div class="modal-dialog TaaVerify">
+				<div class="modal-content TaaVerify">
+					<div class="modal-header">
+						<h4 class="modal-title">TAAgent 환경파일 검증</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						- PROJECT명 : <span class="taaVerify" id="name"></span> <br> - TAManager IP 1 : <span class="taaVerify" id="ip1"></span> <br> - TAManager 포트 1 : <span class="taaVerify" id="port1"></span> <br> - TAManager IP 2 : <span class="taaVerify" id="ip2"></span> <br> - TAManager 포트 2 : <span class="taaVerify" id="port2"></span> <br> - TAAgent IP : <span class="taaVerify" id="taaip"></span> <br> - TAAgent 라이선스 타입 : <span class="taaVerify" id="taatype"></span> <br> - HMAC: <span class="taaVerify" id="hmac"></span>
+					</div>
+					<div style="border-top: 1px solid #e3e6f0;">
+						<span class="ml-4"><i class="fas fa-certificate"></i></span> <span>정합성 검증 결과 : </span><span class="TaaResult" id="verifyResult"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/js/zone/readFile.js"></script>
+	<script type="text/javascript" src="/js/zone/readFileInfo.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+	<th:block  th:include="thymeleaf/include/footer"></th:block>
+</body>
+</html>

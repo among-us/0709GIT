@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					PROJECT 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">PROJECT 허용 IP 목록</b>
+				</h1>
+				<p class="mb-4 sub">PROJECT 허용 IP 목록을 확인할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">PROJECT 허용 IP 목록</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table text-secondary" id="tables" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv text-white">
+										<th>순서</th>
+										<th>PROJECT</th>
+										<th>설명</th>
+										<th>라이선스 타입</th>
+										<th>허용 IP</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="zone, seq : ${zoneLicenseList}" style="cursor: pointer" th:attr="onclick=|goToZoneLicenseInfo('${zone?.getLit_zone_no()}','${zone?.getLit_taa_ip()}','${zone?.getLit_license_type()}')|">
+										<td th:text="${seq.count}"></td>
+										<!-- <td th:text="${zone?.getLit_zone_no()}"></td> -->
+										<td th:text="${zone?.getZct_zone_name()}"></td>
+										<td th:text="${zone?.getZct_zone_info()}"></td>
+										<td th:switch="${zone?.getLit_license_type()}">
+											<span th:case="1" class="center-block">정적 라이선스</span> <span th:case="2" class="center-block">동적 라이선스</span> <span th:case="3" class="center-block">시간제한 라이선스</span>
+										</td>
+										<td th:text="${zone?.getLit_taa_ip()}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/zone/licenseInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/license.js"></script>
+	<script type="text/javascript" src="/js/include/tables.js"></script>
+</body>
+</html>

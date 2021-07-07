@@ -37,9 +37,16 @@ public class ZoneInfoENTITY {
 	Timestamp registed_date;
 	int pl_license_cnt;
 	int tpl_license_cnt;
+	int allowed_cnt;
+	String limited_period;
 	int session_time;
 	String limited_url;
 	String exist;
 	String integrity_value;
+	String history_reg_date;
 	boolean isEnrolled;
+	
+	int pub_static;
+	int pub_dynamic;
+	int pub_timelimit;
 }

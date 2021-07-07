@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					PROJECT 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">PROJECT 등록</b>
+				</h1>
+				<p class="mb-4 sub">PROJECT 등록을 수행할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<span class="pr-5 font-weight-bold text-white">PROJECT 등록</span> <span class="ml-5"> <b class="text-danger mr-2">*</b> &nbsp; 표시는 필수항목입니다.
+						</span>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="form-group row">
+							<label for="z_name" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b>PROJECT명</label>
+							<div class="col-xl-4">
+								<input type="text" name="zone_name" class="form-control" id="z_name" placeholder="영문자만 입력, 한글/특수문자/공백 금지" data-toggle="tooltip" data-placement="top" title="예시 ) Group_Project01">
+							</div>
+							<div class="col-xl-5">
+								<input type="button" value="중복검사" class="btn btn-corn" id="checkBtn"> <br />
+							</div>
+						</div>
+
+						<div class="form-group row" hidden="hidden">
+							<label for="z_reno" class="col-xl-2 col-form-label text-white" hidden="hidden">개정 번호</label>
+							<div class="col-xl-5" hidden="hidden">
+								<input type="text" name="revision_no" class="form-control" id="z_reno" th:value="${zoneInfo?.getRevision_no()}" disabled="disabled" readonly>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="z_info" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b>설명</label>
+							<div class="col-xl-5">
+								<input type="text" name="zone_info" class="form-control" id="z_info" placeholder="예시 ) PKI업무, FM업무 ">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="z_sessionTime" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b> 세션 타임 &nbsp; <b>( /분 )</b></label>
+							<div class="col-xl-5">
+								<select name="session_time" class="form-control">
+									<option th:each=" num : ${#numbers.sequence(1,20)} " th:value="${num*5}" th:utext="${num*5}"></option>
+									<option value="10" selected="selected" hidden="">10</option>
+								</select>
+							</div>
+							<a href="#" class="help">
+								<i class="far fa-question-circle"></i><span class="help-class">Agent의 세션 시간</span>
+							</a>
+						</div>
+						<div class="form-group row">
+							<div class="col-xl-12">
+								<input type="button" class="btn btn-corn" value="등록" id="enrollBtn"> <input type="button" class="btn btn-light" value="취소" onclick="back();" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+
+	<script type="text/javascript" src="/js/zone/zoneInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/zone.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+</body>
+</html>

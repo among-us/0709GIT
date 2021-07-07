@@ -14,5 +14,5 @@ import lombok.ToString;
 public class ManagerZoneMatchInfoENTITY {
 	int tam_no;
 	int zone_no;
-	String zone_name;
+	String zone_name; 
 }

@@ -1,0 +1,68 @@
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid bg-dk">
+		<h1 class="h3 mb-2 text-secondary">
+			GROUP 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">GROUP - PROJECT 설정</b>
+		</h1>
+		<p class="mb-4">PROJECT에 대한 설정을 할 수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">PROJECT 등록</h6>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<form>
+					<div class="form-group row">
+						<label for="c_groupName" class="col-xl-2 col-form-label text-white">GROUP</label>
+						<div class="col-xl-3">
+							<select name="company_name" class="form-control">
+								<option value='default' selected>-- 선택 --</option>
+								<option th:each=" company : ${compList}" th:value="${company?.getComp_no()}" th:utext="${company?.getComp_name()}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="proj_Name" class="col-xl-2 col-form-label text-white">PROJECT</label>
+						<div class="col-xl-3">
+							<select name="proj_name" class="form-control">
+								<option value='default' selected>-- 선택 --</option>
+								<option th:each=" company : ${zoneList}" th:value="${company?.getZone_no()}" th:utext="${company?.getZone_name()}"></option>
+							</select>
+						</div>
+					</div>
+					<input type="button" class="btn btn-primary" value="등록" id="enrollBtn">
+					<input type="button" class="btn btn-dark" value="취소" onclick="back();">
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid full-height">
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<span class="m-0 font-weight-bold text-white mr-5">등록된 프로젝트 목록</span><b class="text-danger ml-5">*</b> 수정 / 보기 기능을 사용하려면 해당 목록을 클릭하세요.
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="table-responsive">
+					<table class="table text-white" id="companyProjectTables" width="100%">
+						<thead>
+							<!-- PROJECT INFO TABLE -->
+							<tr class="bg-nv text-white">
+								<th>GROUP</th>
+								<th>PROJECT</th>
+								<th>유효성</th>
+								<th>등록 일자</th>
+							</tr>
+						</thead>
+						<tbody class="text-secondary" id="testtbody">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/company/project.js"></script>
+	<script type="text/javascript" src="/js/company/projectInfo.js"></script>
+	<script type="text/javascript" src="/js/include/tables.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+
+</body>

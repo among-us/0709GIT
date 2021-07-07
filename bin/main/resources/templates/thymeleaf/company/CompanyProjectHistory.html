@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					GROUP 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">GROUP - PROJECT 설정 로그</b>
+				</h1>
+				<p class="mb-4 sub">프로젝트 설정 로그를 볼 수 있습니다</p>
+			</div>
+		</div>
+		<div id="content">
+			<div class="container-fluid mb-5" style="padding-top: 0em;">
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">프로젝트 설정 로그</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table text-secondary" id="companyProjectHistoryTables" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv text-white">
+										<th>번호</th>
+										<th>GROUP</th>
+										<th>프로젝트</th>
+										<th>유효성</th>
+										<th>등록 계정</th>
+										<th>등록 일자</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/company/history.js"></script>
+	<script src="/js/include/tables.js"></script>
+</body>
+</html>

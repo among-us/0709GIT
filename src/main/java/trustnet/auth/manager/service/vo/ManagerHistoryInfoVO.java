@@ -1,7 +1,5 @@
 package trustnet.auth.manager.service.vo;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +18,12 @@ public class ManagerHistoryInfoVO {
 	String site_info;
 	String tam_local_ip;
 	int tam_local_port;
-	int tam_admin_port;
+	int tam_adm_port;
+	String tam_pub_ip;
+	int tam_pub_port;
+	int tam_pub_adm_port;
 	String tam_license;
 	String shared_path;
-	String log_path;
-	String log_level;
 	String comm_type;
 	String watchdog;
 	String tam_state;
@@ -34,4 +33,10 @@ public class ManagerHistoryInfoVO {
 	String action;
 	String history_reg_date;
 	String issuer_user_id;
+	
+	int pageNum;
+	int show_cnt;
+	String ordering;
+	String filter;
+	String column;
 }

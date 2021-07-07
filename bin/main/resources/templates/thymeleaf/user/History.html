@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					관리자 메뉴<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">계정 로그</b>
+				</h1>
+				<p class="mb-4 sub">계정 정보 변경 로그를 확인할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<span class="m-0 font-weight-bold text-white">관리자 목록</span> <span class="ml-5"> <b class="text-danger mr-2">*</b> &nbsp; 관리자 목록을 클릭하시면 자세한 로그를 볼 수 있습니다.
+						</span>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table display nowrap" id="tables" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv text-white">
+										<th>번호</th>
+										<th>계정</th>
+										<th>계정 권한</th>
+										<th>최근 변경 시간</th>
+										<th>활성화</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="user, seq : ${userList}" style="cursor: pointer" th:attr="onclick=|goToUserInfoDetails('${user?.getUser_no()}')|">
+										<td th:text="${seq.count}"></td>
+										<td th:text="${user?.getUser_id()}"></td>
+										<td th:text="${user?.getUser_perm_info()}"></td>
+										<td th:text="${user?.getRecent_date()}"></td>
+										<td th:text="${user?.getExist()}">></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/user/history.js"></script>
+	<script src="/js/include/tables.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					PROJECT 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i>PROJECT 정보<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">PROJECT 정보 수정</b>
+				</h1>
+				<p class="mb-4 sub">PROJECT에 대한 정보 변경을 수행할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<span class="pr-5 font-weight-bold text-white">PROJECT 정보 수정</span>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="form-group row" hidden="hidden">
+							<label for="z_no" class="col-xl-2 col-form-label text-white">번호</label>
+							<div class="col-xl-5">
+								<input type="text" name="zone_no" class="form-control" id="z_no" th:value="${zoneInfo?.getZone_no()}" readonly="readonly">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="z_name" class="col-xl-2 col-form-label text-white">PROJECT</label>
+							<div class="col-xl-5">
+								<input type="text" name="zone_name" class="form-control" id="z_name" th:value="${zoneInfo?.getZone_name()}" readonly="readonly">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="z_info" class="col-xl-2 col-form-label text-white">설명</label>
+							<div class="col-xl-5">
+								<input type="text" name="zone_info" class="form-control" id="z_info" th:value="${zoneInfo?.getZone_info()}">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="z_reno" class="col-xl-2 col-form-label text-white">개정 번호</label>
+							<div class="col-xl-5">
+								<input type="text" name="revision_no" class="form-control" id="z_reno" th:value="${zoneInfo?.getRevision_no()}" readonly="readonly">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="z_reg_date" class="col-xl-2 col-form-label text-white">등록 일자</label>
+							<div class="col-xl-5">
+								<input type="text" name="registed_date" class="form-control" id="z_reg_date" th:value="${zoneInfo?.getRegisted_date()}" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="z_pl" class="col-xl-2 col-form-label text-white"> 정적 라이선스 개수</label>
+							<div class="col-xl-5">
+								<input type="text" name="pl_license_cnt" class="form-control" id="z_pl" th:value="${zoneInfo?.getPl_license_cnt()}" readonly="readonly">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="z_tpl" class="col-xl-2 col-form-label text-white">동적 라이선스 개수</label>
+							<div class="col-xl-5">
+								<input type="text" name="tpl_license_cnt" class="form-control" id="z_tpl" th:value="${zoneInfo?.getTpl_license_cnt()}" readonly="readonly">
+							</div>
+						</div>
+						<div class="alert alert-info alert-dismissible fade show col-xl-7" role="alert">
+							라이선스 변경이 필요시,
+							<a href="/zoneLicense/LicenseAllowInfoPage" class="alert-link" style="color: blue;">라이선스 요청정보 페이지</a>
+							를 통해 변경하여 주시기 바랍니다
+						</div>
+						<div class="form-group row">
+							<label for="z_sessionTime" class="col-xl-2 col-form-label text-white">세션 타임</label>
+							<div class="col-xl-5">
+								<select name="session_time" class="form-control">
+									<option th:each=" num : ${#numbers.sequence(1,20)} " th:value="${num*5}" th:utext="${num*5}" th:selected="${zoneInfo?.getSession_time()} == ${num*5}"></option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="z_exist" class="col-xl-2 col-form-label text-white">활성화</label>
+							<div class="col-xl-5">
+								<select name="exist" class="form-control">
+									<option th:selected="${zoneInfo?.getExist()} == 'Y'" value="Y">YES</option>
+									<option th:selected="${zoneInfo?.getExist()} == 'N'" value="N">NO</option>
+								</select>
+							</div>
+						</div>
+						<div class="alert alert-danger alert-dismissible fade show col-xl-7" role="alert">
+							PROJECT 활성화 <b class="text-danger">NO</b> 선택시 서비스가 중단 될 수 있습니다
+						</div>
+						<div class="form-group row">
+							<label for="z_limited_url" class="col-xl-2 col-form-label text-white">URL 제한</label>
+							<div class="col-xl-5">
+								<input type="text" name="limited_url" class="form-control" id="z_limited_url" readonly="readonly">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col mt-3">
+								<input type="button" class="btn btn-corn" value="변경" id="updateBtn"> <input type="button" onclick="back();" class="btn btn-light" value="취소" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/zone/zoneInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/zone.js"></script>
+</body>
+</html>

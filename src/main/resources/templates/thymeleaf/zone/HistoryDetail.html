@@ -1,129 +1,114 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>TACO</title>
-</head>
 <body>
-<th:block th:include="thymeleaf/include/header"></th:block>
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-    	<!-- Main Content -->
-    	<div id="content">
- 			<!-- Begin Page Content -->
-        	<div class="container-fluid">
-            	<!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">ZONE</h1>
-                <p class="mb-4">ZONE 현황을 확인할 수 있습니다</p>
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                	<div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">ZONE 현황 이력</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered display nowrap" id="tables" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-										<th>고유번호</th>
-										<th>ZONE명</th>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid ">
+				<h1 class="h3 mb-2 text-secondary">
+					PROJECT 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i>PROJECT 관리 로그<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">PROJECT 관리 로그 상세</b>
+				</h1>
+				<p class="mb-4">PROJECT 로그 상세를 확인할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">PROJECT 정보 수정 이력</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table display nowrap text-secondary" id="tables" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv text-white">
+										<th>번호</th>
+										<th>PROJECT</th>
 										<th>설명</th>
-										<th>사이트명</th>
 										<th>개정번호</th>
-										<th>정적 라이선스 갯수</th>
-										<th>동적 라이선스 갯수</th>
+										<th>정적 라이선스 개수</th>
+										<th>동적 라이선스 개수</th>
+										<th>시간제한 라이선스 개수</th>
 										<th>세션타임</th>
 										<th>URL 제한</th>
-										<th>정합성 코드</th>
-										<th>생성자</th>
+										<th>등록 계정</th>
 										<th>액션</th>
 										<th>기록 생성 일자</th>
-                                    	<th>활성화</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-									<tr th:each="history : ${historyList}" >
-										<td th:text="${history?.getZone_no()}"></td>
+										<th>활성화</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="history, seq : ${historyList}">
+										<td th:text="${seq.count}"></td>
 										<td th:text="${history?.getZone_name()}"></td>
 										<td th:text="${history?.getZone_info()}"></td>
-										<td th:text="${history?.getComp_name()}"></td>
 										<td th:text="${history?.getRevision_no()}"></td>
 										<td th:text="${history?.getPl_license_cnt()}"></td>
 										<td th:text="${history?.getTpl_license_cnt()}"></td>
+										<td th:text="${history?.getAllowed_cnt()}"></td>
 										<td th:text="${history?.getSession_time()}"></td>
 										<td th:text="${history?.getLimited_url()}"></td>
-										<td th:text="${history?.getIntegrity_value()}"></td>
 										<td th:text="${history?.getIssuer_user_id()}"></td>
-										<td th:text="${history?.getAction()}"></td>
+										<th:block th:switch="${history?.getAction()}">
+											<td th:case="C">생성</td>
+											<td th:case="U">변경</td>
+											<td th:case="D">삭제</td>
+										</th:block>
 										<td th:text="${history?.getHistory_reg_date()}"></td>
 										<td th:text="${history?.getExist()}"></td>
-							    	</tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-			</div>
-		</div>
-	</div> 
-	<div class="ZHBtn mb-3 mr-5">
-							<input type="button" value="이전 페이지" id="ZHBtn" class="btn btn-primary">
+									</tr>
+								</tbody>
+							</table>
 						</div>
-	    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-    	<!-- Main Content -->
-    	<div id="content">
- 			<!-- Begin Page Content -->
-        	<div class="container-fluid">
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                	<div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">ZONE 현황 이력</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered display nowrap" id="tables2" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-										<th>고유번호</th>
-										<th>TAA IP</th>
-										<th>라이선스 타입</th>
-										<th>생성자</th>
-										<th>액션</th>
-										<th>기록 생성 일자</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-									<tr th:each="licenseHistory : ${licenseHistoryList}" >
-										<td th:text="${licenseHistory?.getZone_no()}"></td>
-										<td th:text="${licenseHistory?.getTaa_ip()}"></td>
-										<td th:text="${licenseHistory?.getLicense_type()}"></td>
-										<td th:text="${licenseHistory?.getIssuer_user_id()}"></td>
-										<td th:text="${licenseHistory?.getAction()}"></td>
-										<td th:text="${licenseHistory?.getHistory_reg_date()}"></td>
-							    	</tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	
+	<div class="BeforeCancel mb-3 mr-5">
+		<input type="button" value="이전 페이지" onclick="back()" class="btn btn-primary">
+	</div>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid full-height">
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">PROJECT 허용IP 변경 이력</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table display nowrap text-secondary" id="tables2" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv text-white">
+										<th>번호</th>
+										<th>IP 주소</th>
+										<th>라이선스 타입</th>
+										<th>등록 계정</th>
+										<th>활동</th>
+										<th>기록 일자</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="licenseHistory , seq : ${licenseHistoryList}">
+										<td th:text="${seq.count}"></td>
+										<td th:text="${licenseHistory?.getTaa_ip()}"></td>
+										<td th:switch="${licenseHistory?.getLicense_type()}">
+											<span th:case="1" class="center-block label label-info">Static</span> <span th:case="2" class="center-block label label-primary">Dynamic</span> <span th:case="3" class="center-block label label-primary">TimeLimit</span> <span th:case="99" class="center-block label label-primary">N/A</span>
+										</td>
+										<td th:text="${licenseHistory?.getIssuer_user_id()}"></td>
+										<th:block th:switch="${licenseHistory?.getAction()}">
+											<td th:case="C">생성</td>
+											<td th:case="U">변경</td>
+											<td th:case="D">삭제</td>
+										</th:block>
+										<td th:text="${licenseHistory?.getHistory_reg_date()}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<th:block th:include="thymeleaf/include/footer"></th:block>
-    <!-- Bootstrap core JavaScript-->
-    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="/js/sb-admin-2.min.js"></script>
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="/js/demo/datatables-demo.js"></script>
-    <script src="/js/zone/history.js"></script>
-    <script type="text/javascript" src="/js/leejs/cancel.js"></script>
+	<script src="/js/zone/history.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+	<script src="/js/include/tables.js"></script>
 </body>
 </html>

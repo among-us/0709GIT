@@ -3,9 +3,11 @@ package trustnet.auth.user.controller.except;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 import trustnet.auth.common.dto.CommonResponseDTO;
+import trustnet.auth.interceptor.GeneralInterceptor;
 import trustnet.auth.manager.controller.except.ParameterException;
 import trustnet.auth.user.code.UserResultEnum;
 import trustnet.auth.user.controller.dto.UserInfoResponseDTO;
@@ -57,8 +59,11 @@ public class UserException extends RuntimeException{
 	@ExceptionHandler(TokenValidationException.class)
 	CommonResponseDTO<Object> tokenValidationException(TokenValidationException e) {
 		log.info("{}", e.getClass());
+		log.info(">>>>> TOKEN VALID ERROR <<<<<");
 		UserResultEnum err = UserResultEnum.TOKENVALIDATION;
 		UserInfoResponseDTO resDTO = new UserInfoResponseDTO(err);
+		GeneralInterceptor a = new GeneralInterceptor(null, null, null, null);
+		
 		return CommonResponseDTO.builder().data(resDTO).build();
 	}
 	
@@ -66,6 +71,30 @@ public class UserException extends RuntimeException{
 	CommonResponseDTO<Object> loginFailException(LoginFailException e) {
 		log.info("{}", e.getClass());
 		UserResultEnum err = UserResultEnum.LOGINERROR;
+		UserInfoResponseDTO resDTO = new UserInfoResponseDTO(err);
+		return CommonResponseDTO.builder().data(resDTO).build();
+	}
+	
+	@ExceptionHandler(UserExistException.class)
+	CommonResponseDTO<Object> userExistException(UserExistException e) {
+		log.info("{}", e.getClass());
+		UserResultEnum err = UserResultEnum.EXISTERROR;
+		UserInfoResponseDTO resDTO = new UserInfoResponseDTO(err);
+		return CommonResponseDTO.builder().data(resDTO).build();
+	}
+	
+	@ExceptionHandler(UserNoneException.class)
+	CommonResponseDTO<Object> userNoneException(UserNoneException e) {
+		log.info("{}", e.getClass());
+		UserResultEnum err = UserResultEnum.NONEERROR;
+		UserInfoResponseDTO resDTO = new UserInfoResponseDTO(err);
+		return CommonResponseDTO.builder().data(resDTO).build();
+	}
+	
+	@ExceptionHandler(NoPermissionException.class)
+	CommonResponseDTO<Object> NopermissionException(NoPermissionException e) {
+		log.info("{}", e.getClass());
+		UserResultEnum err = UserResultEnum.EXISTERROR;
 		UserInfoResponseDTO resDTO = new UserInfoResponseDTO(err);
 		return CommonResponseDTO.builder().data(resDTO).build();
 	}

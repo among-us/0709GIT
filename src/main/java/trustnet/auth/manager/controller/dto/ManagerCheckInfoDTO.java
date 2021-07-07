@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ManagerCheckInfoDTO {
-	@Pattern(regexp = "^[0-9a-zA-Z]*$", message = "TAM명에 특수문자를 사용할 수 없습니다")
-	@NotEmpty(message = "TAM명을 입력해주세요")
+	@Pattern(regexp = "^[0-9a-zA-Z_]*$", message = "TAM명에 특수문자를 사용할 수 없습니다")
+	@NotEmpty(message = "TAManager명을 입력해주세요")
 	String tam_name;
 }

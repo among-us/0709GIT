@@ -1,81 +1,70 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>TACO</title>
-</head>
 <body>
 	<th:block th:include="thymeleaf/include/header"></th:block>
-
-
-	<!-- Content Wrapper -->
-	<div id="content-wrapper" class="d-flex flex-column">
-
-		<!-- Main Content -->
-		<div id="content">
-			<!-- Begin Page Content -->
-			<div class="container-fluid">
-				<!-- Page Heading -->
-				<h1 class="h3 mb-2 text-gray-800">ZONE 허용 IP 정보</h1>
-				<p class="mb-4">ZONE 허용 IP 정보를 변경할수 있습니다</p>
-
-				<!-- DataTales Example -->
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<h6 class="m-0 font-weight-bold text-primary">ZONE 허용 IP 정보 변경</h6>
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">
+			PROJECT 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> PROJECT 허용 IP 목록 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">PROJECT 허용 IP 정보 변경</b>
+		</h1>
+		<p class="mb-4">PROJECT 허용 IP 정보를 변경할수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">PROJECT 허용 IP 정보 변경</h6>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="form-group row" hidden="hidden">
+					<label for="z_no" class="col-xl-2 col-form-label text-white">번호 </label>
+					<div class="col-xl-5">
+						<input type="text" name="zone_no" class="form-control" id="z_no" th:value="${zoneNLicense?.getLit_zone_no()}" disabled="disabled" readonly>
 					</div>
-					<div class="card-body">
-						<form>
-							<div class="form-group row">
-								<label for="z_no" class="col-sm-2 col-form-label">고유번호 </label>
-								<div class="col-sm-5">
-									<input type="text" name="zone_no" class="form-control" id="z_no" th:value="${zoneNLicense?.getLit_zone_no()}" disabled="disabled" readonly>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="z_name" class="col-sm-2 col-form-label">ZONE 이름 </label>
-								<div class="col-sm-5">
-									<input type="text" name="zone_name" class="form-control" id="z_name" th:value="${zoneNLicense?.getZct_zone_name()}" disabled="disabled" readonly>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="z_info" class="col-sm-2 col-form-label">설명</label>
-								<div class="col-sm-5">
-									<input type="text" name="zone_info" class="form-control" id="z_info" th:value="${zoneNLicense?.getZct_zone_info()}" disabled="disabled" readonly>
-								</div>
-							</div>
-
-
-							<div class="form-group row">
-								<label for="z_taa_ip" class="col-sm-2 col-form-label">TAAgent IP</label>
-								<div class="col-sm-5">
-									<input type="text" name="taa_ip" class="form-control" id="z_taa_ip" th:value="${zoneNLicense?.getLit_taa_ip()}"> 현재 IP : <span id="now_stat" th:utext="${zoneNLicense?.getLit_taa_ip()}"></span>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="z_license" class="col-sm-2 col-form-label">현재 라이선스 타입</label>
-								<div class="col-sm-5">
-									<select name="license_type" class="form-control">
-										<option th:each="code : ${codeList}" th:if="${code?.getLicense_type() < 3}" th:selected="${code?.getLicense_type()} == ${zoneNLicense?.getLit_license_type()}" th:value="${code?.getLicense_type()}" th:utext="${code?.getLicense_value()}"></option>
-									</select>
-									현재 타입 : <span id="now_stat" th:utext="${zoneNLicense?.getLicense_value()}"></span>
-								</div>
-							</div>
+				</div>
+				<div class="form-group row">
+					<label for="z_name" class="col-xl-2 col-form-label text-white">PROJECT</label>
+					<div class="col-xl-5">
+						<input type="text" name="zone_name" class="form-control" id="z_name" th:value="${zoneNLicense?.getZct_zone_name()}" disabled="disabled" readonly>
 					</div>
-					<div class="col ml-2 mb-3">
-						<input type="button" class="btn btn-primary" value="변경" id="updateBtn"> <input type="button" class="btn btn-primary" value="삭제" id="deleteBtn"> <input type="button" id="ZIPCBtn" class="btn btn-light" value="취소" />
+				</div>
+				<div class="form-group row">
+					<label for="z_info" class="col-xl-2 col-form-label text-white">설명</label>
+					<div class="col-xl-5">
+						<input type="text" name="zone_info" class="form-control" id="z_info" th:value="${zoneNLicense?.getZct_zone_info()}" disabled="disabled" readonly>
 					</div>
-					</form>
+				</div>
+				<div class="alert alert-danger alert-dismissible fade show col-xl-7" role="alert">
+					<strong style="color: red;">IP를 변경</strong>하게 되면 기존 서비스에 영향을 주게 됩니다. 주의 하시기 바랍니다.
+				</div>
+				<div class="form-group row">
+					<label for="z_taa_ip" class="col-xl-2 col-form-label text-white">TAAgent IP</label>
+					<div class="col-xl-5">
+						<input type="text" name="taa_ip" class="form-control" id="z_taa_ip" th:value="${zoneNLicense?.getLit_taa_ip()}"> 현재 IP : <span id="now_stat" th:utext="${zoneNLicense?.getLit_taa_ip()}"></span>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="z_license" class="col-xl-2 col-form-label text-white">현재 라이선스 타입</label>
+					<div class="col-xl-5">
+						<!-- 								<input type="text" class="form-control" th:value="${zoneNLicense?.getLit_license_type()}" disabled="disabled"> -->
+						<th:block th:switch="${zoneNLicense?.getLit_license_type()}">
+							<td th:case=1>
+								<input type="text" class="form-control" id="license" value="정적 라이선스" disabled="disabled">
+							</td>
+							<td th:case=2>
+								<input type="text" class="form-control" id="license" value="동적 라이선스" disabled="disabled">
+							</td>
+							<td th:case=3>
+								<input type="text" class="form-control" id="license" value="시간제한 라이선스" disabled="disabled">
+							</td>
+							<td th:case=99>
+								<input type="text" class="form-control" id="license" value="N/A" disabled="disabled">
+							</td>
+						</th:block>
+					</div>
+				</div>
+				<div class="mt-5 mb-3">
+					<input type="button" class="btn btn-primary" value="변경" id="updateBtn"> <input type="button" class="btn btn-danger" value="삭제" id="deleteBtn"> <input type="button" id="ZIPCBtn" class="btn btn-dark" value="취소" />
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<th:block th:include="thymeleaf/include/footer"></th:block>
 	<script type="text/javascript" src="/js/zone/licenseInfo.js"></script>
 	<script type="text/javascript" src="/js/zone/licenseUpdate.js"></script>
-	<script type="text/javascript" src="/js/leejs/cancel.js"></script>
-	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
 </body>
-</html>

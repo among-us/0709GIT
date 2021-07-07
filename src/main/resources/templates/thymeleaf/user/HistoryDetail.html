@@ -1,90 +1,57 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>TACO</title>
-</head>
 <body>
-<th:block th:include="thymeleaf/include/header"></th:block>
-
-
-
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-    	<!-- Main Content -->
-    	<div id="content">
- 			<!-- Begin Page Content -->
-        	<div class="container-fluid">
-            	<!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">사용자</h1>
-                <p class="mb-4">사용자 목록을 확인할 수 있습니다</p>
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                	<div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">사용자 목록</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive ">
-                            <table class="table table-bordered display nowrap" id="tables" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-										<th>번호</th>
-										<th>계정명</th>
-										<th>권한</th>
-										<th>사이트명</th>
-										<th>로그인 실패횟수</th>
-										<th>마지막 로그인</th>
-										<th>계정 등록 일자</th>
-										<th>액션</th>
-										<th>생성자</th>
-										<th>기록 생성 일자</th>
-										<th>활성화</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-									<tr th:each="history, seq : ${userHistoryList}" >
-										<td th:text="${seq.count}"></td>
-										<!-- <td th:text="${history?.getUser_no()}"></td> -->
-										<td th:text="${history?.getUser_id()}"></td>
-										<td th:text="${history?.getPermissions()}"></td>
-										<td th:text="${history?.getComp_name()}"></td>
-										<!-- <td th:text="${history?.getPasswd()}"></td> -->
-										<td th:text="${history?.getAuth_err()}"></td>
-										<td th:text="${history?.getLast_login()}"></td>
-										<td th:text="${history?.getReg_date()}"></td>
-						<!-- 				<td th:text="${history?.getHmac()}"></td> -->
-										<th:block th:switch="${history?.getAction}">
-											<td th:case="C">생성</td>
-											<td th:case="U">변경</td>
-											<td th:case="D">삭제</td>
-										</th:block>
-										<td th:text="${history?.getIssuer_user_id()}"></td>
-										<td th:text="${history?.getHistory_reg_date()}"></td>
-										<td th:text="${history?.getExist()}">></td>
-							    	</tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">
+			관리자<i class="fas fa-chevron-right mr-2 ml-2"></i> 계정 로그<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">계정 로그 상세</b>
+		</h1>
+		<p class="mb-4">계정 정보 변경 로그 상세를 확인할 수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">계정 로그 상세</h6>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="table-responsive ">
+					<table class="table display nowrap text-secondary" id="tables" width="100%" cellspacing="0">
+						<thead>
+							<tr class="bg-nv">
+								<th>번호</th>
+								<th>계정명</th>
+								<th>권한</th>
+								<!-- 										<th>기업명</th> -->
+								<th>로그인 실패횟수</th>
+								<th>마지막 로그인</th>
+								<th>계정 등록 일자</th>
+								<th>수정</th>
+								<th>활동</th>
+								<th>변경 시간</th>
+								<th>활성화</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="history, seq : ${userHistoryList}">
+								<td th:text="${seq.count}"></td>
+								<!-- <td th:text="${history?.getUser_no()}"></td> -->
+								<td th:text="${history?.getUser_id()}"></td>
+								<td th:text="${history?.getUser_perm_info()}"></td>
+								<td th:text="${history?.getAuth_err()}"></td>
+								<td th:text="${history?.getLast_login()}"></td>
+								<td th:text="${history?.getReg_date()}"></td>
+								<td th:text="${history?.getIssuer_user_id()}"></td>
+								<th:block th:switch="${history?.getAction}">
+									<td th:case="C">생성</td>
+									<td th:case="U">변경</td>
+									<td th:case="D">삭제</td>
+								</th:block>
+								<td th:text="${history?.getHistory_reg_date()}"></td>
+								<td th:text="${history?.getExist()}">></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
-
-
-<th:block th:include="thymeleaf/include/footer"></th:block>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="/js/sb-admin-2.min.js"></script>
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="/vendor/datatables/dataTables.responsive.min.js"></script> 
-    <script src="/js/demo/datatables-demo.js"></script>
-    <script src="/js/user/history.js"></script>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script src="/js/user/history.js"></script>
+	<script src="/js/include/tables.js"></script>
 </body>
-</html>

@@ -11,8 +11,6 @@ import trustnet.auth.common.dto.CommonResponseDTO;
 import trustnet.auth.manager.controller.except.ParameterException;
 import trustnet.auth.managerzone.code.ManagerZoneResultEnum;
 import trustnet.auth.managerzone.controller.dto.ManagerZoneResponseDTO;
-import trustnet.auth.zone.code.ZoneResultEnum;
-import trustnet.auth.zone.controller.dto.ZoneInfoResponseDTO;
 
 @RestControllerAdvice("trustnet.auth.managerzone.controller")
 @Slf4j

@@ -1,7 +1,5 @@
 package trustnet.auth.zone.controller.dto;
 
-import java.sql.Timestamp;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -20,27 +18,17 @@ import trustnet.auth.zone.code.ZoneResultEnum;
 public class ZoneVerifyIntegrityDTO {
 	
 	String zone_name;
-	int revision_no;
-	int pl_count;
-	int tpl_count;
-	String limit_url;
+	int asis_revision_no;
+	int asis_pl_count;
+	int asis_tpl_count;
+	String asis_limited_url;
+	
+	int tobe_revision_no;
+	int tobe_pl_count;
+	int tobe_tpl_count;
+	String tobe_limited_url;
+	
 	String integrity;
-	
-	
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static CommonResponseDTOBuilder<Object> builder() {
-		return null;
-	}
-	
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	int errorCode;
-	
-	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	String errorMessage;
-	
-	public ZoneVerifyIntegrityDTO(ZoneResultEnum retEnum){
-		this.errorCode = retEnum.getErrorCode();
-		this.errorMessage = retEnum.getErrorMessage();
-	}
+	String value;
 	
 }

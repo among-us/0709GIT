@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>UPDATE PAGE</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					GROUP 관리<i class="fas fa-chevron-right mr-2 ml-2"></i>GROUP 등록 및 정보<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">GROUP 정보 수정</b>
+				</h1>
+				<p class="mb-4 sub">GROUP 정보를 수정할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">GROUP 정보 수정</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<form>
+							<div class="form-group row" hidden="hidden">
+								<label for="c_no" class="col-xl-1 col-lg-1 col-form-label text-white">번호</label>
+								<div class="col-xl-3 col-lg-3">
+									<input type="text" name="comp_no" class="form-control" id="c_no" th:value="${companyNGroup?.getCi_comp_no()}" disabled="disabled" readonly>
+								</div>
+							</div>
+							<div>
+								<input type="text" id="asis_comp_name" th:value="${companyNGroup?.getCi_comp_name()}" readonly="readonly" disabled="disabled" hidden="hidden">
+							</div>
+							<div class="form-group row">
+								<label for="c_siteName" class="col-xl-1 col-lg-1 col-form-label text-white">GROUP</label>
+								<div class="col-xl-2 col-lg-2">
+									<input type="text" name="comp_name" class="form-control" id="c_siteName" th:value="${companyNGroup?.getCi_comp_name()}">
+								</div>
+								<input type="button" class="btn btn-corn" id="updateCheckBtn" value="중복 검사" />
+							</div>
+							<div class="form-group row">
+								<label for="c_exist" class="col-xl-1 col-lg-1 col-form-label text-white">유효성</label>
+								<div class="col-xl-3 col-lg-3">
+									<input type="text" name="exist" class="form-control" id="c_exist" th:value="${companyNGroup?.getExist()}" disabled="disabled" readonly>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="c_reg_date" class="col-xl-1 col-lg-1 col-form-label text-white">등록일자</label>
+								<div class="col-xl-3 col-lg-3">
+									<input type="text" name="reg_date" class="form-control" id="c_reg_date" th:value="${companyNGroup?.getCi_reg_date()}" disabled="disabled" readonly>
+								</div>
+							</div>
+
+							<div class="form-group row ">
+								<div class="col-xl-12 col-lg-12 mt-3">
+									<input type="button" class="btn btn-corn" value="변경" id="updateBtn"> <input type="button" class="btn btn-danger" value="삭제" id="deleteBtn"> <input type="button" class="btn btn-light" value="취소" id="back">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/js/company/companyInfo.js"></script>
+	<script type="text/javascript" src="/js/company/company.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+</body>
+</html>

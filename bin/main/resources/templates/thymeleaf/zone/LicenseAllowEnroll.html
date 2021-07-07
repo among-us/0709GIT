@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper">
+		<div id="content">
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					라이선스 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">라이선스 허용정보 등록</b>
+				</h1>
+				<p class="mb-4 sub">라이선스 허용정보를 등록할 수 있습니다</p>
+				<div class="card shadow">
+					<div class="card-header py-3 bg-nv">
+						<span class="pr-5 font-weight-bold text-white">라이선스 허용정보 등록 <b class="text-dark ml-2">( 정적 / 동적 라이선스 )</b></span>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="form-group row">
+							<label for="filelabel" class="col-xl-1 col-form-label text-white fixedLabel"><b>파일등록 형식</b></label>
+							<div class="col-xl-10">
+								<button onclick="licenseopenTextFile()" class="btn btn-corn mr-3 ">라이선스 정보 파일 등록</button>
+								<input type="button" class="btn btn-light" value="취소" id="LAIP" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="fixedLabel" class="col-xl-1 col-form-label text-white fixedLabel"><b>붙여넣기 형식</b></label>
+							<div class="col-xl-4">
+								<input type="text" class="form-control" id="license_request" name="license_enroll" placeholder="라이선스 등록정보 결과값 입력">
+							</div>
+							<button class="btn btn-corn fixed_btn" id="lenrollBtn">등록</button>
+						</div>
+						<div class="container">
+							<div class="modal fade TaaVerify" id="licenseEnrollModal" role="dialog">
+								<div class="modal-dialog TaaVerify">
+									<div class="modal-content TaaVerify">
+										<div class="modal-header">
+											<h4 class="modal-title">라이선스 허용등록 정보</h4>
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+										</div>
+										<div class="modal-body">
+											<b>- ZONE : </b><span class="tamVerify" id="zone_name"></span> <br> <b>- 개정 번호 : </b><span class="tamVerify" id="re_no"></span> <br> <b>- 정적 라이선스 개수 : </b><span class="tamVerify" id="pl_cnt"></span> <span class="asis">( 현재허용 &nbsp;<span id="asispl"></span>개 )
+											</span> <br> <b>- 동적 라이선스 개수 : </b><span class="tamVerify" id="tpl_cnt"></span> <span class="asis">( 현재허용 &nbsp; <span id="asistpl"></span>개 )
+											</span> <br> <b>- 제한 URL : </b><span class="tamVerify" id="limited_url"></span> <br> <b>- 검증값 : </b><span class="tamVerify" id="integrity"></span>
+										</div>
+										<div></div>
+										<div class="modal-footer mr-4">
+											<div>
+												<span id="license_question"><b class="mr-2">해당 정보를 등록하시겠습니까 ?</b></span>
+												<button class="btn btn-corn ml-3 pl-4 pr-4" id="license_yes">예</button>
+												<button class="btn btn-clear ml-3" id="license_no" data-dismiss="modal" aria-label="Close">아니오</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<p id="value" style="display: none;"></p>
+						<p id="t_integrity" style="display: none;"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="content">
+			<div class="container-fluid">
+				<div class="card shadow">
+					<div class="card-header py-3 bg-nv">
+						<span class="pr-5 font-weight-bold text-success">시간제한 라이선스 허용정보 등록 <b class="text-dark ml-2">( 시간제한 라이선스 )</b></span> </span>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="form-group row">
+							<label for="filelabel" class="col-xl-1 col-form-label text-white fixedLabel"><b>파일등록 형식</b></label>
+							<div class="col-xl-10">
+								<button onclick="timeopenTextFile()" class="btn btn-success mr-3">시간제한 라이선스 정보 파일 등록</button>
+								<input type="button" class="btn btn-light" value="취소" id="TLAIP" />
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="fixedLabel" class="col-xl-1 col-form-label text-white fixedLabel"><b>붙여넣기 형식</b></label>
+							<div class="col-xl-4">
+								<input type="text" name="timelicense_enroll" class="form-control" id="timelicense_request" placeholder="라이선스 등록정보 결과값 입력">
+							</div>
+							<input type="button" class="btn btn-success fixed_btn" value="등록" id="tlenrollBtn">
+						</div>
+						<div style="display: none;">
+							<p id="value"></p>
+							<p id="t_integrity"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade TaaVerify" id="timelicenseModal" role="dialog">
+				<div class="modal-dialog TaaVerify">
+					<!-- Modal content-->
+					<div class="modal-content TaaVerify">
+						<div class="modal-header">
+							<h4 class="modal-title">시간제한 라이선스 허용등록 정보</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<b>- ZONE : </b><span class="tamVerify" id="t_z_name"></span> <br> <b>- 허용 IP : </b><span class="tamVerify" id="t_ip"></span> <br> <b>- 허용 개수 : </b><span class="tamVerify" id="t_cnt"></span> <br> <b>- 만료일 : </b><span class="tamVerify" id="t_limit"></span> <br> <b>- 검증값 : </b><span class="tamVerify" id="tm_integrity"></span>
+						</div>
+						<div></div>
+						<div class="modal-footer mr-4">
+							<div>
+								<span id="license_question"><b class="mr-2">해당 정보를 등록하시겠습니까 ?</b></span>
+								<button class="btn btn-success ml-3 pl-4 pr-4" id="time_license_yes">예</button>
+								<button class="btn btn-clear ml-3" id="time_license_no" data-dismiss="modal" aria-label="Close">아니오</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/zone/licenseInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/licenseInfoEnroll.js"></script>
+	<script type="text/javascript" src="/js/zone/licensePasteEnroll.js"></script>
+	<script type="text/javascript" src="/js/zone/readFileInfo.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid">
+		<h1 class="h3 mb-2 text-secondary">
+			TA-Controller 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Controller 정보</b>
+		</h1>
+		<p class="mb-4">Controller 목록을 확인할 수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<span class="m-0 font-weight-bold text-white">Controller 목록</span> <span class="ml-5"> <b class="text-danger mr-1">*</b> 수정 / 보기 기능을 사용하려면 해당 목록을 클릭하세요.
+				</span>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="table-responsive">
+					<table class="table display nowrap text-secondary" id="tables" width="100%" cellspacing="0">
+						<thead>
+							<tr class="bg-nv text-white">
+								<th>번호</th>
+								<th hidden="hidden">번호</th>
+								<th>Controller 명</th>
+								<th>내부 IP</th>
+								<th>내부 포트</th>
+								<th>관리자 포트</th>
+								<th>프로세스 모니터링</th>
+								<th>서비스 활성화</th>
+								<th class="text-center">Download</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="controller, seq : ${ctrlList}" style="cursor: pointer" th:attr="onclick=|goToControllerInfo('${controller?.getCtrl_no()}')|">
+								<td th:text="${seq.count}"></td>
+								<td th:text="${controller?.getCtrl_no()}" hidden="hidden"></td>
+								<td th:text="${controller?.getCtrl_name()}"></td>
+								<td th:text="${controller?.getLocal_ip()}"></td>
+								<td th:text="${controller?.getLocal_port()}"></td>
+								<td th:text="${controller?.getAdmin_port()}"></td>
+								<td th:text="${controller?.getWatchdog()}"></td>
+								<td th:text="${controller?.getEnable()}"></td>
+								<td class="text-center" onclick="event.cancelBubble=true" th:attr="onclick=|goToControllerFile('${controller?.getCtrl_no()}')|">
+									<button class="btn btn-primary">File Download</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/control/control.js"></script>
+	<script type="text/javascript" src="/js/control/controlInfo.js"></script>
+	<script src="/js/include/tables.js"></script>
+</body>

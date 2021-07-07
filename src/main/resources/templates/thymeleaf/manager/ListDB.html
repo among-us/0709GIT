@@ -1,0 +1,58 @@
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">
+			관리자 메뉴<i class="fas fa-chevron-right mr-2 ml-2"></i><b class="text-white">DB 정보 목록</b>
+		</h1>
+		<p class="mb-4">DB 목록을 확인할 수 있습니다</p>
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<span class="pr-5 font-weight-bold text-white">DB 목록</span> <span class="ml-5"> <b class="text-danger mr-1">*</b> 수정 / 보기 기능을 사용하려면 해당 목록을 클릭하세요.
+				</span>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="table-responsive">
+					<table class="table display nowrap" id="DBtables" width="100%" cellspacing="0">
+						<thead>
+							<tr class="bg-nv text-white">
+								<th>번호</th>
+								<th>서비스명</th>
+								<th>타입</th>
+								<th>내부 주소</th>
+								<th>내부 포트</th>
+								<th>외부 주소</th>
+								<th>외부 포트</th>
+								<!-- 										<th>DB 이름</th> -->
+								<th class="text-center">관리</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="manager, seq : ${dbList}" style="cursor: pointer" th:attr="onclick=|goToDbUpdatePage('${manager?.getDb_no()}')|">
+								<td th:text="${seq.count}"></td>
+								<td th:text="${manager?.getDb_svc_name()}"></td>
+								<td th:text="${manager?.getDb_type_no()}"></td>
+								<td th:text="${manager?.getDb_priv_ip()}"></td>
+								<td th:text="${manager?.getDb_priv_port()}"></td>
+								<td th:text="${manager?.getDb_pub_ip()}"></td>
+								<td th:text="${manager?.getDb_pub_port()}"></td>
+								<td class="text-center" onclick="event.cancelBubble=true" style="cursor: auto;">
+									<input name="checkbox" type='checkbox' style='zoom: 1.6'>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<button class="btn btn-danger mt-3" id="list_del_btn" style="float: right">삭제</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="ex3_Result1"></div>
+	<div id="ex3_Result2"></div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/admin/dblist.js"></script>
+	<script type="text/javascript" src="/js/admin/updateDB.js"></script>
+	<script type="text/javascript" src="/js/admin/updateDBInfo.js"></script>
+	<script src="/js/include/tables.js"></script>
+	<script src="/js/include/swal.js"></script>
+</body>

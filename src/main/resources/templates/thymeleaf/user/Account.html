@@ -1,73 +1,99 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>TACO</title>
-</head>
 <body>
-<th:block th:include="thymeleaf/include/header"></th:block>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">계정정보 변경</h1>
+		<p class="mb-4">계정정보를 변경할 수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">계정정보 변경</h6>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="form-group row">
+					<label for="u_id" class="col-xl-2 col-form-label text-white">계정명</label>
+					<div class="col-xl-4">
+						<input type="text" name="user_id" class="form-control" id="u_id" th:value="${authInfoToken?.getUser_id()}" disabled="disabled" readonly>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="u_permission" class="col-xl-2 col-form-label text-white">권한</label>
+					<div class="col-xl-4">
+						<th:block th:switch="${authInfoToken?.getPerm_no()}">
+							<td th:case="0">
+								<span class="form-control" id="u_perm_no" th:value="${userInfo?.getPerm_no()}">no permission</span>
+							</td>
+							<td th:case="1">
+								<span class="form-control" id="u_perm_no" th:value="${userInfo?.getPerm_no()}">admin</span>
+							</td>
+							<td th:case="10">
+								<span class="form-control" id="u_perm_no" th:value="${userInfo?.getPerm_no()}">group</span>
+							</td>
+							<td th:case="20">
+								<span class="form-control" id="u_perm_no" th:value="${userInfo?.getPerm_no()}">project</span>
+							</td>
+						</th:block>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="u_pwd" class="col-xl-2 col-form-label text-white">패스워드</label>
+					<div class="col-xl-4">
+						<input type="password" name="passwd" class="form-control" id="u_pwd">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="u_re_pwd" class="col-xl-2 col-form-label text-white">패스워드 재입력</label>
+					<div class="col-xl-4">
+						<input type="password" name="repasswd" class="form-control" id="u_re_pwd">
+					</div>
+				</div>
+				<hr>
+				<div class="form-group row">
+					<label for="u_permission" class="col-xl-2 col-form-label text-white">회사명</label>
+					<div class="col-xl-4">
+						<input type="text" class="form-control" id="u_company_name" th:value="${userInfo?.getUser_company_name()}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="u_permission" class="col-xl-2 col-form-label text-white">소속</label>
+					<div class="col-xl-4">
+						<input type="text" class="form-control" id="u_dept_name" th:value="${userInfo?.getUser_dept_name()}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="u_permission" class="col-xl-2 col-form-label text-white">이름</label>
+					<div class="col-xl-4">
+						<input type="text" class="form-control" id="u_name" th:value="${userInfo?.getUser_name()}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="u_permission" class="col-xl-2 col-form-label text-white">이메일</label>
+					<div class="col-xl-4">
+						<input type="text" class="form-control" id="u_email" th:value="${userInfo?.getUser_email()}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="u_permission" class="col-xl-2 col-form-label text-white">연락처1</label>
+					<div class="col-xl-4">
+						<input type="text" class="form-control" id="u_phone1" th:value="${userInfo?.getUser_phone_num1()}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="u_permission" class="col-xl-2 col-form-label text-white">연락처2</label>
+					<div class="col-xl-4">
+						<input type="text" class="form-control" id="u_phone2" th:value="${userInfo?.getUser_phone_num2()}">
+					</div>
+				</div>
 
-
-<!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-    	<!-- Main Content -->
-    	<div id="content">
- 			<!-- Begin Page Content -->
-        	<div class="container-fluid">
-            	<!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">유저정보</h1>
-                <p class="mb-4">유저정보를 변경할 수 있습니다</p>
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                	<div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">유저정보 변경</h6>
-                    </div>
-                    <div class="card-body">
-                    
-                    
-                      <form>
-						  <div class="form-group row">
-						    <label for="u_id" class="col-sm-2 col-form-label">계정명</label>
-						    <div class="col-sm-4">
-						      <input type="text" name="user_id" class="form-control" id="u_id" th:value="${authInfoToken?.getUser_id()}" disabled="disabled" readonly>
-						    </div>
-						  </div>
-						  <div class="form-group row">
-						    <label for="u_permission" class="col-sm-2 col-form-label">권한</label>
-						    <div class="col-sm-4">
-						      <input type="text" name="permissions" class="form-control" id="u_permission" th:value="${authInfoToken?.getPermissions()}" disabled="disabled" readonly>
-						    </div>
-						  </div>
-						  <div class="form-group row">
-						    <label for="u_pwd" class="col-sm-2 col-form-label">패스워드</label>
-						    <div class="col-sm-4">
-						      <input type="password" name="passwd" class="form-control" id="u_pwd" >
-						    </div>
-						  </div>
-						  <div class="form-group row">
-						    <label for="u_re_pwd" class="col-sm-2 col-form-label">패스워드 재입력</label>
-						    <div class="col-sm-4">
-						     	<input type="password" name="repasswd" class="form-control" id="u_re_pwd">
-						    </div>
-						  </div>
-						  
-						  <div class="form-group row">
-						    <div class="col-sm-10">
-						      <input type="button" class="btn btn-primary" value="변경하기" id="updateBtn">
-						    </div>
-						  </div>
-						</form>
-						</div>
+				<div class="form-group row">
+					<div class="col-xl-10">
+						<input type="button" class="btn btn-primary" value="변경" id="updateBtn">
+						<input type="button" class="btn btn-dark" value="취소" onclick="back();">
 					</div>
 				</div>
 			</div>
 		</div>
-	
- 	<script type="text/javascript" src="/js/user/accountInfo.js"></script>
+	</div>
+
+	<script type="text/javascript" src="/js/user/accountInfo.js"></script>
 	<script type="text/javascript" src="/js/user/account.js"></script>
 	<th:block th:include="thymeleaf/include/footer"></th:block>
 </body>
-</html>

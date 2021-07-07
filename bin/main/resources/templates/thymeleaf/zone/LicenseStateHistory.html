@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					TAAgent 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Agent 현황 로그</b>
+				</h1>
+				<p class="mb-4 sub">Agent 현황 로그를 확인할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">Agent 현황 로그</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<table class="table display nowrap text-secondary" id="statetables" width="100%" cellspacing="0">
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>Manager</th>
+									<th>Manager IP</th>
+									<th>Agent IP</th>
+									<th>Agent 호스트 정보</th>
+									<th>ZONE</th>
+									<th>라이선스 타입</th>
+									<th>요청 타입</th>
+									<th>요청 일자</th>
+									<th>요청 결과</th>
+									<th>결과 사유</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script src="/js/zone/history.js"></script>
+</body>
+</html>

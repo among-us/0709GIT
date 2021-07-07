@@ -1,76 +1,45 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-<title>TACO</title>
-</head>
 <body>
-<th:block th:include="thymeleaf/include/header"></th:block>
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-    	<!-- Main Content -->
-    	<div id="content">
- 			<!-- Begin Page Content -->
-        	<div class="container-fluid">
-            	<!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">ZONE 허용 IP 목록</h1>
-                <p class="mb-4">ZONE 허용 IP 목록을 확인할 수 있습니다</p>
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                	<div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">ZONE 허용 IP 목록</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-										<th>번호</th>
-										<th>ZONE 이름</th>
-										<th>설명</th>
-										<th>TAAgent IP</th>
-										<th>라이선스 권한</th>
-								<!-- 		<th>exist</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-									<tr th:each="zone, seq : ${zoneLicenseList}" style="cursor:pointer" 
-									th:attr="onclick=|goToZoneLicenseInfo('${zone?.getLit_zone_no()}','${zone?.getLit_taa_ip()}','${zone?.getLit_license_type()}')|">
-										<td th:text="${seq.count}"></td>
-										<!-- <td th:text="${zone?.getLit_zone_no()}"></td> -->
-										<td th:text="${zone?.getZct_zone_name()}"></td>
-										<td th:text="${zone?.getZct_zone_info()}"></td>
-						  				<td th:text="${zone?.getLit_taa_ip()}"></td>
-						  				<td th:text="${zone?.getLit_license_type()}"></td>
-						<!--   				<td th:text="${zone?.getZct_exist()}"></td> -->
-							    	</tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">
+			PROJECT 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">PROJECT 허용 IP 목록</b>
+		</h1>
+		<p class="mb-4">PROJECT 허용 IP 목록을 확인할 수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">PROJECT 허용 IP 목록</h6>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="table-responsive">
+					<table class="table text-secondary" id="tables" width="100%" cellspacing="0">
+						<thead>
+							<tr class="bg-nv text-white">
+								<th>순서</th>
+								<th>PROJECT</th>
+								<th>설명</th>
+								<th>라이선스 타입</th>
+								<th>허용 IP</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="zone, seq : ${zoneLicenseList}" style="cursor: pointer" th:attr="onclick=|goToZoneLicenseInfo('${zone?.getLit_zone_no()}','${zone?.getLit_taa_ip()}','${zone?.getLit_license_type()}')|">
+								<td th:text="${seq.count}"></td>
+								<!-- <td th:text="${zone?.getLit_zone_no()}"></td> -->
+								<td th:text="${zone?.getZct_zone_name()}"></td>
+								<td th:text="${zone?.getZct_zone_info()}"></td>
+								<td th:switch="${zone?.getLit_license_type()}">
+									<span th:case="1" class="center-block">정적 라이선스</span> <span th:case="2" class="center-block">동적 라이선스</span> <span th:case="3" class="center-block">시간제한 라이선스</span>
+								</td>
+								<td th:text="${zone?.getLit_taa_ip()}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
-	
-
-	    <!-- Bootstrap core JavaScript-->
+	<th:block th:include="thymeleaf/include/footer"></th:block>
 	<script type="text/javascript" src="/js/zone/licenseInfo.js"></script>
 	<script type="text/javascript" src="/js/zone/license.js"></script>
-	
-    <!-- <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
-    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="/js/sb-admin-2.min.js"></script>
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="/js/demo/datatables-demo.js"></script>
-
-
+	<script type="text/javascript" src="/js/include/tables.js"></script>
 </body>
-</html>

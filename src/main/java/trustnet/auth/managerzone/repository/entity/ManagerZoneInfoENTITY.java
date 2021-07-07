@@ -14,5 +14,5 @@ import lombok.ToString;
 public class ManagerZoneInfoENTITY {
 	int tam_no;
 	int zone_no;
-	String hmac;
+//	String hmac;
 }

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					TA-Agent 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Agent 허용 / 제한</b>
+				</h1>
+				<p class="mb-4 sub">Agent를 허용 / 제한할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">Agent 허용 / 제한</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table display nowrap text-secondary zone" id="licenseTables" width="100%" cellspacing="0">
+								<!-- origin table id = tables >> myTable -->
+								<thead>
+									<tr class="header bg-nv">
+										<th>번호</th>
+										<th hidden="hidden">ZONE 번호</th>
+										<th>PROJECT</th>
+										<th>설명</th>
+										<th>정적 라이선스 개수</th>
+										<th>동적 라이선스 개수</th>
+										<th>시간제한 라이선스 개수</th>
+										<th>세션시간</th>
+										<th>활성화</th>
+									</tr>
+								</thead>
+								<tbody id="zone_tbody">
+									<tr th:each="zone, seq : ${zoneList}" style="cursor: pointer">
+										<td th:text="${seq.count}"></td>
+										<td hidden="hidden" id="zone_no" th:text="${zone?.getZone_no()}"></td>
+										<td id="zone_name" th:text="${zone?.getZone_name()}"></td>
+										<td id="zone_info" th:text="${zone?.getZone_info()}"></td>
+										<td id="zone_pl_license" th:text="${zone?.getPl_license_cnt()}"></td>
+										<td id="zone_tpl_license" th:text="${zone?.getTpl_license_cnt()}"></td>
+										<td id="zone_tm_license" th:text="${zone?.getAllowed_cnt()}"></td>
+										<td id="session_time" th:text="${zone?.getSession_time()}"></td>
+										<td id="exist" th:text="${zone?.getExist()}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<button id="renewal" class="btn btn-corn ml-4 mb-3">
+					새로고침 <i class="fas fa-undo-alt"></i>
+				</button>
+				<div class="container-fluid">
+					<div class="card shadow mb-4 bg-nv">
+						<div class="card-header py-3 bg-nv">
+							<h6 class="m-0 font-weight-bold text-white">라이선스 현황</h6>
+							<span id="now_pl_cnt"></span> <span id="now_tpl_cnt"></span>
+						</div>
+						<div class="card-body bg-nv rounded-bottom">
+							<div class="table-responsive">
+								<table class="table text-secondary" id="nowStatus" width="100%" cellspacing="0">
+									<thead>
+										<tr class="text-center bg-nv">
+											<th>타입</th>
+											<th>최대 허용개수</th>
+											<th>현재 발급개수</th>
+											<th>현재 거부개수</th>
+										</tr>
+									</thead>
+									<tbody class="text-center">
+										<tr>
+											<td>정적 라이선스</td>
+											<td id="pl_allow"></td>
+											<td id="pl_publish"></td>
+											<td id="pl_deny"></td>
+										</tr>
+										<tr>
+											<td>동적 라이선스</td>
+											<td id="tpl_allow"></td>
+											<td id="tpl_publish"></td>
+											<td id="tpl_deny"></td>
+										</tr>
+										<tr>
+											<td>시간제한 라이선스</td>
+											<td id="tl_allow"></td>
+											<td id="tl_publish"></td>
+											<td id="tl_deny"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<div class="container-fluid">
+					<div class="card shadow mb-4 bg-nv">
+						<div class="card-header py-3 bg-nv">
+							<span class="m-0 font-weight-bold text-white">정적 라이선스 타입</span> <label> <span class="alert alert-danger m-5"> <strong>주의 !! </strong> &nbsp; 발급상태가 거부된 Agent는 서비스가 중단 되므로 주의 하시기 바랍니다
+							</span>
+							</label>
+						</div>
+						<div class="card-body bg-nv rounded-bottom ">
+							<div class="table-responsive">
+								<table class="table display nowrap text-secondary" id="plTables" width="100%" cellspacing="0">
+									<thead class="text-center">
+										<tr class="header bg-nv">
+											<th>라이선스 타입</th>
+											<th colspan="6">정적 라이선스</th>
+										</tr>
+										<tr class="header">
+											<th>IP 정보</th>
+											<th>호스트 정보</th>
+											<th>발급 시간</th>
+											<th>발급 상태</th>
+											<th class="center">상태 변경</th>
+										</tr>
+									</thead>
+									<tbody id="text-center">
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<div class="container-fluid">
+					<div class="card shadow mb-4 bg-nv">
+						<div class="card-header py-3 bg-nv">
+							<span class="m-0 font-weight-bold text-white">동적 라이선스 타입</span> <label> <span class="alert alert-danger m-5"> <strong>주의 !! </strong> &nbsp; 발급상태가 거부된 Agent는 서비스가 중단 되므로 주의 하시기 바랍니다
+							</span>
+							</label>
+						</div>
+
+						<div class="card-body bg-nv rounded-bottom">
+							<div class="table-responsive">
+								<table class="table display nowrap text-secondary" id="tplTables" width="100%" cellspacing="0">
+									<!-- origin table id = tables >> myTable -->
+									<thead class="text-center">
+										<tr class="header bg-nv">
+											<th>라이선스 타입</th>
+											<th colspan="6">동적 라이선스</th>
+										</tr>
+										<tr class="header">
+											<th>IP 정보</th>
+											<th>호스트 정보</th>
+											<th>발급 시간</th>
+											<th>발급 상태</th>
+											<th class="center">상태 변경</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- TIME LICENSE TABLE -->
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<div class="container-fluid">
+					<div class="card shadow mb-4 bg-nv">
+						<div class="card-header py-3 bg-nv">
+							<span class="m-0 font-weight-bold text-success">시간제한 라이선스 타입</span> <label> <span class="alert alert-success m-3"> <strong>주의 !! </strong> &nbsp; 발급상태가 거부된 Agent는 서비스가 중단 되므로 주의 하시기 바랍니다
+							</span>
+							</label>
+						</div>
+						<div class="card-body bg-nv rounded-bottom">
+							<div class="table-responsive">
+								<table class="table display nowrap text-secondary" id="tmTables" width="100%" cellspacing="0">
+									<!-- origin table id = tables >> myTable -->
+									<thead class="text-center">
+										<tr class="header bg-nv">
+											<th>라이선스 타입</th>
+											<th colspan="6" class="text-success">시간제한 라이선스</th>
+										</tr>
+										<tr class="header">
+											<th>IP 정보</th>
+											<th>호스트 정보</th>
+											<th>발급 시간</th>
+											<th>발급 상태</th>
+											<th class="center">상태 변경</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mt-5" align="center">
+					<button onclick="back();" class="btn btn-corn ml-4 mb-3">뒤로 가기</button>
+					<p id="test"></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+
+	<script type="text/javascript" src="/js/zone/taWether.js"></script>
+	<script type="text/javascript" src="/js/zone/taWetherInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/zoneInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/license.js"></script>
+	<script type="text/javascript" src="/js/zone/licenseInfo.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+
+</body>
+</html>

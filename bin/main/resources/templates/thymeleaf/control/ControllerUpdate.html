@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					TA-Controller 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> Controller 정보<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Controller 정보 변경</b>
+				</h1>
+				<p class="mb-4 sub">Controller의 정보 변경을 수행할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<span class="font-weight-bold text-corn">Controller 정보 변경</span> <i class="fas fa-star-of-life ml-5"></i> 표시는 필수항목입니다.
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="form-group row" hidden="hidden">
+							<label for="c_no" class="col-xl-2 col-form-label text-white">Controller 번호</label>
+							<div class="col-xl-4">
+								<input type="text" name="ctrl_no" class="form-control" id="c_no" th:value="${ctrlInfo?.getCtrl_no()}" disabled="disabled" readonly>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="c_name" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b>Controller 명</label>
+							<div class="col-xl-4">
+								<input type="text" name="ctrl_name" class="form-control" id="c_name" th:value="${ctrlInfo?.getCtrl_name()}" disabled="disabled">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="c_local_ip" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b>내부 IP</label>
+							<div class="col-xl-4">
+								<input type="text" name="Ctrl_local_ip" class="form-control" id="c_local_ip" th:value="${ctrlInfo?.getLocal_ip()}">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="c_local_port" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b>내부 포트</label>
+							<div class="col-xl-4">
+								<input type="text" name="Ctrl_local_port" class="form-control" id="c_local_port" th:value="${ctrlInfo?.getLocal_port()}">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="c_admin_port" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b>관리자 포트</label>
+							<div class="col-xl-4">
+								<input type="text" name="Ctrl_admin_port" class="form-control" id="c_admin_port" th:value="${ctrlInfo?.getAdmin_port()}">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="c_watchdog" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b>프로세스 모니터링</label>
+							<div class="col-xl-4">
+								<select name="watchdog" id="watchdog" class="form-control">
+									<option th:selected="${ctrlInfo?.getWatchdog()} == 'Y'" value="Y">YES</option>
+									<option th:selected="${ctrlInfo?.getWatchdog()} == 'N'" value="N">NO</option>
+								</select>
+							</div>
+							<a href="#" class="help">
+								<i class="far fa-question-circle"></i><span class="help-class text-white">TA-Controller 서비스 프로세스 관리 (WatchDog)</span>
+							</a>
+						</div>
+						<div class="form-group row">
+							<label for="c_comm_type" class="col-xl-2 col-form-label text-white"><b class="text-danger mr-2">*</b>서비스 활성화</label>
+							<div class="col-xl-4">
+								<select name="comm_type" id="enable" class="form-control">
+									<option th:selected="${ctrlInfo?.getEnable()} == 'Y'" value="Y">YES</option>
+									<option th:selected="${ctrlInfo?.getEnable()} == 'N'" value="N">NO</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xl-12">
+								<input type="button" class="btn btn-corn" value="적용" id="updateBtn"> <input type="button" id="UCBtn" class="btn btn-light" value="취소" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/control/control.js"></script>
+	<script type="text/javascript" src="/js/control/controlInfo.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+</body>
+</html>

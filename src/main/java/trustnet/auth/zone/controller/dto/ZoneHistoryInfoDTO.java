@@ -35,4 +35,5 @@ public class ZoneHistoryInfoDTO {
 	String action;
 	String history_reg_date;
 	String issuer_user_id;
+	int allowed_cnt;
 }

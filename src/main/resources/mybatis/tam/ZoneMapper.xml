@@ -1,36 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="trustnet.auth.zone.repository.ZoneMapper">
-	<select id="findAllZoneList" resultType="ZoneInfoENTITY">
-		SELECT 
-		zct.zone_no,
-		zct.zone_name,
-		zct.zone_info,
-		zct.comp_no,
-		cit.comp_name,
-		zct.revision_no,
-		zct.registed_date,
-		zct.pl_license_cnt,
-		zct.tpl_license_cnt,
-		zct.session_time,
-		zct.limited_url,
-		zct.exist,
-		zct.integrity_value
-		FROM zone_info_tbl AS zct
-		JOIN company_info_tbl AS cit
-		ON zct.comp_no = cit.comp_no
-		
-		<!-- WHERE exist = 'Y' -->
-		<!--  ZoneEnroll 에서 -> pl , tpl , integrity , limited url 항목 삭제했기때문에 등록누르면 failed to convert error 발생 -->
+
+	<select id="findAllZone" resultType="ZoneInfoENTITY">
+		SELECT z.zone_no
+		,z.zone_name
+		,z.zone_info ,cit.comp_name ,z.pl_license_cnt,
+		us.Pub_static
+		,z.tpl_license_cnt,
+		us.Pub_dynamic,tm.allowed_cnt
+		,us.Pub_timelimit,tm.limited_period
+		,z.session_time , z.exist
+		,z.revision_no ,z.limited_url FROM
+		zone_info_tbl z
+		LEFT JOIN
+		license_tmlimit_info_tbl tm
+		ON z.zone_no
+		=tm.zone_no
+		LEFT JOIN (
+		SELECT
+		tit.zone_no ,
+		IFNULL(SUM(CASE
+		tit.license_type when '1' then 1 ELSE 0
+		END),0) AS
+		Pub_static,
+		IFNULL(SUM(CASE tit.license_type when '2' then 1
+		ELSE 0
+		END),0) AS
+		Pub_dynamic,
+		IFNULL(SUM(CASE tit.license_type when '3'
+		then
+		1 ELSE 0
+		END),0) AS Pub_timelimit
+		FROM taa_info_tbl tit
+		WHERE
+		tit.allow_state = 1
+		GROUP BY zone_no
+		) us
+		ON us.zone_no = z.zone_no
+		LEFT
+		JOIN comp_zone_list_tbl czlt
+		ON z.zone_no = czlt.zone_no
+		LEFT JOIN
+		company_info_tbl cit
+		ON czlt.comp_no = cit.comp_no
+		GROUP BY z.zone_no ;
 	</select>
-	
-	<select id="findAllZoneListOnlyExist" resultType="ZoneInfoENTITY">
-		SELECT 
+
+	<select id="findAllZoneList"
+		parameterType="ZoneLicenseAllowInfoVO"
+		resultType="ZoneLicenseAllowInfoENTITY">
+		SELECT z.zone_no
+		,z.zone_name
+		,z.zone_info ,z.pl_license_cnt,
+		us.Pub_static
+		,z.tpl_license_cnt,
+		us.Pub_dynamic,tm.allowed_cnt
+		,us.Pub_timelimit,tm.limited_period
+		,z.session_time , z.exist
+		,z.revision_no ,z.limited_url FROM
+		zone_info_tbl z
+		LEFT JOIN
+		license_tmlimit_info_tbl tm
+		ON z.zone_no
+		=tm.zone_no
+		LEFT JOIN (
+		SELECT
+		tit.zone_no ,
+		IFNULL(SUM(CASE
+		tit.license_type when '1' then 1 ELSE 0
+		END),0) AS
+		Pub_static,
+		IFNULL(SUM(CASE tit.license_type when '2' then 1
+		ELSE 0
+		END),0) AS
+		Pub_dynamic,
+		IFNULL(SUM(CASE tit.license_type when '3'
+		then
+		1 ELSE 0
+		END),0) AS Pub_timelimit
+		FROM taa_info_tbl tit
+		WHERE
+		tit.allow_state = 1
+		GROUP BY zone_no
+		) us
+		ON us.zone_no = z.zone_no
+		WHERE
+		z.zone_name LIKE
+		CONCAT('%',#{filter},'%')
+		ORDER BY ${column}
+		${ordering}
+		LIMIT
+		#{pageNum}, #{show_cnt}
+	</select>
+
+	<select id="getOtherContent"
+		parameterType="ZoneLicenseAllowInfoENTITY"
+		resultType="ZoneLicenseAllowInfoENTITY">
+		SELECT * FROM zone_info_tbl zit
+		WHERE zone_name=
+		#{zone_name};
+	</select>
+
+	<select id="findAllZoneListOnlyExist"
+		resultType="ZoneInfoENTITY">
+		SELECT
 		zct.zone_no,
 		zct.zone_name,
 		zct.zone_info,
-		zct.comp_no,
-		cit.comp_name,
 		zct.revision_no,
 		zct.registed_date,
 		zct.pl_license_cnt,
@@ -40,196 +117,436 @@
 		zct.exist,
 		zct.integrity_value
 		FROM zone_info_tbl AS zct
-		JOIN company_info_tbl AS cit
-		ON zct.comp_no = cit.comp_no
 		WHERE zct.exist = 'Y'
 	</select>
-	
+
 	<select id="findZoneInfoAsZoneName" resultType="ZoneInfoENTITY">
 		SELECT *
-		FROM zone_info_tbl
+		FROM
+		zone_info_tbl
 		WHERE zone_name = #{zone_name}
 	</select>
-	
+
+	<select id="findTimeLicenseInfoAsZoneName"
+		resultType="ZoneTimeLicenseHistoryENTITY">
+		SELECT zone_no
+		FROM
+		zone_info_tbl
+		WHERE zone_name =
+		#{zone_name}
+	</select>
+
 	<select id="findZoneWithNO" resultType="ZoneInfoENTITY">
-		SELECT * 
-		FROM zone_info_tbl
-		WHERE zone_no = #{zone_no}
-		LIMIT 1
+		SELECT z.zone_no ,
+		z.zone_name , z.zone_info , z.revision_no , z.registed_date ,
+		ziht.history_reg_date , z.pl_license_cnt , z.tpl_license_cnt ,
+		z.session_time ,z.exist ,z.limited_url
+		FROM
+		zone_info_tbl z
+		LEFT JOIN
+		zone_info_history_tbl ziht
+		ON z.zone_no = ziht.zone_no
+		WHERE z.zone_no =
+		34
+		ORDER BY history_reg_date DESC
+		LIMIT 1 ;
+	</select>
+
+	<!-- <select id="findZoneWithNO" resultType="ZoneInfoENTITY"> -->
+	<!-- SELECT * -->
+	<!-- FROM -->
+	<!-- zone_info_tbl -->
+	<!-- WHERE zone_no = #{zone_no} -->
+	<!-- LIMIT 1 -->
+	<!-- </select> -->
+
+	<select id="timeLicenseCount" resultType="ZoneTimeLicenseENTITY">
+		SELECT allowed_cnt FROM
+		license_tmlimit_info_tbl
+		where zone_no = #{zone_no};
+	</select>
+
+	<!-- tawether license count -->
+	<select id="tmAllowedCount" parameterType="int" resultType="int">
+		SELECT allowed_cnt FROM
+		license_tmlimit_info_tbl
+		where zone_no
+		=#{zone_no};
+	</select>
+
+	<select id="tmPublishCount" parameterType="int" resultType="int">
+		SELECT COUNT(*) as publish_cnt FROM taa_info_tbl tit
+		where zone_no =
+		#{zone_no} AND license_type =3;
+	</select>
+	<!-- SELECT COUNT(*) as publish_cnt FROM taa_info_tbl tit -->
+	<!-- where zone_no = #{zone_no} AND license_type =3 AND allow_state =1; -->
+
+	<select id="tmDenyCount" parameterType="int" resultType="int">
+		SELECT
+		COUNT(*) as deny_cnt FROM taa_info_tbl tit
+		where
+		zone_no = #{zone_no}
+		AND license_type =3 AND allow_state =2;
+	</select>
+	<!-- tawether license count -->
+	<select id="timeLicensePublishCount"
+		resultType="ZoneTimeLicenseENTITY">
+		SELECT COUNT(*) as publish_cnt FROM taa_info_tbl tit
+		where
+		zone_no = #{zone_no} AND license_type =3 AND allow_state =1;
+	</select>
+
+	<!-- <select id="timeLicenseDenyCount" -->
+	<!-- resultType="ZoneTimeLicenseENTITY"> -->
+	<!-- SELECT COUNT(*) as deny_cnt FROM taa_info_tbl tit -->
+	<!-- where -->
+	<!-- zone_no = #{zone_no} AND license_type =3 AND allow_state =2; -->
+	<!-- </select> -->
+
+	<select id="timeLicenseDenyCount"
+		resultType="ZoneTimeLicenseENTITY">
+		SELECT COUNT(*) as deny_cnt FROM taa_info_tbl tit
+		where
+		zone_no = #{zone_no} AND license_type =3 AND allow_state =2;
 	</select>
 
 	<select id="findZoneWithCompNo" resultType="ZoneInfoENTITY">
-		SELECT * 
-		FROM zone_info_tbl
+		SELECT *
+		FROM
+		zone_info_tbl
 		WHERE comp_no = #{comp_no}
 	</select>
-	
-	<select id="findZoneWithCompNoWithAlive" resultType="ZoneInfoENTITY">
-		SELECT * 
+
+	<select id="findZoneWithCompNoWithAlive"
+		resultType="ZoneInfoENTITY">
+		SELECT *
 		FROM zone_info_tbl
-		WHERE comp_no = #{comp_no} AND exist = 'Y'
+		WHERE exist = 'Y'
+		<!-- WHERE comp_no = #{comp_no} AND -->
 	</select>
-	
+
 	<update id="updateZoneWithID" parameterType="ZoneInfoENTITY">
 		UPDATE zone_info_tbl
 		SET zone_name = #{zone_name},
-			zone_info = #{zone_info},
-			comp_no = #{comp_no},
-			pl_license_cnt = #{pl_license_cnt},
-			tpl_license_cnt = #{tpl_license_cnt},
-			session_time = #{session_time},
-			revision_no = revision_no + 1,
-			integrity_value = #{integrity_value},
-			exist = #{exist}
-		WHERE zone_no = #{zone_no}
+		zone_info = #{zone_info},
+		pl_license_cnt =
+		#{pl_license_cnt},
+		tpl_license_cnt =
+		#{tpl_license_cnt},
+		session_time =
+		#{session_time},
+		revision_no =
+		revision_no + 1,
+		exist = #{exist}
+		WHERE
+		zone_no = #{zone_no}
 	</update>
-	
 
-	
+
+	<update id="updateAllowValue"
+		parameterType="ZoneWetherLicenseENTITY">
+		UPDATE taa_info_tbl
+		SET allow_state = 1
+		WHERE taa_ip =
+		#{taa_ip}
+		AND taa_hostname =#{taa_hostname};
+	</update>
+	<update id="updateRejectValue"
+		parameterType="ZoneWetherLicenseENTITY">
+		UPDATE taa_info_tbl
+		SET allow_state = 2
+		WHERE taa_ip =
+		#{taa_ip}
+		AND taa_hostname =#{taa_hostname};
+	</update>
+
+	<!-- <update id="updateLicenseAllowInfo" -->
+	<!-- parameterType="ZoneLicenseAllowInfoENTITY"> -->
+	<!-- UPDATE zone_info_tbl -->
+	<!-- SET revision_no = 999 , -->
+	<!-- pl_license_cnt = #{pl_license_cnt}, tpl_license_cnt -->
+	<!-- =#{tpl_license_cnt}, limited_url = #{limited_url} , integrity_value -->
+	<!-- =#{integrity_value} -->
+	<!-- where zone_name = #{zone_name}; -->
+	<!-- </update> -->
+
+	<update id="updateLicenseAllowInfo"
+		parameterType="ZoneLicenseAllowInfoENTITY">
+		UPDATE zone_info_tbl
+		SET revision_no = #{revision_no} ,
+		pl_license_cnt = #{pl_license_cnt}, tpl_license_cnt
+		=#{tpl_license_cnt}, limited_url = #{limited_url} , integrity_value
+		=#{integrity_value}
+		where zone_name = #{zone_name};
+	</update>
+
 	<update id="deleteZoneWithID" parameterType="ZoneInfoENTITY">
 		UPDATE zone_info_tbl
 		SET exist = 'N'
 		WHERE zone_no = #{zone_no}
 	</update>
-	
-	<select id="findAllZoneLicenseList" resultType="ZoneNLicenseInfoENTITY">
-		SELECT lit.zone_no AS lit_zone_no, 
-				lit.taa_ip AS lit_taa_ip, 
-				lit.license_type AS lit_license_type, 
-				zct.zone_name AS zct_zone_name, 
-				zct.zone_info AS zct_zone_info,
-				zct.comp_no AS zct_comp_no, 
-				zct.revision_no AS zct_revision_no, 
-				zct.registed_date AS zct_registed_date, 
-				zct.pl_license_cnt AS zct_pl_license_cnt, 
-				zct.tpl_license_cnt AS zct_tpl_license_cnt,
-				zct.session_time AS zct_session_time, 
-				zct.limited_url AS zct_limited_url, 
-				zct.exist AS zct_exist, 
-				zct.integrity_value AS zct_integrity_value
+
+	<select id="findAllZoneLicenseList"
+		resultType="ZoneNLicenseInfoENTITY">
+		SELECT lit.zone_no AS lit_zone_no,
+		lit.taa_ip AS lit_taa_ip,
+		lit.license_type AS lit_license_type,
+		zct.zone_name AS zct_zone_name,
+		zct.zone_info AS zct_zone_info,
+		zct.revision_no AS zct_revision_no,
+		zct.registed_date AS
+		zct_registed_date,
+		zct.pl_license_cnt AS
+		zct_pl_license_cnt,
+		zct.tpl_license_cnt AS zct_tpl_license_cnt,
+		zct.session_time AS
+		zct_session_time,
+		zct.limited_url AS
+		zct_limited_url,
+		zct.exist AS
+		zct_exist,
+		zct.integrity_value AS
+		zct_integrity_value
 		FROM license_info_tbl AS lit
-		JOIN zone_info_tbl AS zct
-		WHERE
-		(lit.zone_no = zct.zone_no)	AND zct.exist = 'Y'
+		JOIN zone_info_tbl AS
+		zct
+		WHERE (lit.zone_no = zct.zone_no) AND zct.exist = 'Y'
 	</select>
-	
-	<select id="findAllZoneLicenseListAsZoneNO" parameterType="ZoneLicenseInfoENTITY" resultType="ZoneNLicenseInfoENTITY">
-		
-		SELECT lit.zone_no AS lit_zone_no, 
-				lit.taa_ip AS lit_taa_ip, 
-				lit.license_type AS lit_license_type, 
-				zct.zone_name AS zct_zone_name, 
-				zct.zone_info AS zct_zone_info,
-				zct.comp_no AS zct_comp_no, 
-				zct.revision_no AS zct_revision_no, 
-				zct.registed_date AS zct_registed_date, 
-				zct.pl_license_cnt AS zct_pl_license_cnt, 
-				zct.tpl_license_cnt AS zct_tpl_license_cnt,
-				zct.session_time AS zct_session_time, 
-				zct.limited_url AS zct_limited_url, 
-				zct.exist AS zct_exist, 
-				zct.integrity_value AS zct_integrity_value,
-				lct.license_value
+
+	<select id="findAllZoneLicenseListAsZoneNO"
+		resultType="ZoneNLicenseInfoENTITY">
+		SELECT lit.zone_no AS lit_zone_no,
+		lit.taa_ip AS lit_taa_ip,
+		lit.license_type AS lit_license_type,
+		zct.zone_name AS zct_zone_name,
+		zct.zone_info AS zct_zone_info,
+		zct.revision_no AS zct_revision_no,
+		zct.registed_date AS
+		zct_registed_date,
+		zct.pl_license_cnt AS
+		zct_pl_license_cnt,
+		zct.tpl_license_cnt AS zct_tpl_license_cnt,
+		zct.session_time AS
+		zct_session_time,
+		zct.limited_url AS
+		zct_limited_url,
+		zct.exist AS
+		zct_exist,
+		zct.integrity_value AS
+		zct_integrity_value,
+		lct.license_value
 		FROM license_info_tbl AS lit
-			JOIN zone_info_tbl AS zct
-			JOIN license_code_tbl AS lct
+		JOIN
+		zone_info_tbl AS zct
+		JOIN license_code_tbl AS lct
 		WHERE
-		(lit.zone_no = zct.zone_no) AND 
-		<!-- zct.exist = 'Y' AND --> 
-		lit.zone_no = #{zone_no} AND 
+		(lit.zone_no =
+		zct.zone_no) AND
+		lit.zone_no = #{zone_no} AND
 		lit.taa_ip = #{taa_ip} AND
-		lct.license_type = lit.license_type
-	
-		
+		lct.license_type = #{license_type}
+		LIMIT 1;
 	</select>
-	
-    <insert id="saveZoneInfo" parameterType="ZoneInfoVO">
-        INSERT INTO zone_info_tbl(zone_name, zone_info, comp_no,revision_no, registed_date, pl_license_cnt, tpl_license_cnt, session_time, limited_url, exist, integrity_value)
-        values (#{zone_name}, #{zone_info}, #{comp_no}, #{revision_no}, now(), #{pl_license_cnt}, #{tpl_license_cnt}, #{session_time}, #{limited_url}, 'Y', #{integrity_value})
-    </insert>
-   
-    <insert id="saveZoneLicenseInfo" parameterType="ZoneLicenseInfoVO">
-        INSERT INTO license_info_tbl(zone_no, taa_ip, license_type)
-        values (#{zone_no}, #{taa_ip}, #{license_type})
-    </insert>
-    
-    <update id="updateZoneLicenseInfo" parameterType="ZoneLicenseUpdateENTITY">
+
+	<!-- LIST로 바꿔볼까 -->
+
+
+	<!-- <select id="findAllZoneLicenseListAsZoneNO" -->
+	<!-- parameterType="ZoneLicenseInfoENTITY" -->
+	<!-- resultType="ZoneNLicenseInfoENTITY"> -->
+
+	<!-- SELECT lit.zone_no AS lit_zone_no, -->
+	<!-- lit.taa_ip AS lit_taa_ip, -->
+	<!-- lit.license_type AS lit_license_type, -->
+	<!-- zct.zone_name AS zct_zone_name, -->
+	<!-- zct.zone_info AS zct_zone_info, -->
+	<!-- zct.comp_no AS zct_comp_no, -->
+	<!-- zct.revision_no AS zct_revision_no, -->
+	<!-- zct.registed_date AS -->
+	<!-- zct_registed_date, -->
+	<!-- zct.pl_license_cnt AS zct_pl_license_cnt, -->
+	<!-- zct.tpl_license_cnt AS zct_tpl_license_cnt, -->
+	<!-- zct.session_time AS -->
+	<!-- zct_session_time, -->
+	<!-- zct.limited_url AS zct_limited_url, -->
+	<!-- zct.exist AS -->
+	<!-- zct_exist, -->
+	<!-- zct.integrity_value AS zct_integrity_value, -->
+	<!-- lct.license_value -->
+	<!-- FROM license_info_tbl AS lit -->
+	<!-- JOIN zone_info_tbl AS zct -->
+	<!-- JOIN license_code_tbl AS lct -->
+	<!-- WHERE -->
+	<!-- (lit.zone_no = zct.zone_no) AND -->
+	<!-- lit.zone_no = #{zone_no} AND -->
+	<!-- lit.taa_ip = #{taa_ip} AND -->
+	<!-- lit.license_type = #{license_type}; -->
+	<!-- </select> -->
+
+	<insert id="saveZoneInfo" parameterType="ZoneInfoVO">
+		INSERT INTO
+		zone_info_tbl(zone_name, zone_info,revision_no, registed_date,
+		pl_license_cnt, tpl_license_cnt, session_time, limited_url, exist,
+		integrity_value)
+		values (#{zone_name},#{zone_info}, #{revision_no},
+		now(),#{pl_license_cnt},#{tpl_license_cnt},
+		#{session_time},#{limited_url}, 'Y',#{integrity_value})
+	</insert>
+
+	<!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- -->
+	<insert id="saveTimeLicenseHistory"
+		parameterType="ZoneTimeLicenseHistoryENTITY">
+		INSERT INTO license_tmlimit_info_history_tbl
+		(zone_no,allowed_ip,allowed_cnt,limited_period,issuer_user_no,`action`,history_reg_date)
+		VALUES(#{zone_no},#{allowed_ip},#{allowed_cnt},#{limited_period},#{issuer_user_no},#{action},now());
+	</insert>
+	<!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- -->
+	<insert id="saveZoneLicenseInfo"
+		parameterType="ZoneLicenseInfoVO">
+		INSERT INTO license_info_tbl(zone_no, taa_ip,
+		license_type)
+		values (#{zone_no}, #{taa_ip}, #{license_type})
+	</insert>
+
+	<insert id="updateTimelimitLicense"
+		parameterType="ZoneTimeLicenseENTITY">
+		INSERT INTO
+		license_tmlimit_info_tbl
+		(zone_no ,
+		zone_name,allowed_ip , allowed_cnt , limited_period, icv)
+		VALUES
+		((SELECT zone_no FROM zone_info_tbl WHERE zone_name=#{zone_name}),
+		#{zone_name},#{allowed_ip},#{allowed_cnt} ,#{limited_period}, #{icv})
+		ON DUPLICATE KEY UPDATE
+		zone_no =(SELECT zone_no FROM zone_info_tbl
+		WHERE zone_name =#{zone_name}),
+		zone_name = #{zone_name},
+		allowed_ip=#{allowed_ip}, allowed_cnt
+		=#{allowed_cnt},
+		limited_period =
+		#{limited_period}, icv= #{icv};
+	</insert>
+
+	<update id="updateZoneLicenseInfo"
+		parameterType="ZoneLicenseUpdateENTITY">
 		UPDATE license_info_tbl
-		SET taa_ip = #{taa_ip},
-			license_type = #{license_type}
-		WHERE zone_no = #{zone_no} AND 
-				taa_ip = #{asis_taa_ip} AND 
-				license_type = #{asis_license_type}
+		SET taa_ip = #{taa_ip}
+		WHERE
+		zone_no = #{zone_no} AND license_type = #{license_type} AND taa_ip =
+		#{asis_taa_ip};
 	</update>
-	
-	<delete id="deleteZoneLicenseInfo" parameterType="ZoneLicenseInfoENTITY">
+
+	<delete id="deleteZoneLicenseInfo"
+		parameterType="ZoneLicenseInfoENTITY">
 		DELETE
 		FROM license_info_tbl
-		WHERE zone_no = #{zone_no} AND 
-				taa_ip = #{taa_ip} AND 
-				license_type = #{license_type}
-	</delete>
-    
-    
-    <insert id="saveZoneHistory" parameterType="ZoneHistoryInfoENTITY">
-        INSERT 
-        INTO zone_info_history_tbl(zone_no, zone_name, zone_info, comp_no, 
-        revision_no, registed_date, pl_license_cnt, tpl_license_cnt,
-        session_time, limited_url, exist, integrity_value, issuer_user_no,
-        action, history_reg_date)
-        values (#{zone_no}, #{zone_name}, #{zone_info}, #{comp_no}, 
-        #{revision_no}, #{registed_date}, #{pl_license_cnt}, #{tpl_license_cnt},
-        #{session_time}, #{limited_url}, #{exist}, #{integrity_value}, #{issuer_user_no}, 
-        #{action}, now())
-    </insert>
-    
-    <select id="findAllZoneHistoryAsZoneNo" resultType="ZoneHistoryInfoENTITY">
-		SELECT 
-			ziht.zone_history_no,
-			ziht.zone_no,
-			ziht.zone_name,
-			ziht.zone_info,
-			ziht.comp_no,
-			ziht.revision_no,
-			ziht.registed_date,
-			ziht.pl_license_cnt,
-			ziht.tpl_license_cnt,
-			ziht.session_time,
-			ziht.limited_url,
-			ziht.integrity_value,
-			ziht.issuer_user_no,
-			ziht.`action`,
-			ziht.exist,
-			ziht.history_reg_date,
-			uit.user_id AS issuer_user_id,
-			cit.comp_name
-		FROM zone_info_history_tbl AS ziht
-		JOIN user_info_tbl AS uit
-		JOIN company_info_tbl AS cit
-		ON ziht.comp_no = cit.comp_no AND ziht.issuer_user_no = uit.user_no
 		WHERE zone_no = #{zone_no}
+		AND taa_ip = #{taa_ip}
+		AND license_type = #{license_type}
+	</delete>
+
+
+	<insert id="saveZoneHistory"
+		parameterType="ZoneHistoryInfoENTITY">
+		INSERT
+		INTO zone_info_history_tbl(zone_no,
+		zone_name,zone_info,revision_no, registed_date,
+		pl_license_cnt,tpl_license_cnt,session_time, limited_url, exist,
+		integrity_value,issuer_user_no,action, history_reg_date)
+		values
+		(#{zone_no},#{zone_name},
+		#{zone_info},#{revision_no},#{registed_date}, #{pl_license_cnt},
+		#{tpl_license_cnt},#{session_time}, #{limited_url}, #{exist},
+		#{integrity_value},#{issuer_user_no},#{action}, now())
+	</insert>
+
+	<select id="findAllZoneHistoryAsZoneNo"
+		resultType="ZoneHistoryInfoENTITY">
+		SELECT ziht.zone_no,ziht.zone_name ,ziht.zone_info
+		,ziht.revision_no
+		,ziht.pl_license_cnt ,ziht.tpl_license_cnt
+		,ltit.allowed_cnt
+		,ziht.session_time ,ziht.limited_url
+		,ziht.integrity_value,uit.user_id AS issuer_user_id
+		,ziht.`action` ,
+		ziht.history_reg_date ,ziht.exist FROM zone_info_history_tbl ziht
+		LEFT
+		JOIN license_tmlimit_info_tbl ltit
+		ON ziht.zone_no = ltit.zone_no
+		JOIN
+		user_info_tbl uit
+		ON ziht.issuer_user_no = uit.user_no
+		WHERE
+		ziht.zone_no = #{zone_no};
 	</select>
-	
-	<select id="findAllZoneCodeInfo" resultType="ZoneLicenseCodeInfoENTITY">
-		SELECT * 
+	<!-- <select id="findAllZoneHistoryAsZoneNo" -->
+	<!-- resultType="ZoneHistoryInfoENTITY"> -->
+	<!-- SELECT -->
+	<!-- ziht.zone_history_no, -->
+	<!-- ziht.zone_no, -->
+	<!-- ziht.zone_name, -->
+	<!-- ziht.zone_info, -->
+	<!-- ziht.comp_no, -->
+	<!-- ziht.revision_no, -->
+	<!-- ziht.registed_date, -->
+	<!-- ziht.pl_license_cnt, -->
+	<!-- ziht.tpl_license_cnt, -->
+	<!-- ltit.allowed_cnt , -->
+	<!-- ziht.session_time, -->
+	<!-- ziht.limited_url, -->
+	<!-- ziht.integrity_value, -->
+	<!-- ziht.issuer_user_no, -->
+	<!-- ziht.`action`, -->
+	<!-- ziht.exist, -->
+	<!-- ziht.history_reg_date, -->
+	<!-- uit.user_id AS -->
+	<!-- issuer_user_id, -->
+	<!-- cit.comp_name -->
+	<!-- FROM zone_info_history_tbl AS ziht -->
+	<!-- JOIN -->
+	<!-- user_info_tbl AS uit -->
+	<!-- JOIN -->
+	<!-- company_info_tbl AS cit -->
+	<!-- ON ziht.comp_no = -->
+	<!-- cit.comp_no AND -->
+	<!-- ziht.issuer_user_no = uit.user_no -->
+	<!-- JOIN license_tmlimit_info_tbl ltit -->
+	<!-- ON ltit.zone_no = ziht.zone_no -->
+	<!-- WHERE ziht.zone_no = #{zone_no} -->
+	<!-- </select> -->
+
+	<select id="findAllZoneCodeInfo"
+		resultType="ZoneLicenseCodeInfoENTITY">
+		SELECT *
 		FROM license_code_tbl
 	</select>
-	
-	<insert id="saveZoneLicenseHistory" parameterType="ZoneLicenseHistoryInfoENTITY">
-        INSERT 
-        INTO license_info_history_tbl(zone_no, taa_ip, license_type, issuer_user_no, action, history_reg_date)
-        values (#{zone_no}, #{taa_ip}, #{license_type}, #{issuer_user_no}, #{action}, now())
-    </insert>
-    
-    <select id="findZoneLicenseAsZoneNONTaaIP" parameterType="ZoneLicenseInfoENTITY" resultType="ZoneLicenseInfoENTITY">
-		SELECT * 
+
+	<insert id="saveZoneLicenseHistory"
+		parameterType="ZoneLicenseHistoryInfoENTITY">
+		INSERT
+		INTO license_info_history_tbl(zone_no,
+		taa_ip,license_type,issuer_user_no, action, history_reg_date)
+		values
+		(#{zone_no}, #{taa_ip}, #{license_type}, #{issuer_user_no},
+		#{action},
+		now())
+	</insert>
+
+	<select id="findZoneLicenseAsZoneNONTaaIP"
+		parameterType="ZoneLicenseInfoENTITY"
+		resultType="ZoneLicenseInfoENTITY">
+		SELECT *
 		FROM license_info_tbl
-		WHERE zone_no = #{zone_no} and taa_ip = #{taa_ip}
+		WHERE zone_no = #{zone_no} and
+		taa_ip = #{taa_ip}
 		LIMIT 1
 	</select>
-	
-	<select id="findZoneLicenseHistoryInfo" parameterType="ZoneInfoENTITY" resultType="ZoneLicenseHistoryInfoENTITY">
-	SELECT 
+
+	<select id="findZoneLicenseHistoryInfo"
+		parameterType="ZoneInfoENTITY"
+		resultType="ZoneLicenseHistoryInfoENTITY">
+		SELECT
 		liht.license_history_no,
 		liht.zone_no,
 		liht.taa_ip,
@@ -238,24 +555,366 @@
 		liht.`action`,
 		liht.history_reg_date,
 		uit.user_id AS issuer_user_id
-	FROM license_info_history_tbl AS liht
-	JOIN user_info_tbl AS uit
-	ON liht.issuer_user_no = uit.user_no
-	WHERE zone_no = #{zone_no}
+		FROM
+		license_info_history_tbl AS liht
+		JOIN user_info_tbl AS uit
+		ON
+		liht.issuer_user_no = uit.user_no
+		WHERE liht.zone_no = #{zone_no}
 	</select>
-	
-	<select id="findAllLicenseStateHistoryInfo" resultType="ZoneLicenseStateHistoryInfoENTITY">
-		SELECT * 
+
+	<!-- TAAGENT HISTORY 같음 -->
+	<select id="findAllLicenseStateHistoryInfo"
+		resultType="ZoneLicenseStateHistoryInfoENTITY">
+		SELECT *
 		FROM license_state_history_tbl AS lsht
-		JOIN tam_info_tbl AS tit
-		ON lsht.tam_no = tit.tam_no
+		JOIN
+		tam_info_tbl AS tit
+		ON
+		lsht.tam_no = tit.tam_no
 		ORDER BY req_date DESC;
 	</select>
-	
-    <select id="isFindZone" parameterType="ZoneInfoENTITY" resultType="int">
-		SELECT COUNT(*) 
+
+	<select id="findAllLicenseHistory"
+		parameterType="ZoneLicenseHistoryInfoENTITY"
+		resultType="ZoneLicenseHistoryInfoENTITY">
+		SELECT liht.license_history_no, liht.zone_no ,
+		zit.zone_name ,liht.taa_ip ,
+		liht.license_type , liht.issuer_user_no ,
+		liht.`action` ,
+		liht.history_reg_date,
+		uit.user_id AS
+		issuer_user_id FROM
+		license_info_history_tbl
+		liht
+		LEFT JOIN zone_info_tbl zit
+		ON zit.zone_no
+		= liht.zone_no
+		LEFT JOIN user_info_tbl uit
+		ON uit.user_no =
+		liht.issuer_user_no
+		WHERE
+		liht.license_history_no LIKE
+		CONCAT('%',#{filter},'%') OR
+		zit.zone_name LIKE
+		CONCAT('%',#{filter},'%') OR
+		liht.taa_ip LIKE CONCAT('%',#{filter},'%')
+		OR
+		liht.history_reg_date LIKE CONCAT('%',#{filter},'%')
+		ORDER BY
+		${column} ${ordering}
+		LIMIT
+		#{pageNum}, #{show_cnt};
+	</select>
+
+	<select id="findTimeLicenseHistory"
+		resultType="ZoneTimeLicenseHistoryENTITY">
+		SELECT ltiht.history_no , ltiht.zone_no , zit.zone_name ,
+		ltiht.allowed_ip ,
+		ltiht.allowed_cnt ,ltiht.limited_period
+		,ltiht.issuer_user_no
+		,ltiht.`action` ,ltiht.history_reg_date FROM
+		license_tmlimit_info_history_tbl ltiht
+		LEFT JOIN zone_info_tbl zit
+		ON
+		ltiht.zone_no = zit.zone_no
+		WHERE
+		ltiht.history_no LIKE
+		CONCAT('%',#{filter},'%') OR
+		zit.zone_name LIKE
+		CONCAT('%',#{filter},'%') OR
+		ltiht.allowed_ip LIKE
+		CONCAT('%',#{filter},'%') OR
+		ltiht.allowed_cnt LIKE
+		CONCAT('%',#{filter},'%') OR
+		ltiht.limited_period LIKE
+		CONCAT('%',#{filter},'%') OR
+		ltiht.issuer_user_no LIKE
+		CONCAT('%',#{filter},'%') OR
+		ltiht.action LIKE
+		CONCAT('%',#{filter},'%') OR
+		ltiht.history_reg_date LIKE
+		CONCAT('%',#{filter},'%')
+		ORDER BY ${column} ${ordering}
+		LIMIT
+		#{pageNum}, #{show_cnt};
+	</select>
+
+	<select id="requestLicenseHistory"
+		parameterType="ZoneLicenseStateHistoryInfoENTITY"
+		resultType="ZoneLicenseStateHistoryInfoENTITY">
+		SELECT
+		lsht.state_no ,
+		tit.tam_name ,
+		lsht.tam_local_ip,
+		lsht.taa_no ,
+		lsht.taa_ip ,
+		lsht.taa_hostname ,
+		lsht.zone_name,
+		lsht.license_type ,
+		lsht.req_type ,
+		lsht.req_date ,
+		lsht.req_result ,
+		lsht.result_reason
+		FROM
+		license_state_history_tbl lsht
+		LEFT JOIN
+		tam_info_tbl tit ON
+		lsht.tam_no = tit.tam_no
+		WHERE
+		state_no LIKE
+		CONCAT('%',#{filter},'%') OR
+		tit.tam_name LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.tam_local_ip LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.taa_no LIKE CONCAT('%',#{filter},'%')
+		OR
+		lsht.taa_ip LIKE CONCAT('%',#{filter},'%') OR
+		taa_hostname LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.zone_name LIKE
+		CONCAT('%',#{filter},'%')
+		OR license_type LIKE
+		CONCAT('%',#{filter},'%')
+		OR req_type LIKE CONCAT('%',#{filter},'%')
+		OR
+		req_date LIKE CONCAT('%',#{filter},'%') OR
+		req_result LIKE
+		CONCAT('%',#{filter},'%') OR
+		result_reason LIKE
+		CONCAT('%',#{filter},'%')
+		ORDER BY ${column} ${ordering}
+		LIMIT
+		#{pageNum}, #{show_cnt};
+	</select>
+
+	<select id="requestLicenseHistoryWithNoFilter"
+		parameterType="ZoneLicenseStateHistoryInfoENTITY"
+		resultType="ZoneLicenseStateHistoryInfoENTITY">
+		SELECT
+		lsht.state_no ,
+		tit.tam_name ,
+		lsht.tam_local_ip,
+		lsht.taa_no ,
+		lsht.taa_ip ,
+		lsht.taa_hostname ,
+		lsht.zone_name,
+		lsht.license_type ,
+		lsht.req_type ,
+		lsht.req_date ,
+		lsht.req_result ,
+		lsht.result_reason
+		FROM
+		license_state_history_tbl lsht
+		LEFT JOIN
+		tam_info_tbl tit ON
+		lsht.tam_no = tit.tam_no
+		ORDER BY ${column}
+		${ordering}
+		LIMIT
+		#{pageNum}, #{show_cnt};
+	</select>
+
+	<select id="isFindZone" parameterType="ZoneInfoENTITY"
+		resultType="int">
+		SELECT COUNT(*)
 		FROM zone_info_tbl
-		WHERE zone_name = #{zone_name}
+		WHERE zone_name =
+		#{zone_name}
+	</select>
+
+
+	<select id="findAllManagerName"
+		parameterType="ManagerCreateFileENTITY"
+		resultType="ManagerCreateFileENTITY">
+		SELECT tam_name FROM tam_info_tbl;
+		<!-- SELECT tam_name FROM tam_info_tbl; -->
+	</select>
+
+	<select id="findTaaIp" parameterType="ZoneLicenseInfoENTITY"
+		resultType="ZoneLicenseInfoENTITY">
+		SELECT taa_ip FROM license_info_tbl;
+	</select>
+
+	<select id="findTamIp" parameterType="ManagerInfoENTITY"
+		resultType="ManagerInfoENTITY">
+		SELECT tam_local_ip FROM tam_info_tbl;
+	</select>
+
+	<select id="findTamLocalPort" parameterType="ManagerInfoENTITY"
+		resultType="ManagerInfoENTITY">
+		SELECT tam_local_port FROM tam_info_tbl;
+	</select>
+
+	<select id="licenseCount" resultType="ZoneWetherLicenseENTITY">
+		SELECT pl_license_cnt,
+		tpl_license_cnt
+		FROM zone_info_tbl
+		WHERE zone_no =
+		#{zone_no};
+	</select>
+
+
+	<select id="licensePublish" resultType="ZoneWetherLicenseENTITY">
+		SELECT COUNT(*) as
+		pub_pl_cnt FROM taa_info_tbl tit
+		where zone_no = #{zone_no} AND
+		license_type =1;
+	</select>
+
+	<select id="tpllicensePublish"
+		resultType="ZoneWetherLicenseENTITY">
+		SELECT COUNT(*) as pub_tpl_cnt FROM taa_info_tbl tit
+		where
+		zone_no = #{zone_no} AND license_type =2;
+	</select>
+
+	<!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- -->
+
+	<select id="denyCount" resultType="ZoneWetherLicenseENTITY">
+		SELECT COUNT(*) as deny_cnt FROM taa_info_tbl tit
+		where zone_no =
+		#{zone_no} AND license_type =1 AND allow_state =2;
+		<!-- deny pl count -->
+	</select>
+
+	<select id="denyTplCount" resultType="ZoneWetherLicenseENTITY">
+		SELECT COUNT(*) as deny_tpl_cnt FROM taa_info_tbl tit
+		where zone_no =
+		#{zone_no} AND license_type =2 AND allow_state =2;
+		<!-- deny tpl count -->
+	</select>
+
+	<select id="taaPlType" resultType="ZoneWetherLicenseENTITY">
+		SELECT taa_ip ,taa_hostname
+		,registed_date ,allow_state
+		FROM taa_info_tbl tit
+		where zone_no =
+		#{zone_no} AND license_type =1;
+	</select>
+
+	<select id="taaTplType" resultType="ZoneWetherLicenseENTITY">
+		SELECT taa_ip ,taa_hostname
+		,registed_date ,allow_state
+		FROM taa_info_tbl tit
+		where zone_no =
+		#{zone_no} AND license_type =2;
+	</select>
+
+	<select id="taaTmType" resultType="ZoneWetherLicenseENTITY">
+		SELECT taa_ip ,taa_hostname
+		,registed_date ,allow_state
+		FROM taa_info_tbl tit
+		where zone_no =
+		#{zone_no} AND license_type =3;
+	</select>
+
+
+	<!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- --><!-- -->
+	<!-- <select id="getDBwithZoneName" -->
+	<!-- resultType="ZoneLicenseUpdateDBENTITY"> -->
+	<!-- SELECT zone_name , revision_no , pl_license_cnt ,tpl_license_cnt ,limited_url 
+		,integrity_value FROM zone_info_tbl zit -->
+	<!-- where zone_name =#{zone_name}; -->
+	<!-- </select> -->
+
+	<select id="getDBwithZoneName"
+		resultType="ZoneLicenseUpdateDBENTITY">
+		SELECT zone_name , revision_no , pl_license_cnt
+		,tpl_license_cnt ,limited_url ,integrity_value FROM zone_info_tbl zit
+		where zone_name =#{zone_name};
+	</select>
+
+	<update id="updateLicenseInfo"
+		parameterType="ZoneLicenseUpdateDBENTITY">
+		UPDATE zone_info_tbl
+		SET revision_no =#{revision_no},
+		pl_license_cnt =#{pl_license_cnt}, tpl_license_cnt =
+		#{tpl_license_cnt}, limited_url =#{limited_url}, integrity_value
+		=#{integrity_value}
+		where zone_name=#{zone_name};
+	</update>
+
+	<select id="countZoneInfo" resultType="int">
+		SELECT COUNT(*) FROM
+		zone_info_tbl zit ;
+	</select>
+
+	<select id="countZoneLicenseHistory" resultType="int">
+		SELECT COUNT(*)
+		FROM license_info_history_tbl liht
+		LEFT JOIN zone_info_tbl zit
+		ON
+		liht.zone_no = zit.zone_no
+		WHERE zit.zone_name LIKE
+		CONCAT('%',#{filter},'%') OR
+		liht.taa_ip LIKE
+		CONCAT('%',#{filter},'%')
+	</select>
+
+	<select id="countZonetmLicenseHistory" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM license_tmlimit_info_history_tbl ltiht ;
+	</select>
+
+	<select id="countLicenseStateHistoryWithNoFilter" resultType="int">
+		SELECT COUNT(*)
+		FROM license_state_history_tbl lsht
+	</select>
+
+	<select id="countLicenseStateHistory" parameterType="String"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM license_state_history_tbl lsht
+		LEFT JOIN
+		tam_info_tbl tit ON
+		lsht.tam_no = tit.tam_no
+		WHERE
+		lsht.state_no LIKE
+		CONCAT('%',#{filter},'%') OR
+		tit.tam_name LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.tam_local_ip LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.taa_ip LIKE CONCAT('%',#{filter},'%')
+		OR
+		lsht.taa_hostname LIKE CONCAT('%',#{filter},'%') OR
+		lsht.zone_name
+		LIKE CONCAT('%',#{filter},'%') OR
+		lsht.license_type LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.req_type LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.req_date LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.req_result LIKE
+		CONCAT('%',#{filter},'%') OR
+		lsht.result_reason LIKE
+		CONCAT('%',#{filter},'%')
+	</select>
+	<!-- <select id="countLicenseStateHistory" parameterType="String" -->
+	<!-- resultType="int"> -->
+	<!-- SELECT COUNT(*) -->
+	<!-- FROM license_state_history_tbl lsht -->
+	<!-- WHERE -->
+	<!-- state_no LIKE CONCAT('%',#{filter},'%') -->
+	<!-- </select> -->
+
+	<select id="getAgentStaticAllow" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM taa_info_tbl WHERE zone_no = #{zone_no} AND license_type=1  AND allow_state =1; 
+	</select>
+
+	<select id="getAgentDynamicAllow" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM taa_info_tbl WHERE zone_no = #{zone_no} AND license_type =2 AND allow_state =1; 
 	</select>
 	
+	<select id="getZoneNoWithZoneName" parameterType="String" resultType="int">
+		SELECT zone_no FROM zone_info_tbl zit WHERE zone_name =#{zone_name};
+	</select>
+	
+	<select id="getZoneInfoWithNo" parameterType="int" resultType="ZoneInfoENTITY">
+		SELECT * FROM zone_info_tbl WHERE zone_no = #{zone_no};
+	</select>
 </mapper>

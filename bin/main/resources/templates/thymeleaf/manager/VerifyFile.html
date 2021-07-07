@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					TA-Manager 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> &nbsp; <b class="text-corn">Manager 환경파일검증</b>
+				</h1>
+				<p class="mb-4 sub">TAManager 환경파일을 검증할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<span class="pr-5 font-weight-bold text-white">TAManager 환경파일 검증</span> </span>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="form-group row">
+							<div class="col-xl-10">
+								<button onclick="openTextFile()" class="btn btn-corn">TAManager 환경파일 검증</button>
+								<input type="button" class="btn btn-light" value="취소" id="ECBtn" /> <br> <br> <i class="fas fa-exclamation-triangle"></i> <span> 발급 받은 TAManager 환경파일의 유효성을 검증합니다</span>
+							</div>
+						</div>
+						<div class="container" style="display: none;">
+							<div class="modal fade TaaVerify" id="tamverifyModal" role="dialog">
+								<div class="modal-dialog TaaVerify">
+									<!-- Modal content-->
+									<div class="modal-content TaaVerify">
+										<div class="modal-header">
+											<h4 class="modal-title">TAManager 환경파일 검증</h4>
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+										</div>
+										<div class="modal-body">
+											- TAManager 명 : <span class="tamVerify" id="name"></span> <br>- 로컬 IP : <span class="tamVerify" id="tamip"></span> <br> - COMM_TYPE : <span class="tamVerify" id="commtype"></span> <br> - DB 타입 : <span class="tamVerify" id="dbtype"></span> <br> - DB 주소: <span class="tamVerify" id="dbaddr"></span> <br> - DB 포트 : <span class="tamVerify" id="dbport"></span> <br> - DB 아이디 : <span class="tamVerify" id="dbid"></span> <br> - DB 비밀번호 : <span class="tamVerify" id="dbpwd"></span> <br> - DB 이름 : <span class="tamVerify" id="dbname"></span> <br> - HMAC : <span class="tamVerify" id="hmac"></span>
+										</div>
+										<div style="border-top: 1px solid #e3e6f0;">
+											<span class="ml-4"><i class="fas fa-certificate"></i></span> <span>정합성 검증 결과 : </span><span class="TaaResult" id="verifyResult"></span>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/manager/readTamFile.js"></script>
+	<script type="text/javascript" src="/js/manager/readTamFileInfo.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+	<script src="/js/manager/directory_upload.js"></script>
+
+</body>
+</html>

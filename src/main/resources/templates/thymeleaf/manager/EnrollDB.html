@@ -1,0 +1,103 @@
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">
+			관리자 메뉴<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">DB 정보 등록</b>
+		</h1>
+		<p class="mb-4">DB 정보를 등록할 수 있습니다</p>
+		<!-- DataTales Example -->
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<div class="row">
+					<div class="col-xl-2">
+						<span class="m-0 font-weight-bold text-white">DB 정보 등록</span>
+					</div>
+					<div class="col-xl-4">
+						<span><b class="text-danger mr-1">*</b>표시는 필수항목입니다. </span>
+					</div>
+				</div>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<form>
+					<div class="form-group row">
+						<label for="s_name" class="col-xl-2 col-form-label text-white TADBENROLL"><b class="text-danger mr-1">*</b>DB 서비스 이름</label>
+						<div class="col-xl-4">
+							<input type="text" name="db_svc_name" class="form-control" id="svc_name" placeholder="'_' 외 특수문자 허용되지 않습니다">
+						</div>
+						<div class="col-xl-2">
+							<input type="button" class="btn btn-primary" value="중복 검사" id="checkBtn">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="c_type" class="col-xl-2 col-form-label text-white TADBENROLL"><b class="text-danger mr-1">*</b>DB 종류</label>
+						<div class="col-xl-3">
+							<input type="text" name="db_type_no" class="form-control" id="db_type" readonly="readonly">
+						</div>
+						<div class="col-xl-2">
+							<select id="dbTypeBox" name='dbType_list' class="form-control">
+								<option value='default' selected>-- 선택 --</option>
+								<option value="1">mariaDB</option>
+								<option value="2">oracleDB</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="t_info" class="col-xl-2 col-form-label text-white TADBENROLL"><b class="text-danger mr-1">*</b>서비스 IP</label>
+						<div class="col-xl-5">
+							<input type="text" name="db_priv_ip" class="form-control" id="d_priv_ip" placeholder="X.X.X.X">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="t_local_ip" class="col-xl-2 col-form-label text-white TADBENROLL"><b class="text-danger mr-1">*</b>서비스 포트</label>
+						<div class="col-xl-5">
+							<input type="text" name="db_priv_port" class="form-control" id="d_priv_port" placeholder="0 ~ 65535" maxlength="5">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="t_local_port" class="col-xl-2 col-form-label text-white TADBENROLL">외부 IP</label>
+						<div class="col-xl-5">
+							<input type="text" name="db_pub_ip" class="form-control" id="d_pub_ip" placeholder="X.X.X.X">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="t_admin_port" class="col-xl-2 col-form-label text-white TADBENROLL">외부 PORT</label>
+						<div class="col-xl-5">
+							<input type="text" name="db_pub_port" class="form-control" id="d_pub_port" placeholder="0 ~ 65535" maxlength="5">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="t_log_path" class="col-xl-2 col-form-label text-white TADBENROLL"><b class="text-danger mr-1">*</b>DB 아이디</label>
+						<div class="col-xl-5">
+							<input type="text" name="db_id" value="" class="form-control" id="d_id" placeholder="">
+							<!-- value="/temp/logs"  -->
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="t_log_path" class="col-xl-2 col-form-label text-white TADBENROLL"><b class="text-danger mr-1">*</b>DB 비밀번호</label>
+						<div class="col-xl-5">
+							<input type="password" name="db_passwd" value="" class="form-control" id="d_passwd" placeholder="">
+							<!-- value="/temp/logs"  -->
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="t_log_path" class="col-xl-2 col-form-label text-white TADBENROLL"><b class="text-danger mr-1">*</b>DB 이름</label>
+						<div class="col-xl-5">
+							<input type="text" name="db_name" value="" class="form-control" id="d_name" placeholder="">
+							<!-- value="/temp/logs"  -->
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xl-10">
+							<input type="button" class="btn btn-primary enroll" value="등록" id="enrollBtn"> <input type="button" id="ECBtn" class="btn btn-dark" value="취소" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/admin/updateDB.js"></script>
+	<script type="text/javascript" src="/js/manager/managerDB.js"></script>
+	<script type="text/javascript" src="/js/manager/managerInfo.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+</body>

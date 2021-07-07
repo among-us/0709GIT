@@ -1,100 +1,106 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
-<!-- sweetalert -->
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<!--  -->
-<title>TACO</title>
-</head>
 <body>
 	<th:block th:include="thymeleaf/include/header"></th:block>
-	<div id="content-wrapper" class="d-flex flex-column">
-		<div id="content">
-			<!-- Begin Page Content -->
-			<div class="container-fluid">
-				<!-- Page Heading -->
-				<h1 class="h3 mb-2 text-gray-800">라이선스 요청 정보</h1>
-				<p class="mb-4">라이선스 정보를 요청할 수 있습니다</p>
-				<!-- DataTales Example -->
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<h6 class="m-0 font-weight-bold text-primary">라이선스 요청</h6>
-					</div>
-					<div class="card-body">
-						<div>
-							<label for="t_name" class="col-sm-1 col-form-label"> <b>ZONE 명 :</b>
-							</label> <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Zone names" title="Type in a name">
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">
+			라이선스 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">라이선스 요청 및 현황</b>
+		</h1>
+		<p class="mb-4">PROJECT를 선택하여 라이선스 요청정보를 생성할 수 있습니다.</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<span class="m-0 font-weight-bold text-white">라이선스 현황</span><span class="ml-5"> <b class="text-danger mr-1">*</b>라이선스 변경 발급이 필요 시 PROJECT를 선택하여 요청 정보를 생성하세요
+				</span>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="table-responsive">
+					<table class="table display nowrap text-secondary hover" id="licenseInfoTables" width="100%" cellspacing="0">
+						<thead>
+							<tr class="bg-nv text-white">
+								<th colspan="3"></th>
+								<th colspan="2">정적 라이선스</th>
+								<th colspan="2">동적 라이선스</th>
+								<th colspan="2">시간제한 라이선스</th>
+								<th colspan="5"></th>
+							</tr>
+							<tr class="header bg-nv">
+								<th>번호</th>
+								<th>PROJECT</th>
+								<th>설명</th>
+								<th>최대</th>
+								<th>발급</th>
+								<th>최대</th>
+								<th>발급</th>
+								<th>최대</th>
+								<th>발급</th>
+								<th>시간제한 만료일</th>
+								<th>세션타임</th>
+								<th>활성화</th>
+								<th>revision_no</th>
+								<th>limited_url</th>
+							</tr>
+						</thead>
+						<tbody id="integrity">
+						</tbody>
+					</table>
+					<div class="modal fade license" id="integrityInfo" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog license">
+							<div class="modal-content license" id="licenseStatus">
+								<div class="modal-header license border-0">
+									<h4 class="modal-title license text-white">
+										<b>정적 / 동적 라이선스 변경 요청 정보</b>
+									</h4>
+									<br>
+								</div>
+								<div class="modal-body license">
+									<div class="integrity_content">
+										<b>*</b> PROJECT : <b class="text-white" id="zone_name" name="zone_name"></b>
+									</div>
+									<div class="integrity_content">
+										<b>*</b> 개정 번호 : <b class="text-white" id="revision_no"></b>
+									</div>
+									<div class="integrity_content">
+										<b class="text-danger">*</b> 정적 라이선스 허용 변경 개수 : <input type="text" name="pl_count" class="modal_input cnt" id="modal_zone_pl_count"><label class="modal_ori"> <i class="fas fa-info-circle"></i> 현재 허용 개수 : <b class="LICENSE_ASIS_INFO" id="zone_pl_count"> </b>
+										</label>
+									</div>
+									<div class="integrity_content">
+										<b class="text-danger">*</b> 동적 라이선스 허용 변경 개수 : <input type="text" name="tpl_count" class="modal_input cnt" id="modal_zone_tpl_count"> <label class="modal_ori"> <i class="fas fa-info-circle"></i> 현재 허용 개수 : <b class="LICENSE_ASIS_INFO" id="zone_tpl_count"> </b>
+										</label>
+									</div>
+									<div class="integrity_content">
+										<b>*</b> 제한 URL : <input type="text" name="limited_url" class="modal_input border border-danger bg-dim text-white " id="modal_zone_limited_url"> <label class="modal_ori"> <i class="fas fa-info-circle"></i> 기존 제한 URL : <b class="LICENSE_ASIS_INFO" id="zone_limited_url"></b>
+										</label>
+									</div>
+									<br>
+									<div class="alert alert-danger" role="alert" style="border: 1px solid #ccc; font-size: 0.85rem;">
+										<span><b>주의사항</b></span><br> <br> <span>- 라이선스 요청 정보를 제조사에 제공 후 등록파일을 받으시기 바랍니다.</span> <br> <span>- 시간제한 라이선스는 발급자에게 문의 바랍니다.</span>
+									</div>
+								</div>
+								<div class="modal-footer border-0">
+									<button type="button" class="btn btn-primary" data-dismiss="modal" id="verifyBtn">요청정보 생성</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="undo">❌</button>
+								</div>
+							</div>
 						</div>
-						<div class="table-responsive">
-							<table class="table table-bordered display nowrap" id="myTable" width="100%" cellspacing="0">
-								<!-- origin table id = tables >> myTable -->
-								<thead>
-									<tr class="header">
-										<th>고유번호</th>
-										<th>ZONE명</th>
-										<th>설명</th>
-										<th>사이트명</th>
-										<th>PL 라이선스 갯수</th>
-										<th>TPL 라이선스 갯수</th>
-										<th>세션타임</th>
-										<th>활성화</th>
-									</tr>
-								</thead>
-								<tbody id="integrity">
-									<tr th:each="zone, seq : ${zoneList}" style="cursor: pointer">
-										<td th:text="${seq.count}"></td>
-										<!-- <td th:text="${zone?.getZone_no()}"></td> -->
-										<td th:text="${zone?.getZone_name()}"></td>
-										<td th:text="${zone?.getZone_info()}"></td>
-										<td th:text="${zone?.getComp_name()}"></td>
-										<td style="display: none;" th:text="${zone?.getRevision_no()}"></td>
-										<td th:text="${zone?.getPl_license_cnt()}"></td>
-										<td th:text="${zone?.getTpl_license_cnt()}"></td>
-										<td th:text="${zone?.getSession_time()}"></td>
-										<td th:text="${zone?.getExist()}"></td>
-										<td style="display: none;" th:text="${zone?.getLimited_url()}"></td>
-									</tr>
-								</tbody>
-							</table>
-							<!-- Modal -->
-							<div class="modal fade" id="integrityInfo" tabindex="-1" role="dialog" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h4 class="modal-title">정합성 값 정보</h4>
+					</div>
+					<div class="modal fade license" id="zone_request" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog license">
+							<div class="modal-content license bg-dim">
+								<div class="modal-header license text-white border-0">
+									<h4 class="modal-title license">라이선스 요청 값</h4>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="undoo">❌</button>
+								</div>
+								<div class="modal-body license border-0">
+									<div class="row">
+										<div class="col-xl-6 col-lg-6">
+											<p class="text-danger">
+												<b id="req_value"> </b>
+											</p>
+											<button id="file_download" class="btn btn-primary">
+												<i class="fas fa-file-download"></i>
+											</button>
 										</div>
-										<div class="modal-body">
-											<p>
-												- ZONE 명 : <b id="zone_name"></b>
-											</p>
-											<p>
-												- 개정 번호 : <b id="revision_no"></b>
-											</p>
-											<p>
-												- 허용 PL 수 :  <b id="zone_pl_count"></b>
-												<!-- 													<input type="text" id="zone_pl_count" class="modal_input" /> -->
-<!-- 												- 허용 PL 수 : <span id="zone_pl_count"> </span> -->
-											</p>
-											<p>
-												- 허용 TPL 수 : <b id="zone_tpl_count"></b>
-											</p>
-											<p>
-												- 제한 URL : <b id="zone_limited_url"></b>
-
-												<!-- - 제한 URL : <input type="text" class="modal_input" id="limited_url" /> -->
-												<!-- 											- 제한 URL :  -->
-											</p>
-											<br> <span> <i style="color: red;" class="fas fa-exclamation-triangle"> </i> 라이선스 요청 정보를 제조사에 제공 후 등록파일을 <br>받으시기 바랍니다
-											</span>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-primary" data-dismiss="modal">요청정보 생성</button>
-											<button type="button" class="btn btn-default" data-dismiss="modal">❌</button>
+										<div class="col-xl-6 col-lg-6" id="qrCodeBox">
+											<img id="qrcode_img" style="display: none" onload="this.style.display='block'">
+											<a id="download" download="" href=""></a>
 										</div>
 									</div>
 								</div>
@@ -104,30 +110,16 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="mt-5" align="center">
-			<button id="back" class="btn btn-primary ml-4 mb-3">뒤로 가기</button>
-		</div>
-
+	</div>
+	<div class="mt-5" align="center">
+		<button onclick="back();" class="btn btn-primary ml-4 mb-3">뒤로 가기</button>
 	</div>
 
-
-
-
 	<th:block th:include="thymeleaf/include/footer"></th:block>
-	<script src="/js/sb-admin-2.min.js"></script>
-	<!-- <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
-	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-	<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-	<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-	<script src="/js/demo/datatables-demo.js"></script>
-	<script type="text/javascript" src="/js/zone/zoneInfo.js"></script>
+
 	<script type="text/javascript" src="/js/zone/zone.js"></script>
-	<script type="text/javascript" src="/js/zone/licenseInfo.js"></script>
-	<script type="text/javascript" src="/js/zone/license.js"></script>
-	<script type="text/javascript" src="/js/leejs/cancel.js"></script>
-
+	<script type="text/javascript" src="/js/zone/zoneInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/licenseAllowInfo.js"></script>
+	<script type="text/javascript" src="/js/zone/licenseQRCode.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
 </body>
-
-
-</html>

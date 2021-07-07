@@ -16,9 +16,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ZoneCheckInfoDTO {
-	@Pattern(regexp = "^[a-zA-Z0-9_]{1,20}$", message = "ZONE명은 영숫자로만 구성할 수 있습니다")
+	@Pattern(regexp = "^[a-zA-Z0-9_]{1,20}$", message = "PROJECT명은 영숫자로만 구성할 수 있습니다")
 //	@Pattern(regexp = "^[0-9a-zA-Z]*$", message = "ZONE명은 영숫자로만 구성할 수 있습니다")
-	@NotEmpty(message = "ZONE명을 입력해주세요")
+	@NotEmpty(message = "PROJECT명을 입력해주세요")
 	String zone_name;
 }
 

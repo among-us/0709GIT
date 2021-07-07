@@ -15,20 +15,41 @@ public class UserInfoVO {
 //	String company;
 //	boolean isLogin;
 
-	int user_no;
 	String user_id;
 	String passwd;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	String repasswd;
-	String permissions;
-	int comp_no;
-	int auth_err;
-	String last_login;
-	String reg_date;
-	String exist;
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	String comp_name;
-	String hmac;
-	boolean isLogin;
+//	String permissions;
 	
+	int comp_no;
+	String comp_name;
+	int user_no;
+	int perm_no;
+	int zone_no;
+	String zone_name;
+	
+	
+	String proj_name;
+	int proj_no;
+	int auth_err;
+	String reg_date;
+	String user_company_name;
+	String user_name;
+	String user_dept_name;
+	String user_email;
+	String user_phone_num1;
+	String user_phone_num2;
+	String last_login;
+	String exist;
+	String hmac;
+	
+	int issuer_user_no;
+	String issuer_user_id;
+	String action;
+	boolean isLogin;	
+	String history_reg_date;
+	int user_perm_no;
+	String user_perm_info;
+	
+	String recent_date;
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					관리자<i class="fas fa-chevron-right mr-2 ml-2"></i> 계정 로그<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">계정 로그 상세</b>
+				</h1>
+				<p class="mb-4 sub">계정 정보 변경 로그 상세를 확인할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">계정 로그 상세</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive ">
+							<table class="table display nowrap text-secondary" id="tables" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv">
+										<th>번호</th>
+										<th>계정명</th>
+										<th>권한</th>
+										<!-- 										<th>기업명</th> -->
+										<th>로그인 실패횟수</th>
+										<th>마지막 로그인</th>
+										<th>계정 등록 일자</th>
+										<th>수정</th>
+										<th>활동</th>
+										<th>변경 시간</th>
+										<th>활성화</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="history, seq : ${userHistoryList}">
+										<td th:text="${seq.count}"></td>
+										<!-- <td th:text="${history?.getUser_no()}"></td> -->
+										<td th:text="${history?.getUser_id()}"></td>
+										<td th:text="${history?.getUser_perm_info()}"></td>
+										<td th:text="${history?.getAuth_err()}"></td>
+										<td th:text="${history?.getLast_login()}"></td>
+										<td th:text="${history?.getReg_date()}"></td>
+										<td th:text="${history?.getIssuer_user_id()}"></td>
+										<th:block th:switch="${history?.getAction}">
+											<td th:case="C">생성</td>
+											<td th:case="U">변경</td>
+											<td th:case="D">삭제</td>
+										</th:block>
+										<td th:text="${history?.getHistory_reg_date()}"></td>
+										<td th:text="${history?.getExist()}">></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script src="/js/user/history.js"></script>
+	<script src="/js/include/tables.js"></script>
+</body>
+</html>

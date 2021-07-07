@@ -1,0 +1,126 @@
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div class="container-fluid full-height">
+		<h1 class="h3 mb-2 text-secondary">
+			TA-Manager 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Manager 환경파일 생성</b>
+		</h1>
+		<p class="mb-4">환경파일을 생성할 수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">MANAGER 환경파일 생성</h6>
+			</div>
+			<div class="card-body bg-nv">
+				<div class="form-group row">
+					<label for="t_name" class="col-sm-2 col-form-label text-white TADBENROLL"> Manager </label>
+					<div class="col-sm-5">
+						<input type="text" name="tam_name" class="form-control" id="t_name" readonly="readonly" th:value="${tamInfoList?.getTam_name()}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="t_name" class="col-sm-2 col-form-label text-white TADBENROLL">Manager IP </label>
+					<div class="col-sm-5">
+						<input type="text" name="tam_local_ip" class="form-control" id="t_local_ip" placeholder="" readonly="readonly" th:value="${tamInfoList?.getTam_local_ip()}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="c_type" class="col-sm-2 col-form-label text-white TACREATE">COMM_TYPE</label>
+					<div class="col-sm-3">
+						<input type="text" name="comm_type" class="form-control" id="c_type" value="network" readonly="readonly">
+					</div>
+					<div class="col-sm-2">
+						<select id="commTypeBox" name='commType_list' class="form-control">
+							<option>-- 선택 --</option>
+							<option value="NETWORK" selected="selected">NETWORK</option>
+							<!-- 										<option value="file">file</option> -->
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="svc_name" class="col-sm-2 col-form-label text-white TACREATE">DB 서비스 이름</label>
+					<div class="col-sm-3">
+						<input type="text" name="db_svc_name" class="form-control" id="tam_db_svc_name" readonly="readonly">
+					</div>
+					<div class="col-sm-2">
+						<select id="svcNameBox" name='svc_name_list' class="form-control">
+							<option value='default' selected>-- 선택 --</option>
+							<option th:each="manager : ${svcList}" th:text="${manager?.getDb_svc_name()}"></option>
+						</select>
+					</div>
+					<a href="#" class="help">
+						<i class="far fa-question-circle"></i><span class="help-class">등록한 DB 서비스 이름을 선택하세요 </span>
+					</a>
+				</div>
+
+				<div class="form-group row">
+					<label for="c_type" class="col-sm-2 col-form-label text-white TACREATE">DB 종류</label>
+					<div class="col-sm-5">
+						<input type="text" name="db_type" class="form-control" id="tam_db_type" value="" readonly="readonly">
+					</div>
+				</div>
+
+
+				<div class="form-group row">
+					<label for="tam_db_addr" class="col-sm-2 col-form-label text-white TACREATE">DB 주소</label>
+					<div class="col-sm-5">
+						<input type="text" name="db_addr" class="form-control" id="tam_db_addr" value="" readonly="readonly">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="tam_db_port" class="col-sm-2 col-form-label text-white TACREATE">DB 포트</label>
+					<div class="col-sm-5">
+						<input type="text" name="db_port" class="form-control" id="tam_db_port" value="" readonly="readonly">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="tam_db_id" class="col-sm-2 col-form-label text-white TACREATE">DB 아이디</label>
+					<div class="col-sm-5">
+						<input type="text" name="db_id" class="form-control" id="tam_db_id" readonly="readonly">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="tam_db_pwd" class="col-sm-2 col-form-label text-white TACREATE">DB 비밀번호</label>
+					<div class="col-sm-5">
+						<input type="password" name="db_pwd" class="form-control" id="tam_db_pwd" readonly="readonly">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="tam_db_name" class="col-sm-2 col-form-label text-white TACREATE">DB 이름</label>
+					<div class="col-sm-5">
+						<input type="text" name="db_name" class="form-control" id="tam_db_name" readonly="readonly">
+					</div>
+				</div>
+
+				<div class="form-group row" style="display: none;">
+					<label for="tam_db_name" class="col-sm-2 col-form-label text-white TACREATE"></label>
+					<div class="col-sm-5">
+						<span id="addr"></span> <span id="port"></span> <span id="id"></span> <span id="pwd"></span> <span id="name"></span> <span id="hmac"></span>
+					</div>
+				</div>
+				<div class="form-group mt-5">
+					<button id="fileCreate" class="btn btn-primary create">생성</button>
+					<a id="download" href=""></a>
+					<input type="button" value="취소" id="TaCBtn" class="btn btn-light">
+				</div>
+			</div>
+			<div class="card-header py-3 bg-nv" style="display: none;">
+				<p id="name"></p>
+				<p id="tamip"></p>
+				<p id="commtype"></p>
+				<p id="dbtype"></p>
+				<p id="dbaddr"></p>
+				<p id="dbport"></p>
+				<p id="dbid"></p>
+				<p id="dbpwd"></p>
+				<p id="dbname"></p>
+				<p id="hmac"></p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/js/manager/setting.js"></script>
+	<script type="text/javascript" src="/js/manager/settingInfo.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+</body>

@@ -18,17 +18,31 @@ public class UserHistoryInfoVO {
 	int user_no;
 	String user_id;
 	String passwd;
-	String permissions;
+	int perm_no;
 	int comp_no;
+	int proj_no;
+	int zone_no;
+	String zone_name;
 	int auth_err;
-	String last_login;
+	String user_name;
+	String user_company_name;
+	String user_dept_name;
+	String user_email;
+	String user_phone_num1;
+	String user_phone_num2;
 	String reg_date;
+	String last_login;
 	String exist;
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	String comp_name;
 	String hmac;
 	int issuer_user_no;
 	String action;
 	String history_reg_date;
+	
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	String comp_name;
 	String issuer_user_id;
+	
+	
+	String user_perm_info;
+	
 }

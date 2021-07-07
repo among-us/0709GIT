@@ -1,0 +1,17 @@
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+
+	<tr th:each="tt : ${testList}">
+		<td th:text="${tt.key + ' : '}"></td>
+		<td th:text="${tt.value}"></td>
+		<br>
+
+	</tr>
+
+</body>
+
+<script type="text/javascript" src="/js/zone/readFile.js"></script>
+<script type="text/javascript" src="/js/zone/readFileInfo.js"></script>
+<script type="text/javascript" src="/js/chart/cancel.js"></script>
+<th:block th:include="thymeleaf/include/footer"></th:block>
+</body>

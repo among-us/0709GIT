@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid">
+				<h1 class="h3 mb-2 text-secondary">
+					GROUP 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i>GROUP - PROJECT 설정 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">GROUP - PROJECT 수정</b>
+				</h1>
+				<p class="mb-4 sub">프로젝트에 대한 정보 변경을 수행할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv bg-dk">
+					<div class="card-header py-3 bg-nv">
+						<span class="pr-5 font-weight-bold text-white">프로젝트 정보 변경</span> <b class="text-danger mr-2">*</b> &nbsp; 표시는 필수항목입니다.
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<form>
+							<div class="form-group row" hidden="hidden">
+								<label for="p_no" class="col-xl-1 col-lg-2 col-form-label text-white">번호</label>
+								<div class="col-xl-3 col-lg-3">
+									<input type="text" name="comp_no" class="form-control" id="c_no" th:value="${projObj?.getComp_no()}" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="comp_name" class="col-xl-1 col-lg-2 col-form-label text-white">GROUP</label>
+								<div class="col-xl-3 col-lg-3">
+									<input type="text" name="" class="form-control" id="" th:value="${projObj?.getComp_name()}" readonly="readonly">
+									<!-- 									<input type="text" name="comp_no" class="form-control" id="c_no" th:value="${projObj?.getComp_no()}" readonly="readonly" hidden="hidden"> -->
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="proj_name" class="col-xl-1 col-lg-2 col-form-label text-white" style="min-width: 5em;"><b class="text-danger mr-2">*</b>PROJECT</label>
+								<!-- 								<div class="col-xl-3 col-lg-3"> -->
+								<!-- 									<input type="text" class="form-control" th:value="${projObj?.getZone_name()}"> -->
+								<!-- 								</div> -->
+								<div class="col-xl-3 col-lg-3">
+									<select name="proj_name" class="form-control" id="proj_list">
+										<option value='default' selected>-- 선택 --</option>
+										<option th:each=" company : ${zoneList}" th:value="${company?.getZone_no()}" th:utext="${company?.getZone_name()}" th:selected="${company?.getZone_no()} == ${projObj?.getZone_no}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="exist" class="col-xl-1 col-lg-2 col-form-label text-white ">유효성</label>
+								<div class="col-xl-3 col-lg-3">
+									<input type="text" name="exist" class="form-control" id="proj_exist" th:value="${projObj?.getExist()}" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="reg_date" class="col-xl-1 col-lg-2 col-form-label text-white ">등록 일자</label>
+								<div class="col-xl-3 col-lg-3">
+									<input type="text" name="reg_date" class="form-control" id="p_reg_date" th:value="${projObj?.getReg_date()}" readonly="readonly">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="form-group row">
+						<div class="col-xl ml-3">
+							<input type="button" class="btn btn-corn" value="변경" id="updateBtn"> <input type="button" id="back" class="btn btn-light" value="취소" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/company/project.js"></script>
+	<script type="text/javascript" src="/js/company/projectInfo.js"></script>
+	<script type="text/javascript" src="/js/include/tables.js"></script>
+	<script type="text/javascript" src="/js/chart/cancel.js"></script>
+</body>
+</html>

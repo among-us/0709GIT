@@ -1,0 +1,7 @@
+input[type=search]{
+	min-width: 20em;
+    max-width: 28em;
+    height: 3em;
+    border-radius:1em;
+}
+

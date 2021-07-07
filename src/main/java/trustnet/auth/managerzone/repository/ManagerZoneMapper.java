@@ -6,8 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import trustnet.auth.manager.repository.entity.ManagerInfoENTITY;
+import trustnet.auth.managerzone.repository.entity.ManagerZoneGetNameENTITY;
 import trustnet.auth.managerzone.repository.entity.ManagerZoneInfoENTITY;
 import trustnet.auth.managerzone.repository.entity.ManagerZoneMatchInfoENTITY;
+import trustnet.auth.managerzone.service.vo.ManagerZoneGetNameVO;
 import trustnet.auth.managerzone.service.vo.ManagerZoneInfoVO;
 
 @Repository
@@ -18,6 +20,10 @@ public interface ManagerZoneMapper {
 	int saveManagerZone(ManagerZoneInfoENTITY entity);
 	int isFindManagerZone(ManagerZoneInfoVO vo);
 	int deleteManagerZoneWithTAMNO(ManagerZoneInfoVO vo);
+	int matchingAllDelete(int tam_no);
+	int deleteMatchingWithTamNo(int tam_no);
 	int deleteManagerZoneWithZONENO(ManagerZoneInfoVO vo);
 	List<ManagerZoneMatchInfoENTITY> findAllHavingZone(ManagerZoneInfoVO vo);
+	
+	ManagerZoneGetNameENTITY getZoneName(ManagerZoneGetNameENTITY entity);
 }

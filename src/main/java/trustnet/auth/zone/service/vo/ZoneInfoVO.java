@@ -17,36 +17,26 @@ import lombok.ToString;
 @ToString
 public class ZoneInfoVO {
 
-//	String zoneName; 
-//	String zoneInfo;
-//	int revisionNumber;
-//	String regDate;
-//	int plLicenseCnt;
-//	int tplLicenseCnt;
-//	int sessionTime;
-//	String limitedUrl;
-//	String hMac;
-//	
-
-
 	int zone_no;
 	String zone_name;
 	String zone_info;
 	int comp_no;
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	String comp_name;
 	int revision_no;
 	Timestamp registed_date;
 	int pl_license_cnt;
 	int tpl_license_cnt;
+	int allowed_cnt;
+	String limited_period;
 	int session_time;
 	String limited_url;
 	String exist;
 	String integrity_value;
+	String history_reg_date;
 	
+	int pub_static;
+	int pub_dynamic;
+	int pub_timelimit;
 
-	public ZoneInfoVO(int comp_no) {
-		this.comp_no = comp_no;
-	}
 }
 

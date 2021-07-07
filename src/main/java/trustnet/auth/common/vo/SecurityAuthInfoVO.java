@@ -21,6 +21,10 @@ public class SecurityAuthInfoVO {
 	
 	int user_no;
 	String user_id;
+	
+	int perm_no;
+	String user_perm_info;
+	
 	String permissions;
 	
 	public SecurityAuthInfoVO(boolean usable, String value) {

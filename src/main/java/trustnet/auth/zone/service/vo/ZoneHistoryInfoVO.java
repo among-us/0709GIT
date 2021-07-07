@@ -16,6 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ZoneHistoryInfoVO {
+	
 	int zone_no;
 	String zone_name;
 	String zone_info;
@@ -34,4 +35,5 @@ public class ZoneHistoryInfoVO {
 	String action;
 	String history_reg_date;
 	String issuer_user_id;
+	int allowed_cnt;
 }

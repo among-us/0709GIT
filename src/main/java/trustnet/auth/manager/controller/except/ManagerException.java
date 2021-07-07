@@ -25,6 +25,17 @@ public class ManagerException {
 	public void NumberFormatException(Exception e) {
 		log.info("{}", e.getClass());
 	}
+	// TAManager Setting File Verify
+	@ExceptionHandler(trustnet.tas.except.TNAuthException.class)
+	CommonResponseDTO<Object>  TNAuthException(Exception e) {
+		log.info("{JNI ERROR}", e.getClass());
+		log.warn("JNI ERROR " + e.toString());
+		ManagerInfoResponseDTO resDTO = new ManagerInfoResponseDTO();
+		ManagerResultEnum err = ManagerResultEnum.JNI_ERROR;
+		resDTO.setErrorCode(err.getErrorCode());
+		resDTO.setErrorMessage(err.getErrorMessage());
+		return CommonResponseDTO.builder().data(resDTO).build();
+	}
 
 	@ExceptionHandler(BindException.class)
 	public CommonResponseDTO<Object> BindException(BindException e) {

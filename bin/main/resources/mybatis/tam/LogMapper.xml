@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="trustnet.auth.log.repository.LogMapper">
+
+	<select id="findAllServiceLogList" resultType="ServiceLogInfoENTITY">
+		SELECT * 
+		FROM TAM_SERVICE_LOG
+	</select>
+	
+	<select id="findAllAuditLogList" resultType="AuditLogInfoENTITY">
+		SELECT * 
+		FROM TAM_AUDIT_LOG
+	</select>
+   
+    <insert id="saveServiceLog" parameterType="ServiceLogInfoENTITY">
+    	INSERT 
+    	INTO TAM_SERVICE_LOG
+     		(date, description)
+      	values 
+      		(#{date}, #{description})
+    </insert>
+    
+    <insert id="saveAuditLog" parameterType="AuditLogInfoENTITY">
+    	INSERT 
+    	INTO TAM_AUDIT_LOG
+     		(date, description)
+      	values 
+      		(#{date}, #{description})
+    </insert>
+</mapper>

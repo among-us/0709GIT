@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					TA-Manager 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Manager 현황 로그</b>
+				</h1>
+				<p class="mb-4 sub">Manager 현황 로그를 확인할 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">Manager 현황 로그</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table display nowrap bg-nv text-secondary hover" id="m_history_tables" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv">
+										<th>번호</th>
+										<th>Manager</th>
+										<th>설명</th>
+										<th>내부 IP</th>
+										<th>내부 서비스 포트</th>
+										<th>내부 관리자 포트</th>
+										<th>외부 IP</th>
+										<th>외부 포트</th>
+										<th>외부 관리자 포트</th>
+										<th>타입</th>
+										<th>프로세스 모니터링</th>
+										<th>활성화</th>
+										<th>등록계정</th>
+										<th>활동</th>
+										<th>등록일자</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+	<script type="text/javascript" src="/js/manager/history.js"></script>
+</body>
+</html>

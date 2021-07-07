@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TAWebConsole</title>
+</head>
+<body>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<div class="container-fluid mb-5">
+				<h1 class="h3 mb-2 text-secondary">
+					TA-Manager 관리 <i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Manager - PROJECT 설정</b>
+				</h1>
+				<p class="mb-4 sub">등록된 Manager와 PROJECT 목록을 볼 수 있습니다</p>
+				<div class="card shadow mb-4 bg-nv">
+					<div class="card-header py-3 bg-nv">
+						<h6 class="m-0 font-weight-bold text-white">Manager - PROJECT 설정 목록</h6>
+					</div>
+					<div class="card-body bg-nv rounded-bottom">
+						<div class="table-responsive">
+							<table class="table display nowrap text-secondary" id="tables" width="100%" cellspacing="0">
+								<thead>
+									<tr class="bg-nv text-white">
+										<th>번호</th>
+										<th>Manager</th>
+										<th>설명</th>
+										<th>내부 IP</th>
+										<th>내부 포트</th>
+										<th>내부 관리자 포트</th>
+										<th>외부 IP</th>
+										<th>외부 포트</th>
+										<th>외부 관리자 포트</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="manager, seq : ${managerList}" style="cursor: pointer" th:attr="onclick=|goToManagerZoneMatch('${manager?.getTam_no()}')|">
+										<td th:text="${seq.count}"></td>
+										<!-- <td th:text="${manager?.getTam_no()}"></td> -->
+										<td th:text="${manager?.getTam_name()}"></td>
+										<td th:text="${manager?.getSite_info()}"></td>
+										<td th:text="${manager?.getTam_local_ip()}"></td>
+										<td th:text="${manager?.getTam_local_port()}"></td>
+										<td th:text="${manager?.getTam_admin_port()}"></td>
+										<td th:text="${manager?.getTam_pub_ip()}"></td>
+										<td th:text="${manager?.getTam_pub_port()}"></td>
+										<td th:text="${manager?.getTam_pub_admin_port()}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/js/managerzone/managerzoneInfo.js"></script>
+	<script type="text/javascript" src="/js/managerzone/managerzone.js"></script>
+	<script src="/js/include/tables.js"></script>
+	<th:block th:include="thymeleaf/include/footer"></th:block>
+</body>
+</html>

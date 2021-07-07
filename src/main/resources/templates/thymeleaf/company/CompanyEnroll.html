@@ -1,66 +1,66 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>TACO</title>
-</head>
 <body>
-<th:block th:include="thymeleaf/include/header"></th:block>
-
-
- <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-    	<!-- Main Content -->
-    	<div id="content">
- 			<!-- Begin Page Content -->
-        	<div class="container-fluid">
-            	<!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">사이트</h1>
-                <p class="mb-4">사이트 정보를 등록할 수 있습니다</p>
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                	<div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">사이트 등록</h6>
-                    </div>
-                    <div class="card-body">
-                    
-                    
-                      <form>
-                      	  <div class="form-group row">
-						    <label for="c_groupName" class="col-sm-2 col-form-label">그룹명</label>
-						    <div class="col-sm-5">
-						      <select name="group_name" class="form-control">
-						  		<option th:each=" group : ${groupList} " th:value="${group?.getGroup_no()}" th:utext="${group?.getGroup_name()}"></option>
-							  </select>
-						    </div>
-						  </div>
-						  <div class="form-group row">
-						    <label for="c_siteName" class="col-sm-2 col-form-label">사이트명</label>
-						    <div class="col-sm-5">
-						      <input type="text" name="comp_name" class="form-control" id="c_siteName" >
-						    </div>
-						  </div>
-						  <div class="form-group row">
-						    <div class="col-sm-10">
-						      <input type="button" class="btn btn-primary" value="등록하기" id="enrollBtn">
-						    </div>
-						  </div>
-						</form>
-						</div>
+	<th:block th:include="thymeleaf/include/header"></th:block>
+	<!-- 	<div id="content-wrapper" class="d-flex flex-column"> -->
+	<div class="container-fluid bg-dk">
+		<h1 class="h3 mb-2 text-secondary">
+			GROUP 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">GROUP 등록 및 정보</b>
+		</h1>
+		<p class="mb-4">GROUP에 대한 설정을 할 수 있습니다</p>
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<h6 class="m-0 font-weight-bold text-white">GROUP 등록</h6>
+			</div>
+			<div class="card-body bg-nv rounded-bottom">
+				<div class="form-group row">
+					<label for="c_groupName" class="col-xl-1 col-lg-1 col-form-label text-white">GROUP명</label>
+					<div class="col-xl-3 col-lg-3">
+						<input type="text" name="comp_name" value="" class="form-control" id="d_name" placeholder="특수문자,공백 사용불가">
+					</div>
+					<div class="col-xl-5 col-lg-5">
+						<input type="button" class="btn btn-dark" value="중복 검사" id="checkBtn"> <input type="button" class="btn btn-primary ml-3" value="등록" id="enrollBtn">
 					</div>
 				</div>
 			</div>
 		</div>
-		
-		
-
-	  
+	</div>
+	<!-- 		<div id="content"> -->
+	<div class="container-fluid full-height">
+		<div class="card shadow mb-4 bg-nv">
+			<div class="card-header py-3 bg-nv">
+				<span class="m-0 font-weight-bold text-white">등록된 GROUP 목록</span><b class="text-danger ml-5 mr-1">*</b>GROUP 목록을 선택하여 정보 수정을 할 수 있습니다
+			</div>
+			<div class="card-body bg-nv rounded-bottom rounded-bottom">
+				<div class="table-responsive">
+					<table class="table nowrap display text-white" id="companyEnrollTables" width="100%">
+						<thead>
+							<tr class="bg-nv text-white">
+								<th>번호</th>
+								<th hidden="hidden">번호</th>
+								<th>GROUP</th>
+								<th>등록계정</th>
+								<th>유효성</th>
+								<th>등록 일자</th>
+								<!-- 										<th>기업 고유 번호</th> -->
+								<!-- 										<th>존재 여부</th> -->
+							</tr>
+						</thead>
+						<tbody class="text-secondary">
+							<tr th:each="company, seq : ${compList}" style="cursor: pointer" th:attr="onclick=|goToCompanyInfo('${company?.getComp_no()}')|">
+								<td th:text="${seq.count}"></td>
+								<td hidden="hidden" th:text="${company?.getComp_no()}"></td>
+								<td th:text="${company?.getComp_name()}"></td>
+								<td th:text="${company?.getIssuer_user_id()}"></td>
+								<td th:text="${company?.getExist()}"></td>
+								<td th:text="${company?.getReg_date()}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 	<th:block th:include="thymeleaf/include/footer"></th:block>
 	<script type="text/javascript" src="/js/company/companyInfo.js"></script>
 	<script type="text/javascript" src="/js/company/company.js"></script>
-
+	<script type="text/javascript" src="/js/include/tables.js"></script>
 </body>
-</html>
