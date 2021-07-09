@@ -91,7 +91,6 @@ public class UserService {
 		if (!isPWCorrect) //비밀번호가 틀렸으면 ? auth_err +1 
 			retDB = updateUserForAuthERRIncrease(vo);
 		else {
-			// 비밀번호 맞추면 auth_err 초기화 & last_login update 
 			retDB = updateUserForAuthERRInit(vo);
 			retDB = updateUserForLastLogin(vo);
 		}
@@ -162,7 +161,6 @@ public class UserService {
 		return retVO;
 	}
 
-	//	List<UserHistoryInfoENTITY> findAllUserHistoryAsUserNo(UserInfoENTITY entity);
 	public List<UserHistoryInfoVO> findAllUserHistoryAsUserNo(UserInfoVO vo) {
 		UserInfoENTITY entity = modelMapper.map(vo, UserInfoENTITY.class);
 		List<UserHistoryInfoENTITY> entityList = mapper
@@ -202,8 +200,6 @@ public class UserService {
 		} else {
 			return false;
 		}
-		//		vo.setLogin(isPWCorrect);
-		//		return vo;
 	}
 
 	public String getExist(String ID) {

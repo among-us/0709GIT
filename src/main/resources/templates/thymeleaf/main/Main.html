@@ -118,7 +118,8 @@
 							<div class="col-xl-4 col-lg-4">
 								<div class="input-group mb-3">
 									<div class="input-group-prepend">
-										<span class="input-group-text bg-nv text-white border-right-0"><i class="far fa-calendar-alt mr-2"></i>날짜</span>
+										<!-- 										<span class="input-group-text bg-nv text-white border-right-0"><i class="far fa-calendar-alt mr-2"></i>날짜</span> -->
+										<span class="input-group-text bg-nv text-white border-right-0">날짜</span>
 
 									</div>
 									<input type="text" id="datepicker" class="form-control bg-nv text-white border-1" value="클릭하여 날짜 선택">
@@ -127,8 +128,10 @@
 							<div class="col-xl-4 col-lg-4">
 								<div class="input-group mb-3">
 									<div class="input-group-prepend">
-										<label class="input-group-text bg-nv text-white border-1"><i class="far fa-building mr-2"></i>GROUP</label>
+<!-- 										<label class="input-group-text bg-nv text-white border-1"><i class="far fa-building mr-2"></i>GROUP</label> -->
+										<label class="input-group-text bg-nv text-white border-1">GROUP</label>
 									</div>
+									<!-- 									<select id="company_name" name="company_name" class="text-white custom-select bg-nv border-1"> -->
 									<select id="company_name" name="company_name" class="form-control text-white bg-nv border-1">
 										<option value='default' selected>-- 선택 --</option>
 										<option th:each=" company : ${compList}" th:value="${company?.getComp_no()}" th:utext="${company?.getComp_name()}"></option>
@@ -138,7 +141,8 @@
 							<div class="col-xl-4 col-lg-4">
 								<div class="input-group mb-3">
 									<div class="input-group-prepend">
-										<span class="input-group-text bg-nv text-white"><i class="fas fa-desktop mr-2"></i>PROJECT</span>
+<!-- 										<span class="input-group-text bg-nv text-white"><i class="fas fa-desktop mr-2"></i>PROJECT</span> -->
+										<span class="input-group-text bg-nv text-white">PROJECT</span>
 									</div>
 									<select id="proj_list" name="proj_name" class="form-control text-white bg-nv border-1">
 										<option value='default' selected>-- 선택 --</option>

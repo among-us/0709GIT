@@ -97,7 +97,15 @@ public class ZoneAPIController {
 	public CommonResponseDTO<Object> enroll(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			@Validated ZoneInfoDTO zoneInfoDTO, BindingResult errors) {
-		log.info("[enroll => ZoneInfoDTO\n] {}", zoneInfoDTO.toString());
+		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
+		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null) {
+			throw new TokenValidationException();
+		}
+		if (!securityVO.getUser_id().equalsIgnoreCase("admin")) {
+			throw new TokenValidationException();
+		}
+
+		log.info("Post Zone => " + securityVO.getUser_id());
 
 		if (errors.hasErrors()) {
 			ManagerInfoResponseDTO resDTO = new ManagerInfoResponseDTO(-7070,
@@ -117,18 +125,8 @@ public class ZoneAPIController {
 		if (!result)
 			return CommonResponseDTO.builder().data(resDTO).build();
 
-		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
-		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null)
-			throw new TokenValidationException();
-
-		if (!securityVO.getUser_id().equalsIgnoreCase("admin"))
-			//		if (!securityVO.getPermissions().equalsIgnoreCase("administrator"))
-			throw new TokenValidationException();
-
 		ZoneInfoVO infoVO = zoneService.findZoneInfoAsZoneName(vo);
-		log.info(infoVO.toString());
 		ZoneHistoryInfoVO historyVO = modelMapper.map(infoVO, ZoneHistoryInfoVO.class);
-		log.info("zone 등록 " + historyVO.toString());
 		historyVO.setAction("C");
 		historyVO.setIssuer_user_no(securityVO.getUser_no());
 		result = zoneService.saveZoneHistory(historyVO);
@@ -140,15 +138,16 @@ public class ZoneAPIController {
 	public CommonResponseDTO<Object> updateZone(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			@Validated ZoneInfoDTO zoneInfoDTO, BindingResult errors) {
-		log.info("[updateZone => ZoneInfoDTO\n] {}", zoneInfoDTO.toString());
+		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
+		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null) {
+			throw new TokenValidationException();
+		}
 
-		//		if (String.valueOf(zoneInfoDTO.getPl_license_cnt()).isEmpty()
-		//				|| String.valueOf(zoneInfoDTO.getTpl_license_cnt()).isEmpty()
-		//				|| String.valueOf(zoneInfoDTO.getSession_time()).isEmpty()) {
-		//			log.warn("PARAMETER EXCEPTION");
-		//			throw new ParameterException();
-		//		}
+		if (!securityVO.getUser_id().equalsIgnoreCase("admin")) {
+			throw new TokenValidationException();
+		}
 
+		log.info("Update Zone => " + securityVO.getUser_id());
 		if (errors.hasErrors()) {
 			ManagerInfoResponseDTO resDTO = new ManagerInfoResponseDTO(-7070,
 					errors.getFieldError().getDefaultMessage());
@@ -166,13 +165,6 @@ public class ZoneAPIController {
 		if (!result)
 			return CommonResponseDTO.builder().data(resDTO).build();
 
-		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
-		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null)
-			throw new TokenValidationException();
-
-		if (!securityVO.getUser_id().equalsIgnoreCase("admin"))
-			throw new TokenValidationException();
-
 		ZoneInfoVO infoVO = zoneService.findZoneInfoAsZoneName(vo);
 		String action = infoVO.getExist().equalsIgnoreCase("Y") ? "U" : "D";
 		ZoneHistoryInfoVO historyVO = modelMapper.map(infoVO, ZoneHistoryInfoVO.class);
@@ -184,8 +176,19 @@ public class ZoneAPIController {
 	}
 
 	@DeleteMapping("/zone")
-	public CommonResponseDTO<Object> deleteZone(ZoneInfoDTO zoneInfoDTO) {
-		log.info("[deleteZone => ZoneInfoDTO\n] {}", zoneInfoDTO.toString());
+	public CommonResponseDTO<Object> deleteZone(
+			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
+			@Validated ZoneInfoDTO zoneInfoDTO, BindingResult errors) {
+		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
+		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null) {
+			throw new TokenValidationException();
+		}
+
+		if (!securityVO.getUser_id().equalsIgnoreCase("admin")) {
+			throw new TokenValidationException();
+		}
+
+		log.info("Delete Zone => " + securityVO.getUser_id());
 
 		if (String.valueOf(zoneInfoDTO.getZone_no()).isEmpty()) {
 			log.warn("PARAMETER EXCEPTION");
@@ -198,8 +201,6 @@ public class ZoneAPIController {
 				: ZoneResultEnum.DELETEERROR;
 		ZoneInfoResponseDTO resDTO = new ZoneInfoResponseDTO(retEnum);
 
-		log.info("[enroll => CompanyResponseInfoDTO\n] {}", resDTO.toString());
-
 		return CommonResponseDTO.builder().data(resDTO).build();
 	}
 
@@ -207,8 +208,6 @@ public class ZoneAPIController {
 	public CommonResponseDTO<Object> enrollLicense(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			ZoneLicenseInfoDTO dto) {
-		log.info("[enrollLicense => ZoneLicenseInfoDTO] {}", dto.toString());
-
 		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
 		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null) {
 			throw new TokenValidationException();
@@ -217,6 +216,7 @@ public class ZoneAPIController {
 		if (!securityVO.getUser_id().equalsIgnoreCase("admin")) {
 			throw new TokenValidationException();
 		}
+		log.info("Post License => " + securityVO.getUser_id());
 
 		if (String.valueOf(dto.getZone_no()).isEmpty() || dto.getTaa_ip().isEmpty()
 				|| String.valueOf(dto.getLicense_type()).isEmpty()) {
@@ -257,16 +257,11 @@ public class ZoneAPIController {
 	public JSONObject getLicenseState(@Validated ZoneLicenseAllowInfoDTO dto,
 			HttpServletRequest request) throws Exception {
 		ZoneLicenseAllowInfoVO vo = modelMapper.map(dto, ZoneLicenseAllowInfoVO.class);
-
 		List<ZoneLicenseAllowInfoVO> volist = zoneService.findAllZoneList(vo);
-
 		int totalCount = zoneService.countZoneInfo();
-		log.info("ZONELICENSEALLOWINFOPAGE COUNT : " + totalCount);
-
 		JSONObject result = new JSONObject();
 		result.put("data", volist);
 		result.put("totalCount", totalCount);
-
 		return result;
 	}
 
@@ -288,8 +283,6 @@ public class ZoneAPIController {
 	public CommonResponseDTO<Object> updateLicense(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			ZoneLicenseUpdateDTO dto) {
-		log.info("[updateLicense => ZoneLicenseUpdateDTO] {}", dto.toString());
-
 		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
 		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null)
 			throw new TokenValidationException();
@@ -300,6 +293,7 @@ public class ZoneAPIController {
 		if (dto.getAsis_taa_ip() == "" || dto.getAsis_license_type() == 0) {
 			log.warn("PARAMETER EXCEPTION");
 		}
+		log.info("Put License => " + securityVO.getUser_id());
 
 		ZoneLicenseUpdateVO vo = modelMapper.map(dto, ZoneLicenseUpdateVO.class);
 
@@ -327,8 +321,6 @@ public class ZoneAPIController {
 	public CommonResponseDTO<Object> deleteLicense(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			ZoneLicenseInfoDTO dto) {
-		log.info("[deleteLicense => ZoneLicenseInfoDTO\n] {}", dto.toString());
-
 		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
 		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null)
 			throw new TokenValidationException();
@@ -341,6 +333,7 @@ public class ZoneAPIController {
 			log.warn("PARAMETER EXCEPTION");
 			throw new ParameterException();
 		}
+		log.info("Delete License => " + securityVO.getUser_id());
 
 		ZoneLicenseInfoVO vo = modelMapper.map(dto, ZoneLicenseInfoVO.class);
 		ZoneLicenseInfoVO infoVO = modelMapper.map(vo, ZoneLicenseInfoVO.class);
@@ -350,16 +343,15 @@ public class ZoneAPIController {
 		ZoneResultEnum retEnum = result ? ZoneResultEnum.SUCCESS : ZoneResultEnum.FAIL;
 		ZoneInfoResponseDTO resDTO = new ZoneInfoResponseDTO(retEnum);
 
-		if (!result)
+		if (!result) {
 			return CommonResponseDTO.builder().data(resDTO).build();
+		}
 
 		ZoneLicenseHistoryInfoVO historyVO = modelMapper.map(retinfoVO,
 				ZoneLicenseHistoryInfoVO.class);
 		historyVO.setAction("D");
 		historyVO.setIssuer_user_no(securityVO.getUser_no());
 		result = zoneService.saveZoneLicenseHistory(historyVO);
-
-		log.info("[enroll => CompanyResponseInfoDTO\n] {}", resDTO.toString());
 
 		return CommonResponseDTO.builder().data(resDTO).build();
 	}
@@ -403,17 +395,6 @@ public class ZoneAPIController {
 		int tobetpl = vo.getTobe_tpl_count();
 		String limited_url = vo.getTobe_limited_url();
 
-		//		log.info("vo ZONE_NAME"+asiszonename);
-		//		log.info("vo ASIS RENO"+asisreno);
-		//		log.info("vo ASIS STATIC"+asisplcnt);
-		//		log.info("vo ASIS DYNAMIC"+asistplcnt);
-		//		log.info("vo ASIS LIMIT"+asislimit);
-		//		log.info("vo TOBE RENO"+tobereno);
-		//		log.info("vo TOBE STATIC"+tobepl);
-		//		log.info("vo TOBE DYNAMIC"+tobetpl);
-		//		log.info("vo TOBE LIMIT"+limited_url);
-		log.info("======================================");
-
 		lc.sZoneName = asiszonename;
 		lc.unAsisRevNo = asisreno;
 		lc.unAsisStaticCnt = asisplcnt;
@@ -432,19 +413,6 @@ public class ZoneAPIController {
 
 		lc.sTobeLimitUrl = limited_url;
 
-		log.info("ZONE_NAME = " + lc.sZoneName);
-		log.info("ASIS RENO = " + lc.unAsisRevNo);
-		log.info("ASIS STATIC = " + lc.unAsisStaticCnt);
-		log.info("ASIS DYNAMIC = " + lc.unAsisDynamicCnt);
-		log.info("ASIS LIMIT = " + lc.sAsisLimitUrl);
-		log.info("TOBE RENO = " + lc.unTobeRevNo);
-		log.info("TOBE STATIC = " + lc.unTobeStaticCnt);
-		log.info("TOBE DYNAMIC = " + lc.unTobeDynamicCnt);
-		log.info("TOBE LIMIT = " + lc.sTobeLimitUrl);
-
-		// server = zone=white&info=estl2UBlJIACKmUhQ2dxZpq+z6gyUsldZOkwLD6xYI3jcOVHpBi291uUAGPvJzJuHTecpnNCxRrtZc5JPDyUQQ==
-		// local =  zone=white&info=8ZClZut2uc5WhaRVAnepXgQvIc96KeO5VpZIQqSKA4nd1jaKNrEDEpxPcswm18WUvTvRVYagW1d89zci9jn4/g==
-
 		try {
 			String sReqMsg = Integrity.generateLicenseRequest(lc);
 			log.info("Request Message  :" + sReqMsg);
@@ -455,8 +423,6 @@ public class ZoneAPIController {
 			return CommonResponseDTO.builder().data("error").build();
 		}
 
-		//CREATE QR CODE 
-		//		return sReqMsg;
 	}
 
 	@GetMapping("/zone/verify-enroll")
@@ -465,29 +431,21 @@ public class ZoneAPIController {
 			throws TNAuthException {
 		ZoneVerifyIntegrityVO vo = modelMapper.map(dto, ZoneVerifyIntegrityVO.class);
 		String sResponseMsg = vo.getValue();
-		log.info("RESPONSE MSG :" + sResponseMsg);
 		TNLicenseInfo lc = new TNLicenseInfo();
 		lc = Integrity.verifyLicenseResponse(sResponseMsg);
 
 		String name = lc.sZoneName;
 		String message = lc.sType;
 		String timestamp = lc.sTimeStamp;
-		log.info(lc.sZoneName);
 
 		int zone_no = zoneService.getZoneNoWithZoneName(name);
-		log.info("zone number > " + zone_no);
 
 		ZoneInfoVO infoVO = zoneService.getZoneInfoWithNo(zone_no);
-		log.info("INFOVO TOSTRING >> "+infoVO.toString());
 		int maxST = infoVO.getPl_license_cnt();
-		int maxDY= infoVO.getTpl_license_cnt();
-		
-		
-		
+		int maxDY = infoVO.getTpl_license_cnt();
+
 		int stVO = zoneService.getAgentStaticAllow(zone_no);
 		int dyVO = zoneService.getAgentDynamicAllow(zone_no);
-		log.info("static > " + stVO);
-		log.info("dynamic > " + dyVO);
 
 		int asisreno = lc.unAsisRevNo; // 기존 개정번호
 		int asispl = lc.unAsisStaticCnt; // 기존 STATIC CNT
@@ -511,23 +469,6 @@ public class ZoneAPIController {
 		String stringdynamicVO = Integer.toString(dyVO);
 		String maxSTATIC = Integer.toString(maxST);
 		String maxDYNAMIC = Integer.toString(maxDY);
-		//		log.info("=============STRING==================");
-		//		log.info("| 개정 번호 : " + stringasreno);
-		//		log.info("| 기존 정적 : " + stringaspl);
-		//		log.info("| 기존 동적 : " + stringastpl);
-		//		log.info("| 개정될 개정 번호 : " + stringbereno);
-		//		log.info("| 입력 정적 : " + stringbepl);
-		//		log.info("| 입력 동적 : " + stringbetpl);
-		log.info("============== INT ====================");
-		log.info("| | 개정 번호 : " + asisreno);
-		log.info("| | 최대 정적 : " + asispl);
-		log.info("| | 최대 동적 : " + asistpl);
-		log.info("| | 개정될 개정 번호 : " + tobereno);
-		log.info("| | 요청 정적 : " + tobepl);
-		log.info("| | 요청 동적 : " + tobetpl);
-		log.info("| | icv : " + integrity);
-		log.info("============== INT ====================");
-
 		String result[] = { name, stringbereno, stringbepl, maxSTATIC, stringbetpl,
 				maxDYNAMIC, tobelimited, integrity, stringstaticVO, stringdynamicVO };
 
@@ -535,17 +476,24 @@ public class ZoneAPIController {
 	}
 
 	@PutMapping("/zone/license-enroll")
-	public CommonResponseDTO<Object> updateLicenseInfo(
-			@Validated ZoneLicenseUpdateDBDTO dto, BindingResult errors)
-			throws TNAuthException {
-		//error 처리 해주고 dto.gettobepl < dto.getasispl   -> 오류임
-		log.info("============== LICENSE ENROLL DTO VALUE : " + dto.toString());
+	public CommonResponseDTO<Object> enrollLicense(
+			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
+			ZoneLicenseUpdateDBDTO dto) {
+		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
+		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null) {
+			throw new TokenValidationException();
+		}
+
+		if (!securityVO.getUser_id().equalsIgnoreCase("admin")) {
+			throw new TokenValidationException();
+		}
+		log.info("Put License => " + securityVO.getUser_id());
+
 		ZoneLicenseUpdateDBVO vo = modelMapper.map(dto, ZoneLicenseUpdateDBVO.class);
-		boolean result = zoneService.updateLicenseInfo(vo); // PUT zone info tbl static/dynamic count 
+		boolean result = zoneService.updateLicenseInfo(vo);
 		ZoneResultEnum retEnum = result ? ZoneResultEnum.SUCCESS
 				: ZoneResultEnum.UPDATEERROR;
 
-		//		log.info(ZoneResultEnum.SUCCESS.getErrorMessage());
 		ZoneInfoResponseDTO resDTO = new ZoneInfoResponseDTO(retEnum);
 		if (!result)
 			return CommonResponseDTO.builder().data(resDTO).build();
@@ -559,11 +507,8 @@ public class ZoneAPIController {
 
 		try {
 			ZoneAgentCreateFileVO vo = modelMapper.map(dto, ZoneAgentCreateFileVO.class);
-			log.info(vo.toString());
 			String zone_name = vo.getZone_name();
-			log.info(vo.getZone_name());
 			String tam_local_ip_1 = vo.getTam_local_ip_1();
-			log.info(vo.getTam_local_ip_1());
 			String tam_local_port_1 = vo.getTam_local_port_1();
 			String tam_local_ip_2 = vo.getTam_local_ip_2();
 			String tam_local_port_2 = vo.getTam_local_port_2();
@@ -575,21 +520,17 @@ public class ZoneAPIController {
 			String enc_tam_local_ip2 = Integrity.tasEncrypt(zone_name, tam_local_ip_2);
 			String enc_tam_local_port2 = Integrity.tasEncrypt(zone_name,
 					tam_local_port_2);
-			log.info("encrypt ip2 port 2" + enc_tam_local_port2);
-			log.info(enc_tam_local_port2);
 			int intport1 = Integer.parseInt(tam_local_port_1);
 			int intport2 = Integer.parseInt(tam_local_port_2);
 
 			String hmac = Integrity.generateTAAConfIntegrity(zone_name, tam_local_ip_1,
 					intport1, tam_local_ip_2, intport2, taa_ip, license);
-			log.info("HMAC VALUE :" + hmac);
 			String taaFile[] = { enc_tam_local_ip, enc_tam_local_port, enc_tam_local_ip2,
 					enc_tam_local_port2, hmac };
 			return CommonResponseDTO.builder().data(taaFile).build();
 
 		} catch (Exception e) {
 			ZoneAgentCreateFileVO vo = modelMapper.map(dto, ZoneAgentCreateFileVO.class);
-			log.info("CATCH START");
 			String zone_name = vo.getZone_name();
 			String tam_local_ip_1 = vo.getTam_local_ip_1();
 			String tam_local_port_1 = vo.getTam_local_port_1();
@@ -604,12 +545,6 @@ public class ZoneAPIController {
 
 			String hmac = Integrity.generateTAAConfIntegrity(zone_name, tam_local_ip_1,
 					intport1, tam_local_ip_2, intport2, taa_ip, license);
-			log.info("CATCH HMAC VALUE :" + hmac);
-
-			// red / 999999 / 10.10.10.1 / 1 / 10.10.10.10
-			//iXNin5poB81SqSDf5BdR2JA2QlQ5orGFA3jQ8ALnFoU=
-
-			// iXNin5poB81SqSDf5BdR2JA2QlQ5orGFA3jQ8ALnFoU=
 
 			String cat[] = { enc_tam_local_ip, enc_tam_local_port, hmac };
 
@@ -618,7 +553,6 @@ public class ZoneAPIController {
 
 	}
 
-	//fail
 	@GetMapping("/zone/read-file")
 	public CommonResponseDTO<Object> ZoneAgentVerifyFile(
 			@Validated ZoneSettingFileDTO dto, BindingResult errors)
@@ -637,9 +571,6 @@ public class ZoneAPIController {
 
 		try {
 			ZoneSettingFileVO vo = modelMapper.map(dto, ZoneSettingFileVO.class);
-			// dto에 담긴값들은 모두 . 파일에서 긁어온 값들임 
-
-			log.info("try flow" + vo.toString());
 			String zone_name = vo.getZone_name().trim();
 			String tam_local_ip_1 = vo.getTam_local_ip_1().trim();
 			String tam_local_port_1 = vo.getTam_local_port_1();
@@ -657,11 +588,7 @@ public class ZoneAPIController {
 			String decIP = Integrity.tasDecrypt(zone_name, tam_local_ip_1);
 			String decIP2 = Integrity.tasDecrypt(zone_name, tam_local_ip_2);
 
-			log.info("READ FILE HMAC VALUE " + dto.getHmac());
 			String readhmac = dto.getHmac();
-
-			log.info("VO LICENSE :" + vo.getLicense());
-			log.info("LICENSE :" + license);
 
 			String createhmac = Integrity.generateTAAConfIntegrity(zone_name, decIP,
 					dec_port, decIP2, dec_port2, taa_ip, license); // Agent 환경파일 검증 성공
@@ -683,10 +610,8 @@ public class ZoneAPIController {
 					license, readhmac, createhmac };
 			return CommonResponseDTO.builder().data(value).build();
 		} catch (Exception e) {
-			log.info("CATCH flow");
 			ZoneSettingFileVO vo = modelMapper.map(dto, ZoneSettingFileVO.class);
 
-			log.info(vo.toString());
 			String zone_name = vo.getZone_name().trim();
 			String tam_local_ip_1 = vo.getTam_local_ip_1().trim();
 			String tam_local_port_1 = vo.getTam_local_port_1();
@@ -712,12 +637,8 @@ public class ZoneAPIController {
 			int dec_port2 = 0;
 
 			String readhmac = vo.getHmac();
-			log.info("CATCH READ HMAC VALUE :" + readhmac);
-			log.info("LICENSE VALUE :" + license);
 			String createhmac = Integrity.generateTAAConfIntegrity(zone_name, decIP,
 					dec_port, decIP2, dec_port2, taa_ip, license); // Agent 환경파일 검증 성공
-
-			log.info("CATCH CREATE HMAC VALUE :" + createhmac);
 
 			switch (license) {
 			case "정적":
@@ -749,11 +670,8 @@ public class ZoneAPIController {
 		List<ZoneWetherLicenseDTO> cntdto = modelMapper.map(cntVO,
 				new TypeToken<List<ZoneWetherLicenseDTO>>() {
 				}.getType());
-		log.info("==========COUNT DTO =============" + cntdto.toString()); // zone_no로 get PL TPL 
 		String licensevalue = cntdto.get(0).getPl_license_cnt();
-		//		log.info("pl license Value ========" + licensevalue);
 		String tpllicensevalue = cntdto.get(0).getTpl_license_cnt();
-		//		log.info("tpl license Value ========" + tpllicensevalue);
 
 		ZoneWetherLicenseVO pubvo = modelMapper.map(dto, ZoneWetherLicenseVO.class); // PUBLISH == 발급 개수 
 
@@ -761,25 +679,21 @@ public class ZoneAPIController {
 		List<ZoneWetherLicenseDTO> pubDTO = modelMapper.map(pubVO,
 				new TypeToken<List<ZoneWetherLicenseDTO>>() {
 				}.getType());
-		log.info("PUBLISH PL DTO" + pubDTO); // publish_pl_cnt
 
 		List<ZoneWetherLicenseVO> pubPVO = zoneService.tpllicensePublish(pubvo);
 		List<ZoneWetherLicenseDTO> pubPDTO = modelMapper.map(pubPVO,
 				new TypeToken<List<ZoneWetherLicenseDTO>>() {
 				}.getType());
-		log.info("PUBLISH TPL DTO" + pubPDTO); // publish_tpl_cnt
 
 		List<ZoneWetherLicenseVO> denyvo = zoneService.denyCount(pubvo);
 		List<ZoneWetherLicenseDTO> denydto = modelMapper.map(denyvo,
 				new TypeToken<List<ZoneWetherLicenseDTO>>() {
 				}.getType());
-		log.info("PUBLISH deny PL DTO" + denydto);
 
 		List<ZoneWetherLicenseVO> denytplvo = zoneService.denyTplCount(pubvo);
 		List<ZoneWetherLicenseDTO> denytpldto = modelMapper.map(denytplvo,
 				new TypeToken<List<ZoneWetherLicenseDTO>>() {
 				}.getType());
-		log.info("PUBLISH deny TPL DTO" + denytpldto);
 
 		ZoneTimeLicenseVO tmvo = modelMapper.map(dto, ZoneTimeLicenseVO.class);
 
@@ -788,40 +702,24 @@ public class ZoneAPIController {
 				new TypeToken<List<ZoneTimeLicenseDTO>>() {
 				}.getType());
 
-		log.info("TIMELICENSE VO : " + tmvo.toString());
-
 		List<ZoneTimeLicenseVO> tmpubvo = zoneService.timeLicensePublishCount(tmvo);
 		List<ZoneTimeLicenseDTO> tmpubdto = modelMapper.map(tmpubvo,
 				new TypeToken<List<ZoneTimeLicenseDTO>>() {
 				}.getType());
-		log.info("TIMELICENSE PUBLISH DTO : " + tmpubdto.toString());
 
 		int zone_no = tmvo.getZone_no();
 		List<ZoneTimeLicenseVO> tmdenyvo = zoneService.timeLicenseDenyCount(zone_no);
 		List<ZoneTimeLicenseDTO> tmdenydto = modelMapper.map(tmdenyvo,
 				new TypeToken<List<ZoneTimeLicenseDTO>>() {
 				}.getType());
-		log.info("TIMELICENSE DENY DTO : " + tmdenydto.toString());
-
-		log.info("--------------TIMELICENSE DTO TEST ----------------------"
-				+ tmdto.toString());
-		log.info("--------------TIMELICENSE DTO SIZE ----------------------"
-				+ tmdto.size());
-
-		// 이다음을 실행을 못함 가져오는값이 없으니까 0번째 배열에서 값추출을 못함
 
 		String puilsh_pl = pubDTO.get(0).getPub_pl_cnt();
-		log.info("PUBLISH PL : " + puilsh_pl);
 		String publish_tpl = pubPDTO.get(0).getPub_tpl_cnt();
-		//		log.info("PUBLISH TPL : "+publish_tpl);
 		String denyPlCnt = denydto.get(0).getDeny_cnt();
-		//		log.info("DENY COUNT : "+ denyPlCnt);
 		String denyTplCnt = denytpldto.get(0).getDeny_tpl_cnt();
-		//		log.info("DENY TPL COUNT : "+ denyTplCnt);
 
 		String value[] = { licensevalue, tpllicensevalue, puilsh_pl, publish_tpl,
 				denyPlCnt, denyTplCnt };
-		log.info("VALUE : " + Arrays.toString(value));
 		return value;
 	}
 
@@ -830,23 +728,13 @@ public class ZoneAPIController {
 			BindingResult errors) throws TNAuthException {
 
 		try {
-
 			ZoneTimeLicenseVO vo = modelMapper.map(dto, ZoneTimeLicenseVO.class);
-			log.info("AGENT TIMELICENSE COUNT = " + vo.toString());
 
-			//		시간제한 라이선스 
-			//		최대 허용 개수 = LICENSE_TMLIMIT_INFO_TBL > allowed_cnt
-			//		현재 발급 개수 = TAA_INFO_TBL > license_type = 3 && allow_state =1;
-			//		현재 거부 개수 = TAA_INFO_TBL > license_type = 3 && allow_state =2;
 			int zone_no = vo.getZone_no();
-
 			int allowed_cnt = zoneService.tmAllowedCount(zone_no);
 			int publish_cnt = zoneService.tmPublishCount(zone_no);
 			int deny_cnt = zoneService.tmDenyCount(zone_no);
 
-			log.info("Allowed cnt" + allowed_cnt);
-			log.info("Publish cnt" + publish_cnt);
-			log.info("Deny cnt" + deny_cnt);
 			int result[] = { allowed_cnt, publish_cnt, deny_cnt };
 
 			return CommonResponseDTO.builder().data(result).build();
@@ -855,30 +743,6 @@ public class ZoneAPIController {
 			return CommonResponseDTO.builder().data(result).build();
 		}
 	}
-	//	@GetMapping("/zone/agent-timelicense")
-	//	public CommonResponseDTO<Object> getTimeLicenseCnt(
-	//			@Validated ZoneTimeLicenseDTO dto, BindingResult errors) throws TNAuthException {
-	//		
-	//		ZoneTimeLicenseVO vo = modelMapper.map(dto, ZoneTimeLicenseVO.class);
-	//		log.info("AGENT TIMELICENSE COUNT = "+vo.toString());
-	//		
-	////		시간제한 라이선스 
-	////		최대 허용 개수 = LICENSE_TMLIMIT_INFO_TBL > allowed_cnt
-	////		현재 발급 개수 = TAA_INFO_TBL > license_type = 3 && allow_state =1;
-	////		현재 거부 개수 = TAA_INFO_TBL > license_type = 3 && allow_state =2;
-	//		int zone_no = vo.getZone_no();
-	//		
-	//		int allowed_cnt = zoneService.tmAllowedCount(zone_no);
-	//		int publish_cnt = zoneService.tmPublishCount(zone_no);
-	//		int deny_cnt = zoneService.tmDenyCount(zone_no);
-	//		
-	//		log.info("Allowed cnt"+allowed_cnt);
-	//		log.info("Publish cnt"+publish_cnt);
-	//		log.info("Deny cnt"+deny_cnt);
-	//		int result [] = {allowed_cnt, publish_cnt, deny_cnt};
-	//		
-	//		return CommonResponseDTO.builder().data(result).build();
-	//	}
 
 	@PutMapping("/zone/wether-allow")
 	public CommonResponseDTO<Object> updateAllowValue(
@@ -925,9 +789,6 @@ public class ZoneAPIController {
 	@GetMapping("/agent/pl-license")
 	public CommonResponseDTO<Object> taaPlType(@Validated ZoneWetherLicenseDTO dto,
 			BindingResult errors) {
-		log.info(
-				"=========================================================================================");
-		log.info("PL LICENSE controller 탔음" + dto.toString());
 
 		ZoneWetherLicenseVO vo = modelMapper.map(dto, ZoneWetherLicenseVO.class);
 		List<ZoneWetherLicenseVO> cntVO = zoneService.taaPlType(vo);
@@ -942,7 +803,6 @@ public class ZoneAPIController {
 	@GetMapping("/agent/tpl-license")
 	public CommonResponseDTO<Object> taaTplType(@Validated ZoneWetherLicenseDTO dto,
 			BindingResult errors) {
-		//log.info("TPL LICENSE controller 탔음" + dto.toString());
 		ZoneWetherLicenseVO vo = modelMapper.map(dto, ZoneWetherLicenseVO.class);
 		List<ZoneWetherLicenseVO> cntVO = zoneService.taaTplType(vo);
 		List<ZoneWetherLicenseDTO> cntdto = modelMapper.map(cntVO,
@@ -970,8 +830,13 @@ public class ZoneAPIController {
 	public CommonResponseDTO<Object> updateTimelimitLicense(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			@Validated ZoneTimeLicenseDTO dto, BindingResult errors) {
-		log.info("[updateZone => ZoneTimeLicenseDTO\n] {}", dto.toString());
-		log.info("[icv => ZONETIMELICENSE ICV VALUE : ] {}", dto.getIcv());
+		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
+		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null)
+			throw new TokenValidationException();
+
+		if (!securityVO.getUser_id().equalsIgnoreCase("admin"))
+			throw new TokenValidationException();
+		log.info("License Enroll TIMELIMIT => " + securityVO.getUser_id());
 
 		if (errors.hasErrors()) {
 			ManagerInfoResponseDTO resDTO = new ManagerInfoResponseDTO(-7070,
@@ -980,7 +845,6 @@ public class ZoneAPIController {
 		}
 
 		ZoneTimeLicenseVO vo = modelMapper.map(dto, ZoneTimeLicenseVO.class);
-		log.info("zonetimelicensevo : " + vo);
 		boolean result = zoneService.updateTimelimitLicense(vo);
 
 		ZoneResultEnum retEnum = result ? ZoneResultEnum.SUCCESS
@@ -990,13 +854,6 @@ public class ZoneAPIController {
 		if (!result)
 			return CommonResponseDTO.builder().data(resDTO).build();
 
-		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
-		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null)
-			throw new TokenValidationException();
-
-		if (!securityVO.getUser_id().equalsIgnoreCase("admin"))
-			throw new TokenValidationException();
-
 		return CommonResponseDTO.builder().data(resDTO).build();
 	}
 
@@ -1004,7 +861,6 @@ public class ZoneAPIController {
 	public CommonResponseDTO<Object> timelimitHistory(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			@Validated ZoneTimeLicenseHistoryDTO dto, BindingResult errors) {
-		log.info("[history => ZoneTimeLicenseHistoryDTO\n] {}", dto.toString());
 
 		if (errors.hasErrors()) {
 			ManagerInfoResponseDTO resDTO = new ManagerInfoResponseDTO(-7070,
@@ -1018,10 +874,10 @@ public class ZoneAPIController {
 		ZoneTimeLicenseHistoryVO historyVO = zoneService
 				.findTimeLicenseInfoAsZoneName(vo);
 
-		int zone_no = historyVO.getZone_no(); // white기준 71번 나옴
+		int zone_no = historyVO.getZone_no(); 
 
-		vo.setZone_no(zone_no); // ZONE_NAME으로 구해온 ZONE_NO 
-		vo.setAction("C"); //postmapping에 한해서 C 고정값 가능
+		vo.setZone_no(zone_no); 
+		vo.setAction("C"); 
 
 		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
 		if (securityVO.getUser_no() == 0 || securityVO.getUser_id() == null)
@@ -1030,8 +886,6 @@ public class ZoneAPIController {
 		if (!securityVO.getUser_id().equalsIgnoreCase("admin"))
 			throw new TokenValidationException();
 		vo.setIssuer_user_no(securityVO.getUser_no());
-
-		//		log.info("XML에 드가는값 : " + vo.toString());
 
 		boolean result = zoneService.saveTimeLicenseHistory(vo);
 		ZoneResultEnum resultEnum = result ? ZoneResultEnum.SUCCESS
@@ -1052,7 +906,6 @@ public class ZoneAPIController {
 
 		int length = full.length;
 		String len = Integer.toString(length);
-		log.info("arrays length :" + len);
 
 		if (length != 5) {
 			return CommonResponseDTO.builder().data("length null").build();
@@ -1060,21 +913,18 @@ public class ZoneAPIController {
 			String name = full[0].trim();
 			String ip = full[1].trim();
 			String cnt = full[2].trim();
-			//			int allow_cnt = Integer.parseInt(cnt);
 			String limit = full[3].trim();
 			String integrity = full[4].trim();
 
 			try {
 				boolean ret = Integrity.verifyTimeLicenseIntegrity(name, ip,
 						Integer.valueOf(cnt), limit, integrity);
-				//				boolean ret = Integrity.verifyTimeLicenseIntegrity(name, ip, allow_cnt,limit, integrity);
-				log.info("boolean > " + ret);
 				String parse[] = { name, ip, cnt, limit, integrity };
 				return CommonResponseDTO.builder().data(parse).build();
 			} catch (Exception e) {
 				JSONObject err = new JSONObject();
 				err.put("errorCode", -1);
-				err.put("errorMessage", "icv 값 검증 오류");
+				err.put("errorMessage", "잘못된 라이선스 정보입니다");
 
 				return CommonResponseDTO.builder().data(err).build();
 			}
@@ -1100,21 +950,12 @@ public class ZoneAPIController {
 	@GetMapping("/zone/timelicense-history")
 	public JSONObject findTimeLicenseHistory(@Validated ZoneTimeLicenseHistoryDTO dto,
 			HttpServletRequest request) throws Exception {
-		log.info("dto list : " + dto.toString());
 		ZoneTimeLicenseHistoryVO vo = modelMapper.map(dto,
 				ZoneTimeLicenseHistoryVO.class);
-
-		log.info("=======timelicense HISTORY VO =============" + vo.toString());
 		List<ZoneTimeLicenseHistoryVO> volist = zoneService.findTimeLicenseHistory(vo);
-		log.info("========t SERVICE 태우고 난 후 LICENSEHISTORYVOLIST========="
-				+ volist.toString());
-
 		String filter = vo.getFilter();
-
 		int totalCount = zoneService.countZonetmLicenseHistory(filter);
 		String strcount = Integer.toString(totalCount);
-		log.info("timelicense HISTORY COUNT : " + strcount);
-
 		JSONObject result = new JSONObject();
 		result.put("data", volist);
 		result.put("totalCount", totalCount);
@@ -1127,14 +968,10 @@ public class ZoneAPIController {
 			HttpServletRequest request) throws Exception {
 		ZoneLicenseStateHistoryInfoVO vo = modelMapper.map(dto,
 				ZoneLicenseStateHistoryInfoVO.class);
-
 		String filter = vo.getFilter();
-		log.info("filter > > >  " + filter);
-
 		if (filter != "") { // filter가 존재
 			List<ZoneLicenseStateHistoryInfoVO> volist = zoneService
 					.requestLicenseHistory(vo);
-
 			int totalCount = zoneService.countLicenseStateHistory(filter); // 총 개수
 
 			JSONObject result = new JSONObject();
@@ -1142,10 +979,9 @@ public class ZoneAPIController {
 			result.put("totalCount", totalCount);
 
 			return result;
-		} else {// filter가 없는거 
+		} else {
 			List<ZoneLicenseStateHistoryInfoVO> volist = zoneService
 					.requestLicenseHistoryWithNoFilter(vo);
-
 			int totalCount = zoneService.countLicenseStateHistoryWithNoFilter(); // 총 개수
 
 			JSONObject result = new JSONObject();
@@ -1179,37 +1015,5 @@ public class ZoneAPIController {
 
 		return CommonResponseDTO.builder().data("a").build();
 	}
-
-	//		@RequestMapping("/zone/history")
-	//		public JSONObject requestLicenseHistory(@Validated ZoneLicenseStateHistoryInfoDTO dto,
-	//				HttpServletRequest request) throws Exception {
-	//			//
-	//			//		log.info("==============ZONE HISTORY DTO ========================"+ dto.toString());0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-	//			//		int nPerPage = dto.getNPerPage();
-	//			//		int currentPage = dto.getCurrentPageNumber();
-	//			//		int startValue = dto.getStartvalue();
-	//			//
-	//			//		String stringpage = Integer.toString(nPerPage);
-	//			//		String stringnumber = Integer.toString(currentPage);
-	//			//		String stringvalue = Integer.toString(startValue);
-	//			//
-	//			//		log.info("nPerPage : " + stringpage);
-	//			//		log.info("page number : " + stringnumber);
-	//			//		log.info("start value : " + stringvalue);
-	//
-	//			ZoneLicenseStateHistoryInfoVO vo = modelMapper.map(dto, ZoneLicenseStateHistoryInfoVO.class);
-	//
-	//			log.info(
-	//					"==============ZONE HISTORY VP ========================" + vo.toString());
-	//			List<ZoneLicenseStateHistoryInfoVO> licenseHistoryVOList = zoneService
-	//					.requestLicenseHistory(vo);
-	//			log.info(
-	//					"==============ZONE SERVICE 태우고 난 후 LICENSEHISTORYVOLIST========================"
-	//							+ licenseHistoryVOList.toString());
-	//			JSONObject result = new JSONObject();
-	//			result.put("data", licenseHistoryVOList);
-	//
-	//			return result;
-	//		}
 
 }

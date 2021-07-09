@@ -53,7 +53,6 @@ public interface ManagerMapper {
 	int saveControllerHistoryInfo(ControllerHistoryENTITY entity);
 	List<ManagerHistoryInfoENTITY> findAllManagerHistoryAsTamNo(ManagerInfoENTITY entity);
 	List<ManagerCreateFileENTITY> findAllManagerName(ManagerCreateFileENTITY entity);
-//	String createHMAC();
 	ManagerGenerateHmacENTITY genHmac(ManagerGenerateHmacVO vo);
 	List<ManagerCreateFileENTITY> findAllManagerName();
 	List<ManagerCreateFileENTITY> findAllServiceName();

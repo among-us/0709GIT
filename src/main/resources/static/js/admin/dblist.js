@@ -11,8 +11,8 @@ $(function(){
 		  iconColor : 'orange',
 		  showCancelButton: true,
 		  confirmButtonColor: '#d33',
-		  cancelButtonColor: 'lightgray',
-		  cancelButtonText: '<span style="color : black">취소</span>',
+		  cancelButtonColor: '#5a5c69',
+		  cancelButtonText: '<span class="text-white">취소</span>',
 		  confirmButtonText: '삭제하겠습니다'
 		}).then((result) => {
 		  if (result.isConfirmed) {

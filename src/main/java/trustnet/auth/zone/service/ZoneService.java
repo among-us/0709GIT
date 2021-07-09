@@ -63,17 +63,11 @@ public class ZoneService {
 	private final ModelMapper modelMapper;
 
 	public boolean saveZoneInfo(ZoneInfoVO vo) {
-		///////////////////////////////////////////////////나중에 수정요망 
-		//		vo.setHmac(commonService.getHMAC());
-		///////////////////////////////////////////////////
 		int result = mapper.saveZoneInfo(vo);
 		return result > 0;
 	}
 
 	public boolean saveTimeLicenseHistory(ZoneTimeLicenseHistoryVO vo) {
-		///////////////////////////////////////////////////나중에 수정요망 
-		//		vo.setHmac(commonService.getHMAC());
-		///////////////////////////////////////////////////
 		int result = mapper.saveTimeLicenseHistory(vo);
 		return result > 0;
 	}
@@ -82,11 +76,6 @@ public class ZoneService {
 		int result = mapper.saveZoneLicenseInfo(vo);
 		return result > 0;
 	}
-
-	//	public boolean saveTimeZoneLicenseInfo(ZoneTimeLicenseVO vo) {
-	//		int result = mapper.saveTimeZoneLicenseInfo(vo);
-	//		return result > 0;
-	//	}
 
 	public List<ZoneLicenseAllowInfoVO> findAllZoneList(ZoneLicenseAllowInfoVO vo) {
 		List<ZoneLicenseAllowInfoENTITY> entityList = mapper.findAllZoneList(vo);
@@ -143,9 +132,6 @@ public class ZoneService {
 	}
 
 	public boolean updateAllowValue(ZoneWetherLicenseVO vo) {
-		///////////////////////////////////////////////////나중에 수정요망 
-		//		vo.setHmac(commonService.getHMAC());
-		///////////////////////////////////////////////////
 		ZoneWetherLicenseENTITY entity = modelMapper.map(vo,
 				ZoneWetherLicenseENTITY.class);
 		int result = mapper.updateAllowValue(entity);
@@ -153,9 +139,6 @@ public class ZoneService {
 	}
 
 	public boolean updateRejectValue(ZoneWetherLicenseVO vo) {
-		///////////////////////////////////////////////////나중에 수정요망 
-		//		vo.setHmac(commonService.getHMAC());
-		///////////////////////////////////////////////////
 		ZoneWetherLicenseENTITY entity = modelMapper.map(vo,
 				ZoneWetherLicenseENTITY.class);
 		int result = mapper.updateRejectValue(entity);
@@ -172,7 +155,6 @@ public class ZoneService {
 	public boolean updateZoneLicenseInfo(ZoneLicenseUpdateVO vo) {
 		ZoneLicenseUpdateENTITY entity = modelMapper.map(vo,
 				ZoneLicenseUpdateENTITY.class);
-		log.info(entity.toString());
 		int result = mapper.updateZoneLicenseInfo(entity);
 		return result > 0;
 	}
@@ -209,13 +191,6 @@ public class ZoneService {
 		return retVOLIST;
 	}
 
-	//	public List<ZoneNLicenseInfoVO> findAllZoneLicenseListAsZoneNO(ZoneLicenseInfoVO vo) {
-	//		ZoneLicenseInfoENTITY entity = modelMapper.map(vo,new TypeToken<List<ZoneLicenseInfoENTITY>>() {}.getType());
-	//		List<ZoneNLicenseInfoENTITY> retENTITY = mapper.findAllZoneLicenseListAsZoneNO(entity);
-	//		List<ZoneNLicenseInfoVO> retVOLIST = modelMapper.map(retENTITY,new TypeToken<List<ZoneNLicenseInfoVO>>() {}.getType());
-	//		return retVOLIST;
-	//	}
-
 	public boolean deleteZoneLicenseInfo(ZoneLicenseInfoVO vo) {
 		ZoneLicenseInfoENTITY entity = modelMapper.map(vo, ZoneLicenseInfoENTITY.class);
 		int result = mapper.deleteZoneLicenseInfo(entity);
@@ -227,12 +202,6 @@ public class ZoneService {
 		int result = mapper.saveZoneHistory(entity);
 		return result > 0;
 	}
-
-	//	public boolean saveTimeLicenseHistory(ZoneTimeLicenseHistoryVO vo) {
-	//		ZoneTimeLicenseHistoryENTITY entity = modelMapper.map(vo, ZoneTimeLicenseHistoryENTITY.class);
-	//		int result = mapper.saveTimeLicenseHistory(entity);
-	//		return result > 0;
-	//	}
 
 	public ZoneInfoVO findZoneInfoAsZoneName(ZoneInfoVO vo) {
 		ZoneInfoENTITY entity = modelMapper.map(vo, ZoneInfoENTITY.class);
@@ -252,7 +221,6 @@ public class ZoneService {
 		return retVO;
 	}
 
-	//	List<ZoneHistoryInfoENTITY> findAllZoneHistoryAsZoneNo(ZoneInfoENTITY entity);
 	public List<ZoneHistoryInfoVO> findAllZoneHistoryAsZoneNo(ZoneInfoVO vo) {
 		ZoneInfoENTITY entity = modelMapper.map(vo, ZoneInfoENTITY.class);
 		List<ZoneHistoryInfoENTITY> entityList = mapper
@@ -285,7 +253,6 @@ public class ZoneService {
 		return retVO;
 	}
 
-	//	List<ZoneLicenseHistoryInfoENTITY> findZoneLicenseHistoryInfo(ZoneLicenseInfoENTITY entity);
 	public List<ZoneLicenseHistoryInfoVO> findZoneLicenseHistoryInfo(ZoneInfoVO vo) {
 		ZoneInfoENTITY entity = modelMapper.map(vo, ZoneInfoENTITY.class);
 		List<ZoneLicenseHistoryInfoENTITY> entityList = mapper
@@ -296,7 +263,6 @@ public class ZoneService {
 		return voList;
 	}
 
-	// 라이선스 관리 zone/licenseStateHistoryPage datatables 
 	public List<ZoneLicenseStateHistoryInfoVO> findAllLicenseStateHistoryInfo() {
 		List<ZoneLicenseStateHistoryInfoENTITY> entityList = mapper
 				.findAllLicenseStateHistoryInfo();
@@ -310,10 +276,8 @@ public class ZoneService {
 			ZoneLicenseHistoryInfoVO vo) {
 		ZoneLicenseHistoryInfoENTITY entity = modelMapper.map(vo,
 				ZoneLicenseHistoryInfoENTITY.class);
-		log.info("함수태우기전 : " + entity);
 		List<ZoneLicenseHistoryInfoENTITY> entityList = mapper
 				.findAllLicenseHistory(entity);
-		log.info("함수태운후  : " + entityList);
 		List<ZoneLicenseHistoryInfoVO> voList = modelMapper.map(entityList,
 				new TypeToken<List<ZoneLicenseHistoryInfoVO>>() {
 				}.getType());
@@ -324,11 +288,9 @@ public class ZoneService {
 			ZoneTimeLicenseHistoryVO vo) {
 		ZoneTimeLicenseHistoryENTITY entity = modelMapper.map(vo,
 				ZoneTimeLicenseHistoryENTITY.class);
-		log.info("timelicense 함수태우기전 : " + entity);
 
 		List<ZoneTimeLicenseHistoryENTITY> entityList = mapper
 				.findTimeLicenseHistory(entity);
-		log.info("timelicense 함수태운후  : " + entityList);
 		List<ZoneTimeLicenseHistoryVO> voList = modelMapper.map(entityList,
 				new TypeToken<List<ZoneTimeLicenseHistoryVO>>() {
 				}.getType());
@@ -345,18 +307,17 @@ public class ZoneService {
 				.requestLicenseHistory(entity);
 		double endTime = System.currentTimeMillis();
 		double diff = endTime - startTime;
-		log.info("license state 함수태운후  : " + entityList);
 		List<ZoneLicenseStateHistoryInfoVO> voList = modelMapper.map(entityList,
 				new TypeToken<List<ZoneLicenseStateHistoryInfoVO>>() {
 				}.getType());
 		return voList;
 	}
-	
+
 	public List<ZoneLicenseStateHistoryInfoVO> requestLicenseHistoryWithNoFilter(
 			ZoneLicenseStateHistoryInfoVO vo) {
 		ZoneLicenseStateHistoryInfoENTITY entity = modelMapper.map(vo,
 				ZoneLicenseStateHistoryInfoENTITY.class);
-		
+
 		double startTime = System.currentTimeMillis();
 		List<ZoneLicenseStateHistoryInfoENTITY> entityList = mapper
 				.requestLicenseHistoryWithNoFilter(entity);
@@ -364,7 +325,7 @@ public class ZoneService {
 		double diff = endTime - startTime;
 		List<ZoneLicenseStateHistoryInfoVO> voList = modelMapper.map(entityList,
 				new TypeToken<List<ZoneLicenseStateHistoryInfoVO>>() {
-		}.getType());
+				}.getType());
 		return voList;
 	}
 
@@ -373,14 +334,6 @@ public class ZoneService {
 		int result = mapper.isFindZone(entity);
 		return result > 0;
 	}
-
-	//	public List<ZoneLicenseStateHistoryInfoVO> requestLicenseHistory(ZoneLicenseStateHistoryInfoVO vo) {
-	//		ZoneLicenseStateHistoryInfoENTITY entity = modelMapper.map(vo, ZoneLicenseStateHistoryInfoENTITY.class);
-	//		List<ZoneLicenseStateHistoryInfoENTITY> entityList = mapper.requestLicenseHistory(entity);
-	//		List<ZoneLicenseStateHistoryInfoVO> voList = modelMapper.map(entityList, new TypeToken<List<ZoneLicenseStateHistoryInfoVO>>() {}.getType());
-	//		
-	//		return voList;
-	//	}
 
 	public List<ManagerCreateFileVO> findAllManagerName() {
 		List<ManagerCreateFileENTITY> entityList = mapper.findAllManagerName();
@@ -413,13 +366,6 @@ public class ZoneService {
 				}.getType());
 		return tamLocalPortList;
 	}
-
-	//	public ZoneWetherLicenseVO licenseCount(ZoneWetherLicenseVO vo) {
-	//		ZoneWetherLicenseENTITY entityL = modelMapper.map(vo, ZoneWetherLicenseENTITY.class);
-	//		ZoneWetherLicenseENTITY entity = mapper.licenseCount(entityL);
-	//		ZoneWetherLicenseVO voValue = modelMapper.map(entity,ZoneWetherLicenseVO.class);
-	//		return voValue;
-	//	}
 
 	public List<ZoneWetherLicenseVO> licenseCount(ZoneWetherLicenseVO vo) {
 		ZoneWetherLicenseENTITY entity = modelMapper.map(vo,
@@ -471,14 +417,6 @@ public class ZoneService {
 		return voList;
 	}
 
-	// list x test
-	//	public List<ZoneTimeLicenseVO> timeLicenseCount(ZoneWetherLicenseVO vo) {
-	//		ZoneTimeLicenseENTITY entity = modelMapper.map(vo, ZoneTimeLicenseENTITY.class);
-	//		ZoneTimeLicenseENTITY retENTITY = mapper.timeLicenseCount(entity); //findZoneWithNO
-	//		ZoneTimeLicenseVO retVO = modelMapper.map(retENTITY, ZoneTimeLicenseVO.class);
-	//		return retVO;
-	//	}
-
 	public List<ZoneTimeLicenseVO> timeLicenseCount(ZoneTimeLicenseVO tmvo) {
 		ZoneTimeLicenseENTITY entity = modelMapper.map(tmvo, ZoneTimeLicenseENTITY.class);
 		List<ZoneTimeLicenseENTITY> entityList = mapper.timeLicenseCount(entity);
@@ -498,20 +436,12 @@ public class ZoneService {
 	}
 
 	public List<ZoneTimeLicenseVO> timeLicenseDenyCount(int zone_no) {
-		//		ZoneTimeLicenseENTITY entity = modelMapper.map(tmvo, ZoneTimeLicenseENTITY.class);
 		List<ZoneTimeLicenseENTITY> entityList = mapper.timeLicenseDenyCount(zone_no);
 		List<ZoneTimeLicenseVO> voList = modelMapper.map(entityList,
 				new TypeToken<List<ZoneTimeLicenseENTITY>>() {
 				}.getType());
 		return voList;
 	}
-	//	
-	//	public List<ZoneTimeLicenseVO> timeLicenseDenyCount(ZoneTimeLicenseVO tmvo) {
-	//		ZoneTimeLicenseENTITY entity = modelMapper.map(tmvo, ZoneTimeLicenseENTITY.class);
-	//		List<ZoneTimeLicenseENTITY> entityList = mapper.timeLicenseDenyCount(entity);
-	//		List<ZoneTimeLicenseVO> voList = modelMapper.map(entityList, new TypeToken<List<ZoneTimeLicenseENTITY>>() {}.getType());
-	//		return voList;
-	//	}
 
 	public List<ZoneWetherLicenseVO> taaPlType(ZoneWetherLicenseVO vo) {
 		ZoneWetherLicenseENTITY entity = modelMapper.map(vo,
@@ -551,7 +481,6 @@ public class ZoneService {
 	}
 
 	public boolean verifyFile(ZoneSettingFileVO vo) throws TNAuthException {
-		log.info(vo.toString());
 		String zone_name = vo.getZone_name().trim();
 		String tam_local_ip_1 = vo.getTam_local_ip_1().trim();
 		String tam_local_port_1 = vo.getTam_local_port_1();
@@ -589,18 +518,12 @@ public class ZoneService {
 		int result = mapper.countZonetmLicenseHistory(filter);
 		return result;
 	}
-	//	public int countLicenseStateHistory() {
-	//		int result = mapper.countLicenseStateHistory();
-	//		log.info("SERVICE LAYER LICENSE HISTORY COUNT >>> "+result);
-	//		return result;
-	//	}
 
 	public int countLicenseStateHistory(String filter) {
 		int result = mapper.countLicenseStateHistory(filter);
-		log.info("SERVICE LAYER LICENSE HISTORY COUNT >>> " + result);
 		return result;
 	}
-	
+
 	public int countLicenseStateHistoryWithNoFilter() {
 		int result = mapper.countLicenseStateHistoryWithNoFilter();
 		return result;
@@ -627,41 +550,29 @@ public class ZoneService {
 		ZoneLicenseAllowInfoENTITY retEntity = mapper.getOtherContent(entity);
 		ZoneLicenseAllowInfoVO retVO = modelMapper.map(retEntity,
 				ZoneLicenseAllowInfoVO.class);
-
 		return retVO;
-
 	}
-	
-	
-	
+
 	public int getAgentStaticAllow(int zone_no) {
-		
+
 		int count = mapper.getAgentStaticAllow(zone_no);
-//		ZoneInfoENTITY entity = mapper.getAgentStaticAllow(zone_no);
-//		ZoneInfoVO retVO = modelMapper.map(entity, ZoneInfoVO.class);
-//		 
 		return count;
 	}
-	
+
 	public int getAgentDynamicAllow(int zone_no) {
 		int count = mapper.getAgentDynamicAllow(zone_no);
-//		ZoneInfoENTITY entity = mapper.getAgentDynamicAllow(zone_no);
-//		ZoneInfoVO retVO = modelMapper.map(entity, ZoneInfoVO.class);
-		
 		return count;
 	}
-	
+
 	public int getZoneNoWithZoneName(String name) {
 		int zone_no = mapper.getZoneNoWithZoneName(name);
 		return zone_no;
 	}
-	
+
 	public ZoneInfoVO getZoneInfoWithNo(int zone_no) {
 		ZoneInfoENTITY entity = mapper.getZoneInfoWithNo(zone_no);
 		ZoneInfoVO retVO = modelMapper.map(entity, ZoneInfoVO.class);
-		
 		return retVO;
 	}
-	
 
 }

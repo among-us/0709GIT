@@ -55,9 +55,10 @@
 		          	type:'post',							
 		            data: timeLicenseObj,
 		            success:function(result){
-						Swal.fire('성공','데이터베이스에 해당 정보를 입력했습니다','success').then((value) => {
-			            		 		window.location.href = "/zoneLicense/LicenseAllowInfoPage";
-									});
+						Swal.fire('성공','시간제한 라이선스 라이선스를 등록하였습니다','success')
+						//.then((value) => {
+			            //		 		window.location.href = "/zoneLicense/LicenseAllowInfoPage";
+						//			});
 		            },	
 		            error:function(result) {
 		            	Swal.fire('경고',result.data.errorMessage,'error');

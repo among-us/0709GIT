@@ -103,12 +103,13 @@ public class UserAPIController {
 		return CommonResponseDTO.builder().data(resDTO).build();
 
 	}
-	
+
 	@PutMapping("/user")
 	public CommonResponseDTO<Object> update(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			UserInfoDTO userInfoDTO, HttpServletRequest request,
-			HttpServletResponse response, ModelAndView modelAndView) throws JsonProcessingException {
+			HttpServletResponse response, ModelAndView modelAndView)
+			throws JsonProcessingException {
 		UserInfoVO vo = modelMapper.map(userInfoDTO, UserInfoVO.class);
 		boolean result = userService.updateUserInfo(vo);
 		UserResultEnum retEnum = result ? UserResultEnum.SUCCESS : UserResultEnum.FAIL;
@@ -122,7 +123,7 @@ public class UserAPIController {
 		if (!(securityVO.getPerm_no() == 1)) {
 			throw new TokenValidationException();
 		}
-		
+
 		UserInfoVO userInfoVO = userService.findUserInfoAsUserNO(vo);
 		UserHistoryInfoVO historyVO = modelMapper.map(userInfoVO,
 				UserHistoryInfoVO.class);
@@ -217,8 +218,7 @@ public class UserAPIController {
 		String exist = userService.getExist(id);
 		int perm_no = userService.getPermNo(id);
 		if (perm_no == 0) {
-			log.warn(">>>>>>>NO PERMISSION EXCEPTION >> USER ID IS " + vo.getUser_id()
-					+ "<<<<<<<");
+			log.warn("NO PERMISSION EXCEPTION >> USER ID IS " + vo.getUser_id());
 			throw new NoPermissionException();
 		}
 		if (exist.equals("N")) {
@@ -242,8 +242,8 @@ public class UserAPIController {
 
 		SecurityAuthInfoVO authVO = modelMapper.map(retVO, SecurityAuthInfoVO.class);
 		SecurityAuthInfoVO retAuthVo = securityService.createToken(authVO);
-		SecurityAuthInfoDTO retAuthDTO = modelMapper.map(retAuthVo, SecurityAuthInfoDTO.class);
-		
+		SecurityAuthInfoDTO retAuthDTO = modelMapper.map(retAuthVo,SecurityAuthInfoDTO.class);
+
 		Cookie cookie = new Cookie("UNETAUTHTOKEN", retAuthDTO.getValue());
 		cookie.setPath(request.getContextPath());
 		response.addCookie(cookie);
@@ -252,7 +252,6 @@ public class UserAPIController {
 		UserInfoResponseDTO resDTO = new UserInfoResponseDTO(resultEnum);
 		return CommonResponseDTO.builder().data(resDTO).build();
 	}
-
 
 	@GetMapping("/project/matching")
 	public String[] getProjectByCompName(@Validated CompanyProjectInfoDTO dto,
@@ -268,17 +267,9 @@ public class UserAPIController {
 	public CommonResponseDTO<Object> checkPwd(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			UserInfoDTO dto) throws TNAuthException {
-		//
-		//		if (errors.hasErrors()) {
-		//			UserInfoResponseDTO resDTO = new UserInfoResponseDTO(-7070,
-		//					errors.getFieldError().getDefaultMessage());
-		//			return CommonResponseDTO.builder().data(resDTO).build();
-		//		}
 		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
 		String user_id = securityVO.getUser_id();
 		int user_no = securityVO.getUser_no();
-
-		// usable / userno / userid / permno 4개 들어옴 
 
 		UserInfoVO vo = modelMapper.map(dto, UserInfoVO.class);
 		vo.setUser_id(user_id);
@@ -302,7 +293,6 @@ public class UserAPIController {
 
 		return CommonResponseDTO.builder().data(perm_code).build();
 	}
-	// 첫 접속했을때.
 
 	@GetMapping("/chart/hourly/first-access")
 	public CommonResponseDTO<Object> firstAccessHourlyChart(
@@ -351,11 +341,8 @@ public class UserAPIController {
 	public CommonResponseDTO<Object> totalChart(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			ChartDTO dto) throws TNAuthException {
-
 		ChartVO vo = modelMapper.map(dto, ChartVO.class);
-
 		ChartVO voList = userService.getTotalCount(vo);
-
 		return CommonResponseDTO.builder().data(voList).build();
 	}
 
@@ -370,9 +357,6 @@ public class UserAPIController {
 		int user_no = securityVO.getUser_no();
 
 		UserInfoVO vo = modelMapper.map(dto, UserInfoVO.class);
-		
-
-		
 
 		vo.setUser_no(user_no);
 		UserInfoVO resultVO = userService.getUserInfoWithUserNo(vo);
@@ -453,7 +437,6 @@ public class UserAPIController {
 	public CommonResponseDTO<Object> dailyChartTotal(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			ChartDailyDTO dto) throws TNAuthException {
-
 
 		ChartDailyVO vo = modelMapper.map(dto, ChartDailyVO.class);
 		ChartDailyVO voList = userService.getDailyChartTotalInfo(vo);

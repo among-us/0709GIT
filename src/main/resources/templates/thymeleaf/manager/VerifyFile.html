@@ -12,7 +12,7 @@
 			<div class="form-group row">
 				<div class="col-xl-10">
 					<button onclick="openTextFile()" class="btn btn-primary">Manager 환경파일 검증</button>
-					<input type="button" class="btn btn-dark" value="취소" id="ECBtn" /> <br> <br> <i class="fas fa-exclamation-triangle"></i> <span> 발급 받은 Manager 환경파일의 유효성을 검증합니다</span>
+					<input type="button" class="btn btn-dark" value="취소" onclick="back();" /> <br> <br> <i class="fas fa-exclamation-triangle"></i> <span> 발급 받은 Manager 환경파일의 유효성을 검증합니다</span>
 				</div>
 			</div>
 		</div>
@@ -24,11 +24,11 @@
 						<!-- Modal content-->
 						<div class="modal-content TaaVerify">
 							<div class="modal-header">
-								<h4 class="modal-title">TAManager 환경파일 검증</h4>
+								<h4 class="modal-title">Manager 환경파일 검증</h4>
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 							</div>
 							<div class="modal-body">
-								- TAManager 명 : <span class="tamVerify" id="name"></span> <br>- 로컬 IP : <span class="tamVerify" id="tamip"></span> <br> - COMM_TYPE : <span class="tamVerify" id="commtype"></span> <br> - DB 타입 : <span class="tamVerify" id="dbtype"></span> <br> - DB 주소: <span class="tamVerify" id="dbaddr"></span> <br> - DB 포트 : <span class="tamVerify" id="dbport"></span> <br> - DB 아이디 : <span class="tamVerify" id="dbid"></span> <br> - DB 비밀번호 : <span class="tamVerify" id="dbpwd"></span> <br> - DB 이름 : <span class="tamVerify" id="dbname"></span> <br> - HMAC : <span class="tamVerify" id="hmac"></span>
+								- Manager 명 : <span class="tamVerify" id="name"></span> <br>- 로컬 IP : <span class="tamVerify" id="tamip"></span> <br> - COMM_TYPE : <span class="tamVerify" id="commtype"></span> <br> - DB 타입 : <span class="tamVerify" id="dbtype"></span> <br> - DB 주소: <span class="tamVerify" id="dbaddr"></span> <br> - DB 포트 : <span class="tamVerify" id="dbport"></span> <br> - DB 아이디 : <span class="tamVerify" id="dbid"></span> <br> - DB 비밀번호 : <span class="tamVerify" id="dbpwd"></span> <br> - DB 이름 : <span class="tamVerify" id="dbname"></span> <br> - HMAC : <span class="tamVerify" id="hmac"></span>
 							</div>
 							<div style="border-top: 1px solid #e3e6f0;">
 								<span class="ml-4"><i class="fas fa-certificate"></i></span> <span>정합성 검증 결과 : </span><span class="TaaResult" id="verifyResult"></span>

@@ -170,7 +170,6 @@ $(function(){
 						}
 					} 
 					
-					
 					if(lic_type1 == 1){
 						for(var i =0 ; i<length ; i++){
 							var hour = 'h'+i;

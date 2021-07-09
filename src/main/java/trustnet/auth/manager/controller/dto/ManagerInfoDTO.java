@@ -35,7 +35,7 @@ public class ManagerInfoDTO {
 	int tam_no;
 //	정규식에 _ UNDERBAR 추가 
 	@Pattern(regexp = "^[0-9a-zA-Z_]*$", message = "TAM명은 영숫자로만 구성할 수 있습니다")
-	@NotEmpty(message = "TAManager명을 입력해주세요")
+	@NotEmpty(message = "Manager명을 입력해주세요")
 	String tam_name;
 	String site_info;
 //	@Pattern(regexp = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$" , message = "올바른 로컬 IPv4 주소를 입력해주세요")

@@ -195,13 +195,11 @@ public class ManagerController {
 				}.getType());
 
 		ManagerInfoVO vo = modelMapper.map(dto, ManagerInfoVO.class);
-		log.info("VO MAP LIST TEST : " + vo.toString());
 		int tam_no = vo.getTam_no();
 
 		ManagerInfoVO settingupdateVOList = managerService.getTamInfowithNo(tam_no);
 		ManagerInfoDTO settingupdateDTOList = modelMapper.map(settingupdateVOList,
 				ManagerInfoDTO.class);
-		log.info("SETTINGUPDATE DTO TEST : " + settingupdateDTOList.toString());
 
 		mav.addObject("tamInfoList", settingupdateDTOList);
 		mav.addObject("tamList", tamNameDTOList);

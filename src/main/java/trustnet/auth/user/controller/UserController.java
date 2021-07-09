@@ -77,7 +77,6 @@ public class UserController {
 		Cookie cookie = new Cookie("UNETAUTHTOKEN", retAuthDTO.getValue());
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
-
 		//		cookie.setPath(request.getContextPath());
 
 		return mav;
@@ -95,10 +94,8 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("thymeleaf/user/Account");
 		SecurityAuthInfoVO securityVO = securityService.checkTokenValidation(token);
 		int perm_code = securityVO.getPerm_no();
-		log.info("myAccount Page VO > "+securityVO.toString());
 		int user_no = securityVO.getUser_no();
 		UserInfoVO vo = userService.getUserInfo(user_no);
-		log.info("myAccount Page Return Value > "+vo.toString());
 		
 		mav.addObject("userInfo", vo);
 		mav.addObject("permCode", perm_code);

@@ -1,6 +1,6 @@
 <body>
 	<th:block th:include="thymeleaf/include/header"></th:block>
-	<div class="container-fluid full-height">
+	<div class="container-fluid">
 		<h1 class="h3 mb-2 text-secondary">
 			TA-Manager 관리<i class="fas fa-chevron-right mr-2 ml-2"></i> <b class="text-white">Manager 등록</b>
 		</h1>
@@ -48,7 +48,7 @@
 						<input type="text" name="tam_local_port" class="form-control" id="t_local_port" placeholder="0 ~ 65535" maxlength="5">
 					</div>
 					<a href="#" class="help text-white">
-						<i class="far fa-question-circle"></i><span class="help-class">TAManager 서비스 포트</span>
+						<i class="far fa-question-circle"></i><span class="help-class">Manager 서비스 포트</span>
 					</a>
 				</div>
 				<div class="form-group row">
@@ -57,7 +57,7 @@
 						<input type="text" name="tam_adm_port" class="form-control" id="t_admin_port" placeholder="0 ~ 65535" maxlength="5">
 					</div>
 					<a href="#" class="help text-white">
-						<i class="far fa-question-circle"></i><span class="help-class">TAManager 관리 포트</span>
+						<i class="far fa-question-circle"></i><span class="help-class">Manager 관리 포트</span>
 					</a>
 				</div>
 				<div class="form-group row">
@@ -96,7 +96,7 @@
 						</select>
 					</div>
 					<a href="#" class="help text-white">
-						<i class="far fa-question-circle"></i><span class="help-class">TAManager 서비스 프로세스 관리 (WatchDog)</span>
+						<i class="far fa-question-circle"></i><span class="help-class">Manager 서비스 프로세스 관리 (WatchDog)</span>
 					</a>
 				</div>
 				<div class="form-group row">
@@ -116,7 +116,7 @@
 				</div>
 				<div class="form-group row">
 					<div class="col-xl-10">
-						<input type="button" class="btn btn-primary enroll" value="등록" id="enrollBtn"> <input type="button" id="ECBtn" class="btn btn-dark" value="취소" />
+						<input type="button" class="btn btn-primary enroll" value="등록" id="enrollBtn"> <input type="button" onclick="back();" class="btn btn-dark" value="취소" />
 					</div>
 				</div>
 				<div class="form-group row">

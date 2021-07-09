@@ -417,7 +417,8 @@
 		AND req_date <![CDATA[ < ]]>
 		STR_TO_DATE(#{end_value},'%Y-%m-%d')
 		AND zone_no = (SELECT
-		zone_no FROM zone_info_tbl zit WHERE zone_name = #{zone_name});
+		zone_no FROM
+		zone_info_tbl zit WHERE zone_name = #{zone_name});
 	</select>
 
 	<!-- <select id="getTotalCount" parameterType="ChartENTITY" -->
@@ -476,7 +477,8 @@
 	<select id="getPermNoWithUserNo" parameterType="int"
 		resultType="int">
 		SELECT perm_no FROM user_info_tbl uit
-		WHERE user_no = #{user_no};
+		WHERE user_no =
+		#{user_no};
 	</select>
 
 	<select id="getUserInfoForToken" parameterType="UserInfoVO"

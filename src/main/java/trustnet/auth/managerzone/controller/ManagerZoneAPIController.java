@@ -101,32 +101,24 @@ public class ManagerZoneAPIController {
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			@RequestBody List<ManagerZoneInfoDTO> dtoList) throws TNAuthException {
 
-		log.info("managerZone LIST<DTO> " + dtoList.toString());
-
 		List<ManagerZoneInfoVO> voList = modelMapper.map(dtoList,
 				new TypeToken<List<ManagerZoneInfoVO>>() {
 				}.getType());
 
-		log.info("managerZone LIST<VO> SIZE = " + voList.size() + "<<<<<<");
 		int tam_no = voList.get(0).getTam_no();
-		log.info("managerZone TAM_NO = " + tam_no + "<<<<<<");
 		ManagerZoneInfoVO deleteVO = new ManagerZoneInfoVO();
 		deleteVO.setTam_no(tam_no);
 		boolean delete = managerZoneService.deleteManagerZoneWithTAMNO(deleteVO);
-		log.info("delete ? " + delete);
 
 		for (ManagerZoneInfoVO vo : voList) {
-			log.info("vo.toString >>> " + vo.toString());
 			boolean test = managerZoneService.saveManagerZone(vo);
-			log.info("boolean 결과 ? " + test);
-			if(!test) {
+			if (!test) {
 				JSONObject err = new JSONObject();
 				err.put("errorCode", -1);
 				err.put("errorMessage", "예기지못한 에러가 발생했습니다. 재시도 바랍니다.");
-				return CommonResponseDTO.builder().data(err).build();		
+				return CommonResponseDTO.builder().data(err).build();
 			}
 		}
-		
 		JSONObject success = new JSONObject();
 		success.put("errorCode", 0);
 		success.put("errorMessage", "성공하였습니다");
@@ -137,36 +129,19 @@ public class ManagerZoneAPIController {
 	public CommonResponseDTO<Object> exceptionDelete(
 			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
 			ManagerZoneInfoDTO dto) throws TNAuthException {
-		
-		log.info("/exception dto.toString > "+dto.toString());
+
 		ManagerZoneInfoVO vo = modelMapper.map(dto, ManagerZoneInfoVO.class);
 		boolean result = managerZoneService.deleteManagerZoneWithTAMNO(vo);
-		log.info("/exception result > " + result);
-		
+
 		JSONObject ret = new JSONObject();
 		ret.put("errorCode", 0);
 		ret.put("errorMessage", "성공하였습니다");
 		return CommonResponseDTO.builder().data(ret).build();
 	}
 
-	//	@PostMapping("/managerZone/catch")
-	//	public CommonResponseDTO<Object> MatchingAllDelete(
-	//			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,
-	//			@Validated ManagerZoneInfoDTO dto, BindingResult errors)throws TNAuthException {
-	//		
-	//		int tam_no = dto.getTam_no();
-	//		
-	//		boolean result = managerZoneService.matchingAllDelete(tam_no);
-	//		
-	//		ManagerZoneResultEnum resultEnum = result ? ManagerZoneResultEnum.SUCCESS : ManagerZoneResultEnum.FAIL;
-	//		ManagerZoneResponseDTO resDTO = new ManagerZoneResponseDTO(resultEnum);
-	//		
-	//		return CommonResponseDTO.builder().data(resDTO).build();
-	//	}
-	//		
-
 }// API controller end
 
+// 예전 소스
 //	@PostMapping("/managerZone")
 //	public CommonResponseDTO<Object> enrollMatch(
 //			@CookieValue(value = "UNETAUTHTOKEN", defaultValue = "") String token,

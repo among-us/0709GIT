@@ -147,7 +147,7 @@
 		zone_info_history_tbl ziht
 		ON z.zone_no = ziht.zone_no
 		WHERE z.zone_no =
-		34
+		#{zone_no}
 		ORDER BY history_reg_date DESC
 		LIMIT 1 ;
 	</select>

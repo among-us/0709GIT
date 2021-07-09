@@ -177,7 +177,7 @@ $(function(){
 				}
 					// 0614 0615 start
 					$.ajax({
-			            url:'/db-info',
+			            url:'/manager/db',
 			            type:'put',
 			            data: updateObj,
 			            success:function(result){

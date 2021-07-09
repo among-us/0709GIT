@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class ManagerGenerateHmacDTO {
 	@Pattern(regexp = "^[0-9a-zA-Z_]*$", message = "TAM명은 영숫자로만 구성할 수 있습니다")
-	@NotEmpty(message = "TAManager명을 입력해주세요")
+	@NotEmpty(message = "Manager명을 입력해주세요")
 	String tam_name;
 	@NotEmpty(message = "로컬 IP 주소를 입력해주세요")
 	String tam_local_ip;

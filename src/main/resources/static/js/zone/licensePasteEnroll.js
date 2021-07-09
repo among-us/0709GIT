@@ -47,7 +47,7 @@ $(function(){
 				            data: parseObj,
 				            success:function(parse){
 				            if(parse.data == "length null"){
-				            	Swal.fire('','올바르지 않은 요청값 형식입니다.','error')
+				            	Swal.fire('','올바르지 않은 요청값 형식입니다','error')
 				            }else if(parse.data.errorCode == -1){
 				            	Swal.fire('',parse.data.errorMessage,'error')
 				            }else{

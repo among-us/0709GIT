@@ -1,6 +1,6 @@
 <body>
 	<th:block th:include="thymeleaf/include/header"></th:block>
-	<div class="container-fluid full-height">
+	<div class="container-fluid">
 		<h1 class="h3 mb-2 text-secondary">
 			관리자 메뉴 <i class="fas fa-chevron-right mr-2 ml-2"></i> DB 정보 목록<i class="fas fa-chevron-right mr-2 ml-2"></i><b class="text-white">DB 정보 변경</b>
 		</h1>
@@ -91,7 +91,7 @@
 					</div>
 					<div class="form-group row">
 						<div class="col-xl-10">
-							<input type="button" class="btn btn-primary" value="적용" id="updateBtn"> <input type="button" id="deleteBtn" class="btn btn-danger" value="삭제" /> <input type="button" id="UCBtn" class="btn btn-dark" value="취소" />
+							<input type="button" class="btn btn-primary" value="적용" id="updateBtn"> <input type="button" id="deleteBtn" class="btn btn-danger" value="삭제" /> <input type="button" onclick="back();" class="btn btn-dark" value="취소" />
 						</div>
 					</div>
 				</form>

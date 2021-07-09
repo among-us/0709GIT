@@ -10,7 +10,7 @@ public enum ZoneResultEnum {
 	BINDEXCEPTION(2002, "처리할 수 없는 데이터가 전달되었습니다"),
 	SQL_INTEGRITY_CONSTRAINT_VIOLATION(3001, "중복된 정보를 가진 정보가 존재합니다"), // ZONE 라이선스 관리 -> ZONE 라이선스 등록 -> ALERT 창 내용 변경 // 이름을 -> 정보를
 	EXISTSUCCESS(0, "사용할 수 있는 이름입니다"),
-	EXISTFAIL(5002, "중복되는 이름이 존재합니다"),
+	EXISTFAIL(5002, "중복되는 PROJECT명이 존재합니다"),
 	JNI_ERROR(-1,"JNI EXCEPTION ERROR");
 
 	private int errorCode;

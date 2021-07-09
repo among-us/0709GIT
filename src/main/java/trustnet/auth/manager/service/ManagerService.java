@@ -67,7 +67,6 @@ public class ManagerService {
 
 	public List<ManagerInfoVO> findAllManagerList() {
 		List<ManagerInfoENTITY> entityList = mapper.findAllManagerList();
-		//		log.info("SERVICE 단 HISTORY TEST : " + entityList.toString());
 		List<ManagerInfoVO> voList = modelMapper.map(entityList,
 				new TypeToken<List<ManagerInfoVO>>() {
 				}.getType());
@@ -85,14 +84,7 @@ public class ManagerService {
 	public List<ManagerHistoryInfoVO> findAllManagerHistory(ManagerHistoryInfoVO vo) {
 		ManagerHistoryInfoENTITY entity = modelMapper.map(vo,
 				ManagerHistoryInfoENTITY.class);
-
-		// ORDERING VALUE TEST 
-		log.info("HISTORY SERVICE ORDERING VALUE ?:" + entity.getOrdering());
-
-		log.info("함수태우기전 : service 단 history entity value : " + entity);
-
 		List<ManagerHistoryInfoENTITY> entityList = mapper.findAllManagerHistory(entity);
-		log.info("함수태운후 : SERVICE 단 HISTORY TEST : " + entityList.toString());
 		List<ManagerHistoryInfoVO> voList = modelMapper.map(entityList,
 				new TypeToken<List<ManagerHistoryInfoVO>>() {
 				}.getType());
@@ -215,14 +207,7 @@ public class ManagerService {
 
 		String hmac = Integrity.generateTAMConfIntegrity(tam_name, tam_ip, comm_type,
 				db_type, dec_addr, port, dec_id, dec_pwd, dec_name);
-		log.info("HMAC VALUE = " + hmac);
 		return true;
-		//		boolean ret;
-		//		if ( hmac.length() != 0 ) {
-		//			return ret = true;
-		//		}else {
-		//			return ret = false;
-		//		}
 
 	}
 	// ==============================================================================================

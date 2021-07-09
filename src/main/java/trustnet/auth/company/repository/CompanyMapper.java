@@ -17,7 +17,7 @@ import trustnet.auth.company.repository.entity.CompanyProjZoneENTITY;
 import trustnet.auth.company.repository.entity.CompanyProjectHistoryENTITY;
 import trustnet.auth.company.repository.entity.CompanyProjectInfoENTITY;
 import trustnet.auth.company.repository.entity.GroupInfoENTITY;
-import trustnet.auth.company.service.CompProjZoneListVO;
+import trustnet.auth.company.service.vo.CompProjZoneListVO;
 import trustnet.auth.company.service.vo.CompanyInfoVO;
 import trustnet.auth.company.service.vo.CompanyProjectInfoVO;
 import trustnet.auth.manager.repository.entity.ManagerHistoryInfoENTITY;

@@ -13,7 +13,7 @@
 				<div class="form-group row">
 					<div class="col-xl-12">
 						<button onclick="openTextFile()" class="btn btn-primary">Agent 환경파일 검증</button>
-						<input type="button" class="btn btn-dark" value="취소" id="ECBtn" /><br> <br> <i class="fas fa-exclamation-triangle"></i> <span> 발급 받은 Agent 환경파일의 유효성을 검증합니다</span>
+						<input type="button" class="btn btn-dark" value="취소" onclick="back();" /><br> <br> <i class="fas fa-exclamation-triangle"></i> <span> 발급 받은 Agent 환경파일의 유효성을 검증합니다</span>
 					</div>
 				</div>
 			</div>
@@ -30,7 +30,7 @@
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 					<div class="modal-body">
-						- PROJECT명 : <span class="taaVerify" id="name"></span> <br> - TAManager IP 1 : <span class="taaVerify" id="ip1"></span> <br> - TAManager 포트 1 : <span class="taaVerify" id="port1"></span> <br> - TAManager IP 2 : <span class="taaVerify" id="ip2"></span> <br> - TAManager 포트 2 : <span class="taaVerify" id="port2"></span> <br> - TAAgent IP : <span class="taaVerify" id="taaip"></span> <br> - TAAgent 라이선스 타입 : <span class="taaVerify" id="taatype"></span> <br> - HMAC: <span class="taaVerify" id="hmac"></span>
+						- PROJECT명 : <span class="taaVerify" id="name"></span> <br> - Manager IP 1 : <span class="taaVerify" id="ip1"></span> <br> - Manager 포트 1 : <span class="taaVerify" id="port1"></span> <br> - Manager IP 2 : <span class="taaVerify" id="ip2"></span> <br> - Manager 포트 2 : <span class="taaVerify" id="port2"></span> <br> - TAAgent IP : <span class="taaVerify" id="taaip"></span> <br> - TAAgent 라이선스 타입 : <span class="taaVerify" id="taatype"></span> <br> - HMAC: <span class="taaVerify" id="hmac"></span>
 					</div>
 					<div style="border-top: 1px solid #e3e6f0;">
 						<span class="ml-4"><i class="fas fa-certificate"></i></span> <span>정합성 검증 결과 : </span><span class="TaaResult" id="verifyResult"></span>

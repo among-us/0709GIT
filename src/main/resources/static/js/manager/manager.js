@@ -7,110 +7,16 @@ $(function(){
 
 	isExistTAMNAME = true; 
 	allowTamName = '';
-	/*
-	$('#enrollBtn').click(function() {
-			//console.log(isExistTAMNAME)
-			if(allowTamName != $("input[name='tam_name']").val() || allowTamName.length < 1 ){
-				Swal.fire('경고','서버명 중복검사 후에 등록절차를 진행해주세요','error')
-				isExistTAMNAME = true;
-				return 0;
-			}
-			
-			if(isExistTAMNAME != false){
-				Swal.fire('경고','해당 서버명을 사용하는 서버가 존재합니다','error')
-				isExistTAMNAME = true; 
-				return 0;
-			}
-			
-			var t_l_i = $("input[name='tam_local_ip']").val();
-			var t_l_p = $("input[name='tam_local_port']").val();
-			var t_a_p = $("input[name='tam_adm_port']").val();
-			
-			var tam_pub_adm_port = 	$("input[name='tam_pub_adm_port']").val();
-			if(tam_pub_adm_port == ""){
-				tam_pub_adm_port = 0;
-			}
-			console.log('tamadmport : '+ tam_pub_adm_port);
-			
-			enrollObj = new EnrollDTO($("input[name='tam_name']").val(),
-					$("input[name='site_info']").val(),
-					$("input[name='tam_local_ip']").val(),
-					$("input[name='tam_local_port']").val(),
-					$("input[name='tam_adm_port']").val(),
-					$("input[name='tam_pub_ip']").val(),
-					$("input[name='tam_pub_port']").val(),
-					tam_pub_adm_port,
-					$("input[name='shared_path']").val(),
-					$('select[name="comm_type"] option:selected').val(),
-					$('select[name="watchdog"] option:selected').val()
-					);
-			
-			
-			var priv_ip =  $("input[name='tam_local_ip']").val();
-			var priv_port = $("input[name='tam_local_port']").val();
-			var tam_priv_port = $("input[name='tam_adm_port']").val();
-			// 내부 ip / 내부 포트 / 관리자 내부 포트
-			
-			//console.log(priv_port);
-			//console.log(tam_priv_port);
-			
-			var pub_ip = $("input[name='tam_pub_ip']").val();
-			var pub_port = $("input[name='tam_pub_port']").val();
-			// 외부 ip / 외부 포트 / 관리자 외부 포트
-			
-			
-			
-			var priv_result = ValidateIPaddress(priv_ip);
-			var pub_result = ValidateIPaddress(pub_ip);
-
-			//console.log('private ip : ' + priv_result);
-			//console.log('pub ip : ' + pub_result);
-			if(priv_ip == "" || priv_port == "" || tam_priv_port == ""){
-				Swal.fire('경고','필수항목을 모두 입력바랍니다','error');
-			}else if(priv_result == 'false'){
-				Swal.fire('입력오류','올바른 내부 IPv4를 입력바랍니다','error');
-			}else if(priv_port < 0 || priv_port > 65535){			
-				Swal.fire('입력오류','올바른 범위의 내부 포트를 입력바랍니다','error');
-			}else if(tam_priv_port <0 || tam_priv_port > 65535){			
-				Swal.fire('입력오류','올바른 범위의 관리자 내부 포트를 입력바랍니다','error');
-			}else if(tam_pub_adm_port < 0 || tam_pub_adm_port > 65535){
-				Swal.fire('입력오류','올바른 범위의 관리자 외부 포트를 입력바랍니다','error');
-			}else {
-					$.ajax({
-			            url:'/manager',
-			            type:'post',
-			            data: enrollObj,
-			            success:function(result){
-            	Swal.fire('경고',result.data.errorMessage,'error');
-			            	if(result.data.errorCode == 0) {
-			            	Swal.fire('성공','등록 성공', 'success')
-							.then((value) => {
-			            		 window.location.href = "/manager/listPage";
-								});
-			            	}
-			            	if(result.data.errorCode == 2004) {
-			            		window.location.href = "/"
-			            	}
-			            },
-			            error:function(result) {
-			            	//alert("서버와의 통신에 실패하였습니다");
-			            	Swal.fire('경고','서버와의 통신에 실패하였습니다','error');
-			            }
-			        })
-	        	}
-		});
-		*/
-		// ==============================================================================================================================
 		
 			$('#enrollBtn').click(function() {
 			if(allowTamName != $("input[name='tam_name']").val() || allowTamName.length < 1 ){
-				Swal.fire('경고','서버명 중복검사 후에 등록절차를 진행해주세요','error')
+				Swal.fire('경고','Manager명 중복검사 후에 등록절차를 진행해주세요','error')
 				isExistTAMNAME = true;
 				return 0;
 			}
 			
 			if(isExistTAMNAME != false){
-				Swal.fire('경고','해당 서버명을 사용하는 서버가 존재합니다','error')
+				Swal.fire('경고','중복된 Manager명입니다','error')
 				isExistTAMNAME = true; 
 				return 0;
 			}

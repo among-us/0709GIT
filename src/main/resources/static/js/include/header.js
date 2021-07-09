@@ -1,7 +1,5 @@
 var ProfileDTO = function (passwd) {
-	
 	this.passwd= passwd;
-
 	return this;
 }
 
@@ -10,18 +8,6 @@ function back(){
 }
 
 $(function(){
-
-/*
-$.ajax({
-	url: '/user/perm-code',
-	get: 'get',
-	success:function(result){
-	},
-	error:function(result){
-		alert('error');
-	}
-})
-*/
 	hover();
 	hideLink();
 
@@ -34,33 +20,35 @@ $.ajax({
 			  showCancelButton: true,
 			  confirmButtonColor: '#E74A3B',
 			  cancelButtonColor: 'gray',
+			  background:'#272C33',
 			  confirmButtonText: '로그아웃',
 			  cancelButtonText : '아니오'
 			}).then((result) => {
 				if (result.isConfirmed) {
 					window.location.href = "/logout";
-			  }// if
-			})	//then
-		})// LOGOUT CLICK FUNCTION END 
+			  }
+			})
+		}) 
 	
 			$('#user_info_update').click(function(){
-			 
 				Swal.fire({
 						  title: '',
 						  input: 'password',
 						  inputLabel: '비밀번호를 입력해주세요',
+						  inputLabelColor:'white',
 						  inputPlaceholder: '계정 비밀번호 입력',
+						  background: '#272C33',
+						  fontColor : 'white',
 					  inputAttributes: {
-					    maxlength: 100,
-					    autocapitalize: 'off',
-					    autocorrect: 'off'
+						    maxlength: 100,
+						    autocapitalize: 'off',
+						    autocorrect: 'off'
 					  }
 				}).then((value) => {
 				var passwd = $('#swal2-input').val();
 				console.log(passwd);
 				profileObj = new ProfileDTO(passwd);
 					$.ajax({
-						// pwd correct logic
 						url : '/user/profile',
 						type : 'get',
 						data : profileObj,
@@ -68,29 +56,35 @@ $.ajax({
 							if(d.data == true){
 								window.location.href="/user/myAccountPage";
 							}else{
-								Swal.fire('','비밀번호가 일치하지 않습니다','error');
+								Swal.fire({
+									title : '',
+									text : '비밀번호가 일치하지 않습니다',
+									icon : 'error',
+									background:'#272C33',
+									width: 500,
+									padding : '2em',
+									fontColor : 'white'
+								});
 							}
 						},
 						error : function(d){
 							Swal.fire('','','error');
 						}
-					}) // ajax end
-				})// then flow
-		}) // function end
-
+					})
+				})
+		})
 });
 
 function hover(){
-
-		var link = document.location.href;
-		var inputClass = document.getElementsByClassName("collapse-item");
-		for(var i =0; i < inputClass.length; i++){
-				if(inputClass[i].href == link){
-					inputClass[i].className += " bg-secondary text-light";
-					inputClass[i].parentNode.parentNode.className = "collapse";
-					inputClass[i].parentNode.parentNode.className += " show";
-				}
+	var link = document.location.href;
+	var inputClass = document.getElementsByClassName("collapse-item");
+	for(var i =0; i < inputClass.length; i++){
+		if(inputClass[i].href == link){
+			inputClass[i].className += " bg-secondary text-light";
+			inputClass[i].parentNode.parentNode.className = "collapse";
+			inputClass[i].parentNode.parentNode.className += " show";
 		}
+	}
 }
 
 function hideLink(){

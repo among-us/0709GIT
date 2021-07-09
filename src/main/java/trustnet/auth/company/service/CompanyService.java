@@ -23,6 +23,7 @@ import trustnet.auth.company.repository.entity.CompanyProjectInfoENTITY;
 import trustnet.auth.company.repository.entity.GroupInfoENTITY;
 import trustnet.auth.company.service.vo.CompNoInfoVO;
 import trustnet.auth.company.service.vo.CompProjZoneListHistoryVO;
+import trustnet.auth.company.service.vo.CompProjZoneListVO;
 import trustnet.auth.company.service.vo.CompanyHistoryInfoVO;
 import trustnet.auth.company.service.vo.CompanyInfoVO;
 import trustnet.auth.company.service.vo.CompanyLicenseVO;

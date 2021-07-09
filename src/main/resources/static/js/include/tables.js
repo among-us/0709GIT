@@ -24,6 +24,7 @@ $(function(){
 		info:false,
 		responsive: true,
 		paging: true,
+		order: [ 0, 'desc' ],
 			language : {
 			           search: "", searchPlaceholder: "Search",
 			           emptyTable : "데이터가 없습니다",
@@ -45,7 +46,7 @@ $(function(){
 		responsive: true,
 		paging: true,
         ordering : true,
-        order: [ 0, 'asc' ],
+        order: [ 0, 'desc' ],
         	language : {
 			           search: "", searchPlaceholder: "Search",
 			           emptyTable : "데이터가 없습니다",
@@ -66,7 +67,7 @@ $(function(){
 		info:false,
 		responsive: false,
 		paging: true,
-        order: [ 0, 'asc' ],
+        order: [ 0, 'desc' ],
         	language : {
 			           search: "", searchPlaceholder: "Search",
 			           emptyTable : "데이터가 없습니다",

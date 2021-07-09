@@ -62,7 +62,13 @@ $(function(){
 		  $("input[name='db_id']").val(result[3]);
 		  $("input[name='db_pwd']").val(result[4]);
 		  $("input[name='db_name']").val(result[5]);
-		  Swal.fire('알림','DB 정보 변경 필요 시에 [관리자 메뉴] -> [ DB 정보목록 ] \n서비스를 이용해주시기 바랍니다','warning')
+		  //Swal.fire('알림','DB 정보 변경 필요 시에 [관리자 메뉴] -> [ DB 정보목록 ] \n서비스를 이용해주시기 바랍니다','warning')
+		  Swal.fire({
+		  	title : '<span class="text-dark">알림</span>',
+		  	text : 'DB 정보 변경 필요 시에 [관리자 메뉴] -> [ DB 정보목록 ] \n서비스를 이용해주시기 바랍니다',
+		  	icon : 'info',
+		  	background : '#272C33'
+		  });
           },
           error:function() {
             Swal.fire('경고','서버와의 통신에 실패하였습니다','error');
@@ -86,7 +92,13 @@ $(function(){
 		  manageObj = new ManageDTO(tam_name,tam_ip,comm_type,db_type,db_ip,db_port,db_id,db_pwd,db_name);
 		
 		  if (tam_name=="" || tam_ip =="" || comm_type=="" || db_type == "" || db_ip == "" || db_port == "" || db_id == "" || db_pwd=="" || db_name=="") {
-		      Swal.fire('', '환경파일 생성에 필요한 정보를 모두 입력바랍니다', 'error');
+		      //Swal.fire('', '환경파일 생성에 필요한 정보를 모두 입력바랍니다', 'error');
+		      Swal.fire({
+		      	text : '환경파일 생성에 필요한 정보를 모두 입력바랍니다',
+		      	background : '#272C33',
+		      	fontColor : 'white',
+		      	icon : 'error'
+		      })
 		  }else if(db_port > 65535 || db_port < 0){
 		    Swal.fire('범위 초과','포트번호에 올바른 범위의 값을 입력하세요','error');
 		  } else {

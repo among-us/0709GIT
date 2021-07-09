@@ -93,7 +93,6 @@ public class CompanyController {
 		int zone_no = dto.getZ_zone_no();
 		String zno = Integer.toString(zone_no);
 
-		log.info("--------------------------------" + zno);
 		CompNoInfoVO vo = modelMapper.map(dto, CompNoInfoVO.class);
 
 		List<CompanyLicenseVO> companyMatchZoneVOLIST = companyService
@@ -101,45 +100,22 @@ public class CompanyController {
 		List<CompanyLicenseDTO> companyMatchZoneDTOLIST = modelMapper
 				.map(companyMatchZoneVOLIST, new TypeToken<List<CompanyLicenseDTO>>() {
 				}.getType());
-
-		//		List<CompanyLicenseVO> companyTimelicenseVOLIST = companyService.findTmlicensePubCnt(vo);
-		//		List<CompanyLicenseDTO> companyTimelicenseDTOLIST = modelMapper.map(companyTimelicenseVOLIST, new TypeToken<List<CompanyLicenseDTO>>() {}.getType());
-		//		mav.addObject("TMList", companyTimelicenseDTOLIST);
-		//		
-
 		List<CompanyInfoVO> compVOList = companyService.findAllCompanyInfo();
 		log.info("COMPANY VO LIST TEST :  " + compVOList.toString());
 		List<CompanyInfoDTO> compDTOList = modelMapper.map(compVOList,
 				new TypeToken<List<CompanyInfoDTO>>() {
 				}.getType());
-
-		//		List<CompanyProjectInfoVO> projVOList = companyService.findAllProjectInfo();
-		//		List<CompanyProjectInfoDTO> projDTOList = modelMapper.map(projVOList,
-		//				new TypeToken<List<CompanyProjectInfoDTO>>() {
-		//		}.getType());
-
 		List<ZoneInfoVO> voZoneList = zoneService.findAllZoneListOnlyExist();
 		List<ZoneInfoDTO> dtoZoneList = modelMapper.map(voZoneList,
 				new TypeToken<List<ZoneInfoDTO>>() {
 				}.getType());
 
-		//		mav.addObject("projList", projDTOList);
 		mav.addObject("compList", compDTOList);
 		mav.addObject("zoneList", dtoZoneList);
 		mav.addObject("companyNGroupInfoList", dtoList);
 		mav.addObject("companyZoneList", companyMatchZoneDTOLIST);
 		return mav;
 	}
-
-	//	@GetMapping("/company/listPage")
-	//	public ModelAndView companyListPage() {
-	//		ModelAndView mav = new ModelAndView("thymeleaf/company/CompanyList");
-	//		List<CompanyNGroupInfoVO> voList = companyService.findAllCompanyNGroupInfo();
-	//		List<CompanyNGroupInfoDTO> dtoList = modelMapper.map(voList, new TypeToken<List<CompanyNGroupInfoDTO>>() {}.getType());
-	//		
-	//		mav.addObject("companyNGroupInfoList", dtoList);
-	//		return mav;
-	//	}
 
 	@GetMapping("/company/updatePage")
 	public ModelAndView companyUpdatePage(
@@ -165,7 +141,6 @@ public class CompanyController {
 				new TypeToken<List<CompanyInfoDTO>>() {
 				}.getType());
 
-		//		ZoneInfoVO zoneInfoVO = new ZoneInfoVO(dto.getC_comp_no());
 		ZoneInfoVO zoneInfoVO = new ZoneInfoVO();
 		List<ZoneInfoVO> zoneInfoVOLIST = zoneService
 				.findZoneWithCompNoWithAlive(zoneInfoVO);
@@ -179,8 +154,6 @@ public class CompanyController {
 		List<CompanyLicenseDTO> companyMatchZoneDTOLIST = modelMapper
 				.map(companyMatchZoneVOLIST, new TypeToken<List<CompanyLicenseDTO>>() {
 				}.getType());
-
-		//		기업 관리 > 서비스 현황 이력 table에 들어가는 시간제한 라이선스 발급 개수 
 
 		mav.addObject("companyList", dtoList);
 		mav.addObject("companyZoneList", companyMatchZoneDTOLIST);
@@ -221,7 +194,6 @@ public class CompanyController {
 		ModelAndView mav = new ModelAndView("thymeleaf/company/CompanyProjectUpdate");
 		CompanyProjectInfoVO vo = modelMapper.map(dto, CompanyProjectInfoVO.class);
 		CompanyProjectInfoVO voList = companyService.getProjectInfo(vo);
-		log.info("After Function :" + voList.toString());
 		List<ZoneInfoVO> voZoneList = zoneService.findAllZoneListOnlyExist();
 		List<ZoneInfoDTO> dtoZoneList = modelMapper.map(voZoneList,
 				new TypeToken<List<ZoneInfoDTO>>() {

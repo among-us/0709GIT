@@ -53,11 +53,12 @@ public class ManagerZoneService {
 		Integer result = managerZoneMapper.deleteManagerZoneWithTAMNO(vo);
 		return result > 0;
 	}
-	
+
 	public boolean matchingAllDelete(int tam_no) {
 		Integer result = managerZoneMapper.matchingAllDelete(tam_no);
 		return result > 0;
 	}
+
 	public boolean deleteMatchingWithTamNo(int tam_no) {
 		Integer result = managerZoneMapper.deleteMatchingWithTamNo(tam_no);
 		return result > 0;
@@ -73,17 +74,12 @@ public class ManagerZoneService {
 		return voList;
 	}
 
-	//	public ManagerZoneInfoVO getZoneName(ManagerZoneInfoVO vo) {
-	//		ManagerZoneInfoENTITY entity = modelMapper.map(vo, ManagerZoneInfoENTITY.class);
-	//		ManagerZoneInfoENTITY retEntity = managerZoneMapper.getZoneName(entity);
-	//		ManagerZoneInfoVO retVO = modelMapper.map(retEntity, ManagerZoneInfoVO.class);
-	//		return retVO;
-	//	}
-
 	public ManagerZoneGetNameVO getZoneName(ManagerZoneGetNameVO vo) {
-		ManagerZoneGetNameENTITY entity = modelMapper.map(vo, ManagerZoneGetNameENTITY.class);
+		ManagerZoneGetNameENTITY entity = modelMapper.map(vo,
+				ManagerZoneGetNameENTITY.class);
 		ManagerZoneGetNameENTITY retEntity = managerZoneMapper.getZoneName(entity);
-		ManagerZoneGetNameVO retVO = modelMapper.map(retEntity, ManagerZoneGetNameVO.class);
+		ManagerZoneGetNameVO retVO = modelMapper.map(retEntity,
+				ManagerZoneGetNameVO.class);
 		return retVO;
 	}
 

@@ -1,4 +1,4 @@
-package trustnet.auth.company.service;
+package trustnet.auth.company.service.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

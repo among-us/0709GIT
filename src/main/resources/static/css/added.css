@@ -506,10 +506,6 @@ button#m_enrollBtn:focus, button#m_deleteBtn:focus {
 	background-color: #f27474;
 }
 
-.swal2-content {
-	color: white;
-}
-
 #licenseStatus {
 	color: #6c7293;
 	background-color: #272C33;
@@ -528,4 +524,14 @@ button#m_enrollBtn:focus, button#m_deleteBtn:focus {
 	color: #fff;
 	background-color: #383F48;
 	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.swal2-input-label{
+	color : white;
+}
+#swal2-content{
+	color:white;
+}
+.swal2-popup{
+	color:white;
+	background-color : #272C33;
 }
